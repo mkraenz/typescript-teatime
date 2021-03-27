@@ -129,15 +129,15 @@ function hello(message, channel, tags) {
 function rollDice(tags, message) {
   const sayDiceRoll = (roll) => say(`@${tags.username} rolled ${roll + 1}`);
   if (message.toLowerCase() === "!d2") {
-    const roll = _.random(1) + 1;
+    const roll = _.random(1);
     sayDiceRoll(roll);
   }
   if (message.toLowerCase() === "!d6") {
-    const roll = _.random(5) + 1;
+    const roll = _.random(5);
     sayDiceRoll(roll);
   }
   if (message.toLowerCase() === "!d20") {
-    const roll = _.random(19) + 1;
+    const roll = _.random(19);
     sayDiceRoll(roll);
   }
 }
