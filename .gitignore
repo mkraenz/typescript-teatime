@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+episode1.5-tmi-js-recorder-writable
+episode1.6
+globals.js
