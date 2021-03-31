@@ -1,5 +1,7 @@
 # E3 Blitz.js
 
+[Blitz.js](https://blitzjs.com/)
+
 ## Features
 
 Found during tutorial + exploring side-ways
@@ -13,11 +15,10 @@ Found during tutorial + exploring side-ways
 - hot module replacement (?thanks to nextjs?)
 - Prisma database viewer
 - LOOOTS of Code generation
-  - which currently still needs some manual adjustments though, still helpful though
+  - which currently still needs some manual adjustments, but it's still helpful
 
 ## Links from the stream
 
-- [Episodes Github Repository](https://github.com/proSingularity/tea-and-typescript-random-walk)
 - [Blitz.js](https://blitzjs.com/)
 - [GraphQL](https://graphql.org/)
 - [Prisma](https://www.prisma.io/)
