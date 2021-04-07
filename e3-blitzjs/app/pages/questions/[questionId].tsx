@@ -1,24 +1,38 @@
-import { Suspense } from "react"
-import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation } from "blitz"
+import updateChoice from "app/choices/mutations/updateChoice"
 import Layout from "app/core/layouts/Layout"
-import getQuestion from "app/questions/queries/getQuestion"
 import deleteQuestion from "app/questions/mutations/deleteQuestion"
+import getQuestion from "app/questions/queries/getQuestion"
+import { BlitzPage, Head, Link, useMutation, useParam, useQuery, useRouter } from "blitz"
+import { Suspense } from "react"
 
 export const Question = () => {
   const router = useRouter()
   const questionId = useParam("questionId", "number")
   const [deleteQuestionMutation] = useMutation(deleteQuestion)
-  const [question] = useQuery(getQuestion, { id: questionId })
+  const [updateChoiceMutation] = useMutation(updateChoice)
+  const [question, { refetch }] = useQuery(getQuestion, { id: questionId })
+
+  const handleVote = async (choiceId) => {
+    await updateChoiceMutation({ id: choiceId })
+    refetch()
+  }
 
   return (
     <>
       <Head>
-        <title>Question {question.id}</title>
+        <title>Question {question.text}</title>
       </Head>
 
       <div>
-        <h1>Question {question.id}</h1>
-        <pre>{JSON.stringify(question, null, 2)}</pre>
+        <h1>Question: {question.text}</h1>
+        <ul>
+          {question.Choice.map((choice) => (
+            <li key={choice.id}>
+              {choice.text} - {choice.votes} votes
+              <button onClick={() => handleVote(choice.id)}>Vote</button>
+            </li>
+          ))}
+        </ul>
 
         <Link href={`/questions/${question.id}/edit`}>
           <a>Edit</a>

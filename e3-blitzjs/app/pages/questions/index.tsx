@@ -25,6 +25,13 @@ export const QuestionsList = () => {
             <Link href={`/questions/${question.id}`}>
               <a>{question.text}</a>
             </Link>
+            <ul>
+              {question.Choice.map((choice) => (
+                <li key={choice.id}>
+                  {choice.text} - {choice.votes} votes
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
