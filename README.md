@@ -1,4 +1,4 @@
-# Tea and TypeScript - on Twitch @fadeoutsama
+# TypeScript Teatime - on Twitch - with @fadeoutsama
 
 [Twitch Channel of fadeoutsama](https://www.twitch.tv/fadeoutsama)
 

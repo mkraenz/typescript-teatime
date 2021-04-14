@@ -1,10 +1,40 @@
+# E3 Blitz.js Tutorial Walkthrough
+
+[Blitz.js](https://blitzjs.com/)
+
+## Features
+
+Found during tutorial + exploring side-ways
+
+- App creation via CLI
+- Login + Logout + Password reset
+- security
+  - CSRF
+  - not exposing existing user emails on password reset
+  - do not salt password hashes
+- hot module replacement (?thanks to nextjs?)
+- Prisma database viewer
+- LOOOTS of Code generation
+  - which currently still needs some manual adjustments, but it's still helpful
+
+## Links from the stream
+
+- [Blitz.js](https://blitzjs.com/)
+- [GraphQL](https://graphql.org/)
+- [Prisma](https://www.prisma.io/)
+- [JSON Web Token jwt.io](https://jwt.io/)
+- [Argon2 Hashing Algorithm](https://de.wikipedia.org/wiki/Argon2)
+- [zod schema-declaration and validation library](https://github.com/colinhacks/zod)
+
+## Blitzjs default readme
+
 [![Blitz.js](https://raw.githubusercontent.com/blitz-js/art/master/github-cover-photo.png)](https://blitzjs.com)
 
 This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
 
-# **name**
+## **name**
 
-## Getting Started
+### Getting Started
 
 Run your app in the development mode.
 
@@ -14,7 +44,7 @@ blitz dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Environment Variables
+### Environment Variables
 
 Ensure the `.env.local` file has required environment variables:
 
@@ -28,7 +58,7 @@ Ensure the `.env.test.local` file has required environment variables:
 DATABASE_URL=postgresql://<YOUR_DB_USERNAME>@localhost:5432/stock-prices_test
 ```
 
-## Tests
+### Tests
 
 Runs your tests using Jest.
 
@@ -38,7 +68,7 @@ yarn test
 
 Blitz comes with a test setup using [Jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/).
 
-## Commands
+### Commands
 
 Blitz comes with a powerful CLI that is designed to make development easy and fast. You can install it with `npm i -g blitz`
 
@@ -57,7 +87,7 @@ Blitz comes with a powerful CLI that is designed to make development easy and fa
 
 You can read more about it on the [CLI Overview](https://blitzjs.com/docs/cli-overview) documentation.
 
-## What's included?
+### What's included?
 
 Here is the starting structure of your app.
 
@@ -149,7 +179,7 @@ These files are:
 
 You can read more about it in the [File Structure](https://blitzjs.com/docs/file-structure) section of the documentation.
 
-## Learn more
+### Learn more
 
 Read the [Blitz.js Documentation](https://blitzjs.com/docs/getting-started) to learn more.
 
