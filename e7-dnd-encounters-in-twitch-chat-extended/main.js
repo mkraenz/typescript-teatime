@@ -12,9 +12,8 @@ const client = new tmi.Client({
 client.connect();
 
 const say = (text) => {
-  const channel = "#fadeoutsama";
   console.log(text);
-  client.say(channel, text);
+  appendToDom(text);
 };
 
 let monster = null;
@@ -28,9 +27,6 @@ client.on("message", (channel, tags, message, self) => {
   const msg = message.toLowerCase();
 
   logChatToPage(tags, message);
-
-  hello(message, channel, tags);
-  rollDice(tags, message);
 
   if (msg === "!ambush") startAmbushRandomBattle();
 
@@ -78,6 +74,14 @@ function winBattle() {
   );
 }
 
+function loseBattle() {
+  console.log("Battle lost");
+  window.clearInterval(timerInterval);
+  say(
+    `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${monster.name} lived happily ever after.`
+  );
+}
+
 function joinBattle(username) {
   console.log(users);
   users.push({ username: username, hasAttacked: false, hp: 150 });
@@ -89,10 +93,7 @@ function monsterAttack() {
     const randomUser = users[_.random(users.length - 1)];
     const monsterTarget = randomUser;
     if (!monsterTarget) {
-      console.log("Battle lost");
-      say(
-        `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${monster.name} lived happily ever after.`
-      );
+      loseBattle();
     }
     const damage = _.random(19) + 1;
     monsterTarget.hp -= damage;
@@ -113,31 +114,12 @@ function monsterAttack() {
 
 function logChatToPage(tags, message) {
   console.log(`${tags["display-name"]}: ${message}`);
-  const messageItem = document.createElement("li");
   const nameAndMessage = `${tags["display-name"]}: ${message}`;
-  messageItem.innerHTML = _.escape(nameAndMessage);
+  appendToDom(nameAndMessage);
+}
+
+function appendToDom(message) {
+  const messageItem = document.createElement("li");
+  messageItem.innerHTML = _.escape(message);
   document.querySelector("#chat-messages").appendChild(messageItem);
-}
-
-function hello(message, channel, tags) {
-  if (message.toLowerCase() === "!hello") {
-    // "@alca, heya!"
-    client.say(channel, `@${tags.username}, heya!`);
-  }
-}
-
-function rollDice(tags, message) {
-  const sayDiceRoll = (roll) => say(`@${tags.username} rolled ${roll + 1}`);
-  if (message.toLowerCase() === "!d2") {
-    const roll = _.random(1);
-    sayDiceRoll(roll);
-  }
-  if (message.toLowerCase() === "!d6") {
-    const roll = _.random(5);
-    sayDiceRoll(roll);
-  }
-  if (message.toLowerCase() === "!d20") {
-    const roll = _.random(19);
-    sayDiceRoll(roll);
-  }
 }
