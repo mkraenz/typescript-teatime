@@ -1,11 +1,12 @@
 import fs from 'fs';
 import getUrls from 'get-urls';
+import { uniq } from 'lodash';
 import readline from 'readline';
 import shell from 'shelljs';
 import { parseLine } from './lib/parseLine';
 
-const videoIds = [987266741]; // get from URL on a twitch video
-const outputFilename = 'all-chats-links.txt';
+const videoIds = [1003847661]; // get from URL on a twitch video
+const outputFilename = 'all-chats-links.md';
 const tmpAllChatLogs = 'all-chatlogs.txt';
 
 async function main() {
@@ -31,10 +32,16 @@ async function main() {
     links.push(...linksInMsg);
   }
 
-  const fileData = links.join('\n');
+  const linkData = uniq(links)
+    .map((l) => `- ${l}`)
+    .join('\n');
+  const fileData = `## Resoures\n\n${linkData}`;
   fs.writeFileSync(outputFilename, fileData);
 
-  console.log(`Success! Links written to ${outputFilename}`);
+  console.log(
+    `Success! Links written to ${outputFilename}. Open by running the following command:`
+  );
+  console.log(`code ./${outputFilename}`);
   shell.rm(tmpAllChatLogs);
 }
 

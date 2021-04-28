@@ -1,0 +1,8 @@
+## Resoures
+
+- https://github.com/tmijs/tmi.js
+- https://dev.twitch.tv/docs/irc
+- https://hub.docker.com/_/mongo
+- https://docs.nestjs.com/recipes/mongodb
+- https://nestjs.com
+- https://mongoosejs.com
