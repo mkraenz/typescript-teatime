@@ -1,0 +1,13 @@
+GET http://localhost:3000/adventurers
+
+###
+
+POST http://localhost:3000/adventurers
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "level": 9000,
+    "experience": 9132831,
+    "nonexistent": true
+}
