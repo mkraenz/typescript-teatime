@@ -59,7 +59,7 @@ function startAmbushRandomBattle() {
   );
   if (!timerInterval) {
     timerInterval = window.setInterval(
-      monsterAttack(),
+      monsterAttack,
       timeTillAttackInSeconds * 1000
     );
   }
@@ -89,27 +89,25 @@ function joinBattle(username) {
 }
 
 function monsterAttack() {
-  return () => {
-    const randomUser = users[_.random(users.length - 1)];
-    const monsterTarget = randomUser;
-    if (!monsterTarget) {
-      loseBattle();
-    }
-    const damage = _.random(19) + 1;
-    monsterTarget.hp -= damage;
-    if (monsterTarget.hp < 0) {
-      users = users.filter((u) => u.username !== monsterTarget.username);
-      say(
-        `⚰️⚰️⚰️ Oh no! @${monsterTarget.username} has been killed by 😈 ${monster.name}`
-      );
-    }
-
-    users.forEach((user) => (user.hasAttacked = false));
-
+  const randomUser = users[_.random(users.length - 1)];
+  const monsterTarget = randomUser;
+  if (!monsterTarget) {
+    loseBattle();
+  }
+  const damage = _.random(19) + 1;
+  monsterTarget.hp -= damage;
+  if (monsterTarget.hp < 0) {
+    users = users.filter((u) => u.username !== monsterTarget.username);
     say(
-      `🔥 😈 ${monster.name} dealt ${damage} damage to @${monsterTarget.username}. ${monsterTarget.username} has ${monsterTarget.hp} ❤️ left.`
+      `⚰️⚰️⚰️ Oh no! @${monsterTarget.username} has been killed by 😈 ${monster.name}`
     );
-  };
+  }
+
+  users.forEach((user) => (user.hasAttacked = false));
+
+  say(
+    `🔥 😈 ${monster.name} dealt ${damage} damage to @${monsterTarget.username}. ${monsterTarget.username} has ${monsterTarget.hp} ❤️ left.`
+  );
 }
 
 function logChatToPage(tags, message) {
