@@ -20,8 +20,11 @@
   - [x] receive HTTP requests
   - [x] save to database
   - [x] return from database
-  - [ ] validation on mongoose level
-  - [ ] (validation on API level)
+  - [x] update an adventurer
+  - [x] validation on mongoose level
+  - [x] validate uniqueness of username
+  - [ ] ~~(validation on API level?)~~ -> not now
+  - [x] expose duplication error on post as 422
   - [ ] discuss next steps
 - [ ] apply values to fights
 

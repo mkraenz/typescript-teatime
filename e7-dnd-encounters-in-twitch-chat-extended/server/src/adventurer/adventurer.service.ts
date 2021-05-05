@@ -17,4 +17,22 @@ export class AdventurerService {
   async findAll(): Promise<Adventurer[]> {
     return this.adventurerModel.find().exec();
   }
+
+  async update(
+    username: string,
+    update: {
+      experience: number;
+    },
+  ): Promise<Adventurer> {
+    const adventurer = await this.adventurerModel.findOne({ username });
+    if (!adventurer) {
+      throw new Error('Entity not found');
+    }
+    adventurer.experience = update.experience;
+    return adventurer.save();
+  }
+
+  async deleteAll() {
+    return this.adventurerModel.remove({});
+  }
 }

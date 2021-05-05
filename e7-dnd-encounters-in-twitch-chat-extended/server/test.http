@@ -11,3 +11,26 @@ Content-Type: application/json
     "experience": 9132831,
     "nonexistent": true
 }
+
+### 
+POST http://localhost:3000/adventurers
+Content-Type: application/json
+
+{
+    "username": "testuser3",
+    "experience": 9132831,
+    "nonexistent": true
+}
+
+###
+
+PATCH http://localhost:3000/adventurers
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "experience": 100
+}
+
+###
+DELETE http://localhost:3000/adventurers
