@@ -25,6 +25,8 @@
   - [x] validate uniqueness of username
   - [ ] ~~(validation on API level?)~~ -> not now
   - [x] expose duplication error on post as 422
+  - [ ] e2e testing
+  - [ ] refactor to typegoose
   - [ ] discuss next steps
 - [ ] apply values to fights
 

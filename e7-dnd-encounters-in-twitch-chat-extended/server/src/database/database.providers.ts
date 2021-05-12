@@ -1,6 +1,7 @@
+import { Provider } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 
-export const databaseProviders = [
+export const databaseProviders: Provider[] = [
   {
     provide: 'DATABASE_CONNECTION',
     useFactory: (): Promise<typeof mongoose> =>
