@@ -6,30 +6,37 @@ import {
   Patch,
   Post,
   UseFilters,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { DuplicateEntityFilter } from '../common/exception-filters/duplicate-entity.filter';
 import { AdventurerService } from './adventurer.service';
 import { CreateAdventurerDto } from './create-adventurer.dto';
-import { UpdateAdventurerDto } from './update-adventurer.dto copy';
+import { GetAdventurerDto } from './get-adventurer.dto';
+import { UpdateAdventurerDto } from './update-adventurer.dto';
 
 @Controller('adventurers')
+@UsePipes(new ValidationPipe({ transform: true }))
 export class AdventurerController {
   constructor(private adventurers: AdventurerService) {}
 
   @Get()
-  findAll() {
-    return this.adventurers.findAll();
+  async findAll() {
+    const adventurers = await this.adventurers.findAll();
+    return adventurers.map(GetAdventurerDto.of);
   }
 
   @Post()
   @UseFilters(new DuplicateEntityFilter())
-  create(@Body() createAdventurerDto: CreateAdventurerDto) {
-    return this.adventurers.create(createAdventurerDto);
+  async create(@Body() createAdventurerDto: CreateAdventurerDto) {
+    const adventurer = await this.adventurers.create(createAdventurerDto);
+    return GetAdventurerDto.of(adventurer);
   }
 
   @Patch()
-  update(@Body() { username, experience }: UpdateAdventurerDto) {
-    return this.adventurers.update(username, { experience });
+  async update(@Body() { username, experience }: UpdateAdventurerDto) {
+    const adventurer = await this.adventurers.update(username, { experience });
+    return GetAdventurerDto.of(adventurer);
   }
 
   @Delete()
