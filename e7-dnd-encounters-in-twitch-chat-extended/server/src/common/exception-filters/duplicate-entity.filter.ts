@@ -3,12 +3,12 @@ import { Response } from 'express';
 import { MongoError } from 'mongodb';
 
 //  [ExceptionsHandler] E11000 duplicate key error collection: typescriptteatime.adventurers index: username_1 dup key: { username: "testuser" }
-@Catch(MongoError)
+@Catch(Error)
 export class DuplicateEntityFilter implements ExceptionFilter {
   catch(exception: MongoError, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
     if (exception.message.includes('E11000 duplicate key error')) {
+      const ctx = host.switchToHttp();
+      const response = ctx.getResponse<Response>();
       response.status(422).json({
         statusCode: 422,
         timestamp: new Date().toISOString(),

@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
+import { TypegooseModule } from 'nestjs-typegoose';
 import { AdventurerController } from './adventurer.controller';
-import { adventurerProviders } from './adventurer.provider';
+import { AdventurerClass } from './adventurer.schema';
 import { AdventurerService } from './adventurer.service';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    TypegooseModule.forFeature([
+      { typegooseClass: AdventurerClass, schemaOptions: {} },
+    ]),
+  ],
   controllers: [AdventurerController],
-  providers: [AdventurerService, ...adventurerProviders],
+  providers: [AdventurerService],
 })
 export class AdventurerModule {}

@@ -1,12 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { ReturnModelType } from '@typegoose/typegoose';
+import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdventurerDto } from '../adventurer/create-adventurer.dto';
 import { Adventurer } from './adventurer.interface';
+import { AdventurerClass } from './adventurer.schema';
 
 @Injectable()
 export class AdventurerService {
   constructor(
-    @Inject('ADVENTURER_MODEL') private adventurerModel: Model<Adventurer>,
+    @InjectModel(AdventurerClass)
+    private adventurerModel: ReturnModelType<typeof AdventurerClass>,
   ) {}
 
   async create(createAdventurerDto: CreateAdventurerDto): Promise<Adventurer> {

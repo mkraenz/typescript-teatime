@@ -25,8 +25,13 @@
   - [x] validate uniqueness of username
   - [ ] ~~(validation on API level?)~~ -> not now
   - [x] expose duplication error on post as 422
-  - [ ] e2e testing
+  - [x] e2e testing
   - [ ] refactor to typegoose
+    - [x] include typegoose + nestjs-typegoose
+    - [x] fix error filtering for duplicate errors
+    - [x] inject the mongo URI
+    - [ ] fix tests one by one
+  - [ ] setup VS Code Debugger with the NestJS server
   - [ ] discuss next steps
 - [ ] apply values to fights
 

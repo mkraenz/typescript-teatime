@@ -6,7 +6,7 @@ POST http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "testuser",
+    "username": "12314232",
     "level": 9000,
     "experience": 9132831,
     "nonexistent": true

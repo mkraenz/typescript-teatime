@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAdventurerDto {
-  @IsString()
+  @IsString() // TODO
   @IsNotEmpty()
   username!: string;
 }
