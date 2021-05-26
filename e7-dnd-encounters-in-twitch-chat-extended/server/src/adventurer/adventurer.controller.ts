@@ -16,7 +16,7 @@ import { GetAdventurerDto } from './get-adventurer.dto';
 import { UpdateAdventurerDto } from './update-adventurer.dto';
 
 @Controller('adventurers')
-@UsePipes(new ValidationPipe({ transform: true }))
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class AdventurerController {
   constructor(private adventurers: AdventurerService) {}
 
