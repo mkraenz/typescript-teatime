@@ -3,14 +3,13 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdventurerDto } from '../adventurer/create-adventurer.dto';
 import { DuplicateEntityException } from '../common/exceptions/duplicate-entity.exception';
-import { Adventurer } from './adventurer.interface';
-import { AdventurerClass } from './adventurer.schema';
+import { Adventurer } from './adventurer.schema';
 
 @Injectable()
 export class AdventurerService {
   constructor(
-    @InjectModel(AdventurerClass)
-    private adventurerModel: ReturnModelType<typeof AdventurerClass>,
+    @InjectModel(Adventurer)
+    private adventurerModel: ReturnModelType<typeof Adventurer>,
   ) {}
 
   async create(createAdventurerDto: CreateAdventurerDto): Promise<Adventurer> {

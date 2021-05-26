@@ -1,4 +1,4 @@
-import { Adventurer } from './adventurer.interface';
+import { Adventurer } from './adventurer.schema';
 
 export class GetAdventurerDto {
   static of(adventurer: Adventurer) {

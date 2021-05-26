@@ -32,11 +32,18 @@
     - [x] inject the mongo URI
     - [x] fix tests one by one
     - [x] repaired the kaputtrepariert error filtering
-    - [x] strip non-whitelisted properties from API
+    - [x] strip non-whitelisted properties on API level
     - [x] try again with global Validation pipe
+  - [ ] schema migrations
+    - [x] pick a library -> `migrate-mongo`
+    - [x] do a basic migration
+    - [x] revert a migration
+    - [ ] migrate migrations to typescript <https://github.com/seppevs/migrate-mongo/issues/79>
+    - [ ] mongoose schema to migration
+      - [ ] up
+      - [ ] down
   - [ ] setup VS Code Debugger with the NestJS server
   - [ ] discuss next steps
-  - [ ] schema migrations
 - [ ] apply values to fights
 
 Adventurers / Users

@@ -1,6 +1,6 @@
 import { prop } from '@typegoose/typegoose';
 
-export class AdventurerClass {
+export class Adventurer {
   @prop({ unique: true, required: true })
   public username!: string;
 
