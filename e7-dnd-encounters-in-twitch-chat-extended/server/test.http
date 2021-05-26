@@ -6,13 +6,15 @@ POST http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "12314232",
-    "level": 9000,
+    "username": "Pick Rick",
+    "level": 9001,
     "experience": 9132831,
     "nonexistent": true
 }
 
-### 
+
+### erroneous username
+
 POST http://localhost:3000/adventurers
 Content-Type: application/json
 

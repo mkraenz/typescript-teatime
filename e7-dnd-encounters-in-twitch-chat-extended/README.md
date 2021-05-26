@@ -33,6 +33,7 @@
     - [ ] fix tests one by one
   - [ ] setup VS Code Debugger with the NestJS server
   - [ ] discuss next steps
+  - [ ] schema migrations
 - [ ] apply values to fights
 
 Adventurers / Users

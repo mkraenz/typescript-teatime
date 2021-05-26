@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { CreateAdventurerDto } from '../adventurer/create-adventurer.dto';
+import { DuplicateEntityException } from '../common/exceptions/duplicate-entity.exception';
 import { Adventurer } from './adventurer.interface';
 import { AdventurerClass } from './adventurer.schema';
 
@@ -14,7 +15,17 @@ export class AdventurerService {
 
   async create(createAdventurerDto: CreateAdventurerDto): Promise<Adventurer> {
     const adventurer = new this.adventurerModel(createAdventurerDto);
-    return adventurer.save({ validateBeforeSave: true });
+    try {
+      return await adventurer.save({ validateBeforeSave: true });
+    } catch (error) {
+      const isDuplicationError = error.message.includes(
+        'E11000 duplicate key error',
+      );
+      if (isDuplicationError) {
+        throw new DuplicateEntityException(error.keyValue);
+      }
+      throw error;
+    }
   }
 
   async findAll(): Promise<Adventurer[]> {
