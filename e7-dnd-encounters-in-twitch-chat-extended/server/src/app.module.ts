@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { AdventurerModule } from './adventurer/adventurer.module';
 import { AppController } from './app.controller';
@@ -20,6 +21,12 @@ import { MongoUriModule } from './mongo-uri/mongo-uri.module';
     AdventurerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true, whitelist: true }),
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

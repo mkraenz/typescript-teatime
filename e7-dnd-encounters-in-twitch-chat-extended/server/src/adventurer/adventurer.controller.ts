@@ -6,8 +6,6 @@ import {
   Patch,
   Post,
   UseFilters,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { DuplicateEntityFilter } from '../common/exception-filters/duplicate-entity.filter';
 import { AdventurerService } from './adventurer.service';
@@ -16,7 +14,6 @@ import { GetAdventurerDto } from './get-adventurer.dto';
 import { UpdateAdventurerDto } from './update-adventurer.dto';
 
 @Controller('adventurers')
-@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class AdventurerController {
   constructor(private adventurers: AdventurerService) {}
 

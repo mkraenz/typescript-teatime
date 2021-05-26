@@ -32,6 +32,8 @@
     - [x] inject the mongo URI
     - [x] fix tests one by one
     - [x] repaired the kaputtrepariert error filtering
+    - [x] strip non-whitelisted properties from API
+    - [x] try again with global Validation pipe
   - [ ] setup VS Code Debugger with the NestJS server
   - [ ] discuss next steps
   - [ ] schema migrations
