@@ -7,7 +7,7 @@ const client = new tmi.Client({
   //   // globals.js contains var dontdothisinrealcode = 'oauth:<mysecrettoken>' which is an oauth token generated as described in https://dev.twitch.tv/docs/irc
   //   password: dontdothisinrealcode,
   // },
-  channels: ["fadeoutsama"],
+  channels: ["typescriptteatime"],
 });
 client.connect();
 

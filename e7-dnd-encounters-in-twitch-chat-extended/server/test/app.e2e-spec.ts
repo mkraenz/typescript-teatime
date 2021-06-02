@@ -50,6 +50,17 @@ describe('/adventurers', () => {
       .expect([]);
   });
 
+  it('should responsd with 404 Not Found for GET of nonexistent adventurer ', async () => {
+    await request(app.getHttpServer())
+      .get('/adventurers/maceisgrace')
+      .expect(404)
+      .expect({
+        statusCode: 404,
+        message: 'Could not find user by username maceisgrace',
+        error: 'Not Found',
+      });
+  });
+
   it('should respond with 400 Bad Request for no body send on POST', async () => {
     await request(app.getHttpServer())
       .post('/adventurers')
@@ -84,10 +95,10 @@ describe('/adventurers', () => {
 
   it('should create/POST an adventurer, then GET it', async () => {
     const adventurerDto: CreateAdventurerDto = {
-      username: 'Pickle Rick',
+      username: 'berny90theone',
     };
     const adventurerRes: GetAdventurerDto = {
-      username: 'Pickle Rick',
+      username: 'berny90theone',
       experience: 0,
       level: 1,
     };
@@ -100,9 +111,9 @@ describe('/adventurers', () => {
       .expect(adventurerRes);
 
     await request(app.getHttpServer())
-      .get('/adventurers')
+      .get(`/adventurers/berny90theone`)
       .expect(200)
-      .expect([adventurerRes]);
+      .expect(adventurerRes);
   });
 
   it('should create/POST an adventurer, DELETE all, then GET empty array', async () => {

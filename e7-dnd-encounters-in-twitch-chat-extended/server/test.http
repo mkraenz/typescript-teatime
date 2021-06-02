@@ -2,11 +2,18 @@ GET http://localhost:3000/adventurers
 
 ###
 
+GET http://localhost:3000/adventurers/Pickle Rick
+
+### 
+
+GET http://localhost:3000/adventurers/notfound
+
+###
 POST http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "Pick Rick5",
+    "username": "Pickle Rick",
     "level": 9001,
     "experience": 9132831,
     "nonexistent": true
@@ -30,7 +37,7 @@ PATCH http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "testuser",
+    "username": "Pickle Rick",
     "experience": 100
 }
 

@@ -42,9 +42,28 @@
     - [ ] mongoose schema to migration
       - [ ] up
       - [ ] down
-  - [ ] setup VS Code Debugger with the NestJS server
-  - [ ] discuss next steps
+  - [x] GET single adventurer
+    - [x] implement
+    - [x] fix broken PATCH tests
+    - [x] add e2e tests
+  - [x] setup VS Code Debugger with the NestJS server
+  - [ ] tmijs to listen constantly
+    - [x] module
+    - [x] install packages
+    - [x] start listening for messages in twitch chat
+  - [ ] migrate domain logic (monster fighting)
+    - [x] quick and dirty copy and paste
+    - [ ] object-orientated implementation
+    - [ ] use adventurers + persist progress
+  - [ ] have server running all the time
+  - [ ] write bot messages to twitch chat
 - [ ] apply values to fights
+
+### On frontend
+
+- [ ] after one battle was lost, the next !ambush shoul d still work (currently the 2nd monster never attacks)
+- [ ] autoscroll the page
+- [ ]
 
 Adventurers / Users
 

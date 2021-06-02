@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
+  Param,
   Patch,
   Post,
   UseFilters,
@@ -21,6 +23,17 @@ export class AdventurerController {
   async findAll() {
     const adventurers = await this.adventurers.findAll();
     return adventurers.map(GetAdventurerDto.of);
+  }
+
+  @Get(':username')
+  async findOne(@Param('username') username: string) {
+    const adventurer = await this.adventurers.findOne(username);
+    if (!adventurer) {
+      throw new NotFoundException(
+        `Could not find user by username ${username}`,
+      );
+    }
+    return GetAdventurerDto.of(adventurer);
   }
 
   @Post()

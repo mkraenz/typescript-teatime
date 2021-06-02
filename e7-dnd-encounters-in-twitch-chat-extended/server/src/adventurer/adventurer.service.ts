@@ -31,6 +31,10 @@ export class AdventurerService {
     return this.adventurerModel.find().exec();
   }
 
+  findOne(username: string) {
+    return this.adventurerModel.findOne({ username }).exec();
+  }
+
   async update(
     username: string,
     update: {
