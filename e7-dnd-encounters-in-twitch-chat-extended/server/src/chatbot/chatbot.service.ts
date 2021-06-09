@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { random } from 'lodash';
 import { ChatUserstate, Client } from 'tmi.js';
-import { monsters } from './monsters.json';
+import { monsters } from './domain/monsters.json';
 
 const tmiConfig = {
   options: { debug: true },
@@ -23,7 +23,7 @@ interface Monster {
   type: string;
   hp: number;
 }
-interface User {
+interface Adventurer {
   username: string;
   hasAttacked: boolean;
   hp: number;
@@ -31,7 +31,7 @@ interface User {
 
 let monster: Monster | null = null;
 
-let users: User[] = []; // the party
+let party: Adventurer[] = [];
 let timerInterval: null | NodeJS.Timeout = null;
 const timeTillAttackInSeconds = 20;
 
@@ -45,6 +45,7 @@ export class ChatbotService {
     this.tmiClient.on('message', handleMessage);
   }
 }
+
 const say = (text: string) => {
   console.log(text);
 };
@@ -64,7 +65,7 @@ const handleMessage = (
   if (msg === '!ambush') startRandomBattle();
   if (msg.includes('!join')) joinParty(username);
   if (msg.includes('!attack')) {
-    const user = users.find((u) => u.username === username);
+    const user = party.find((u) => u.username === username);
     const canAttack = monster && user && !user.hasAttacked;
     if (monster && user && canAttack) {
       userAttack(user, monster);
@@ -78,13 +79,13 @@ function winBattle(monster: Monster) {
     global.clearInterval(timerInterval);
   }
   say(
-    `🏆🏆🏆🎉🏅 VICTORY! 😈 ${monster.name} has been struck down. @${users
+    `🏆🏆🏆🎉🏅 VICTORY! 😈 ${monster.name} has been struck down. @${party
       .map((u) => u.username)
       .join(', @')} earned x00 EXP.`,
   );
 }
 
-function userAttack(user: User, monster: Monster) {
+function userAttack(user: Adventurer, monster: Monster) {
   user.hasAttacked = true;
   const damage = random(19) + 1;
   monster.hp -= damage;
@@ -94,9 +95,9 @@ function userAttack(user: User, monster: Monster) {
 }
 
 function joinParty(username: string) {
-  users.push({ username: username, hasAttacked: false, hp: 150 });
+  party.push({ username: username, hasAttacked: false, hp: 150 });
   say(`⚔️ ${username} joined the battle alongside you.`);
-  say(`${users.map((u) => u.username).join(', ')} stand united in battle.`);
+  say(`${party.map((u) => u.username).join(', ')} stand united in battle.`);
 }
 
 const startRandomBattle = () => {
@@ -110,15 +111,15 @@ const startRandomBattle = () => {
 };
 
 function monsterAttacks() {
-  const randomUser = users[random(users.length - 1)];
+  const randomUser = party[random(party.length - 1)];
   const monsterTarget = randomUser;
   if (!monsterTarget) {
-    loseBattle();
+    return loseBattle();
   }
   const damage = random(19) + 1;
   monsterTarget.hp -= damage;
   if (monsterTarget.hp < 0) {
-    users = users.filter((u) => u.username !== monsterTarget.username);
+    party = party.filter((u) => u.username !== monsterTarget.username);
     // TODO fix definite assigments (!)
     say(
       `⚰️⚰️⚰️ Oh no! @${monsterTarget.username} has been killed by 😈 ${
@@ -127,7 +128,7 @@ function monsterAttacks() {
     );
   }
 
-  users.forEach((user) => (user.hasAttacked = false));
+  party.forEach((user) => (user.hasAttacked = false));
 
   say(
     `🔥 😈 ${monster!.name} dealt ${damage} damage to @${
