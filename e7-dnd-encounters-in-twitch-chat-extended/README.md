@@ -54,7 +54,14 @@
   - [ ] migrate domain logic (monster fighting)
     - [x] quick and dirty copy and paste
     - [ ] object-orientated implementation
-    - [ ] use adventurers + persist progress
+      - [x] domain design
+      - [x] handle victory
+      - [ ] fix dependency injection issues
+      - [ ] handle defeat
+      - [ ] display attack messages
+      - [ ] throw out dead code
+      - [ ] persist progress
+      - [ ] resolve TODOs
   - [ ] have server running all the time
   - [ ] write bot messages to twitch chat
 - [ ] apply values to fights
