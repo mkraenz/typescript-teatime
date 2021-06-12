@@ -57,6 +57,7 @@
       - [x] domain design
       - [x] handle victory
       - [ ] fix dependency injection issues
+      - [ ] integration test battles
       - [ ] handle defeat
       - [ ] display attack messages
       - [ ] throw out dead code
