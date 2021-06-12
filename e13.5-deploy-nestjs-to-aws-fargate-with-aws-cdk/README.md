@@ -4,7 +4,9 @@
 - [x] Nestjs App inside
 - [x] Dockerize nestjs app
 - [x] Deploy container to AWS Fargate
-- [ ] Change some code to have a hitcounter and return the count
+- [x] Change some code to have a hitcounter and return the count
+- [x] receive POST request
+- [x] see logs in cloudwatch
 
 Test scenario
 
