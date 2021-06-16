@@ -1,6 +1,6 @@
 import { random } from 'lodash';
-import { clearInterval } from 'node:timers';
-import { Adventurer } from '../../adventurer/adventurer.schema';
+import type { Adventurer } from '../adventurer/adventurer.schema';
+import { IEvent } from './events';
 import { Monster } from './monster';
 import { monsters } from './monsters.json';
 
@@ -9,8 +9,10 @@ export class Battle {
   private monster: Monster;
   private party: Adventurer[] = [];
   private gameloop: NodeJS.Timeout | null;
+  public log: IEvent[] = [];
 
   constructor() {
+    this.log.push({ type: 'monster appeared' });
     this.monster = this.getMonster();
     // start game loop
     this.gameloop = global.setInterval(
@@ -60,10 +62,11 @@ export class Battle {
 
   private getMonster() {
     const data = { ...monsters[random(monsters.length - 1)] };
-    return new Monster(data);
+    return new Monster(this.log, data);
   }
 
   public join(adventurer: Adventurer) {
     this.party.push(adventurer);
+    this.log.push({ type: 'join' });
   }
 }

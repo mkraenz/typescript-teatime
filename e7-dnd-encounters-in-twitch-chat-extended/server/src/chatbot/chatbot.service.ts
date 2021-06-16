@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { random } from 'lodash';
-import { AdventurerService } from 'src/adventurer/adventurer.service';
 import { ChatUserstate, Client } from 'tmi.js';
-import { Battle } from './domain/battle';
-import { monsters } from './domain/monsters.json';
+import { AdventurerService } from '../adventurer/adventurer.service';
+import { Battle } from '../domain/battle';
 
 const tmiConfig = {
   options: { debug: true },
@@ -24,6 +22,7 @@ export class ChatbotService {
   private readonly tmiClient: Client;
   private readonly adventurers: AdventurerService;
   private battle: Battle | null = null;
+  private lastLogCount = 0;
 
   constructor(adventurers: AdventurerService) {
     this.adventurers = adventurers;
@@ -46,6 +45,14 @@ export class ChatbotService {
 
     if (msg === '!ambush') {
       this.battle = new Battle();
+      setInterval(() => {
+        if (this.battle!.log.length > this.lastLogCount) {
+          for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
+            console.log(JSON.stringify(this.battle!.log[i], null, 2));
+          }
+          this.lastLogCount = this.battle!.log.length;
+        }
+      }, 10);
     }
     if (!this.battle) return;
 
@@ -81,7 +88,8 @@ export class ChatbotService {
   }
 
   private async joinParty(username: string, battle: Battle) {
-    const adventurer = await this.adventurers.create({ username });
+    // TODO handle case of existing adventurer
+    const adventurer = await this.adventurers.create({ username }, battle.log);
     battle.join(adventurer);
     say(`⚔️ ${username} joined the battle alongside you.`);
     say(`${battle.adventurerNames.join(', ')} stand united in battle.`);
@@ -89,64 +97,5 @@ export class ChatbotService {
 }
 
 const say = (text: string) => {
-  console.log(text);
+  // console.log(text);
 };
-
-function winBattle(monster: Monster) {
-  if (timerInterval) {
-    global.clearInterval(timerInterval);
-  }
-}
-
-function userAttack(user: Adventurer, monster: Monster) {
-  user.hasAttacked = true;
-  const damage = random(19) + 1;
-  monster.hp -= damage;
-  say(
-    `🗡️ @${user.username} dealt ${damage} damage to 😈 ${monster.name}. ${monster.hp} ❤️ left.`,
-  );
-}
-
-const startRandomBattle = () => {
-  monster = { ...monsters[random(monsters.length - 1)] };
-  say(
-    `⚔️ An ambush! You're party is in a ${monster.area}. A wild 😈 ${monster.name} appeared. Be prepared! The attack starts in ${timeTillAttackInSeconds} seconds. ❤️: ${monster.hp}`,
-  );
-  if (!timerInterval) {
-    timerInterval = setInterval(monsterAttacks, timeTillAttackInSeconds * 1000);
-  }
-};
-
-function monsterAttacks() {
-  // const randomUser = party[random(party.length - 1)];
-  // const monsterTarget = randomUser;
-  // if (!monsterTarget) {
-  //   return loseBattle();
-  // }
-  // const damage = random(19) + 1;
-  // monsterTarget.hp -= damage;
-  if (monsterTarget.hp < 0) {
-    party = party.filter((u) => u.username !== monsterTarget.username);
-    // TODO fix definite assigments (!)
-    say(
-      `⚰️⚰️⚰️ Oh no! @${monsterTarget.username} has been killed by 😈 ${
-        monster!.name
-      }`,
-    );
-  }
-
-  // party.forEach((user) => (user.hasAttacked = false));
-
-  say(
-    `🔥 😈 ${monster!.name} dealt ${damage} damage to @${
-      monsterTarget.username
-    }. ${monsterTarget.username} has ${monsterTarget.hp} ❤️ left.`,
-  );
-}
-
-function loseBattle() {
-  console.log('Battle lost');
-  if (timerInterval) {
-    global.clearInterval(timerInterval);
-  }
-}

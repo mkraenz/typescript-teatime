@@ -47,7 +47,7 @@
     - [x] fix broken PATCH tests
     - [x] add e2e tests
   - [x] setup VS Code Debugger with the NestJS server
-  - [ ] tmijs to listen constantly
+  - [x] tmijs to listen constantly
     - [x] module
     - [x] install packages
     - [x] start listening for messages in twitch chat

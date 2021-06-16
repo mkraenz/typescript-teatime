@@ -1,6 +1,7 @@
 import { prop } from '@typegoose/typegoose';
 import { random } from 'lodash';
-import { Monster } from '../chatbot/domain/monster';
+import { IEvent } from '../domain/events';
+import { Monster } from '../domain/monster';
 
 export class Adventurer {
   @prop({ unique: true, required: true })
@@ -15,14 +16,21 @@ export class Adventurer {
   @prop({ default: 0 })
   public experience: number = 0;
 
+  private _log: IEvent[] = [];
+
   public get isDead() {
     return this.hp < 0;
+  }
+
+  public set log(log: IEvent[]) {
+    this._log = log;
   }
 
   private hasAttackedThisTurn = false;
 
   public takeDamage(damage: number) {
     this.hp = this.hp - damage;
+    this._log.push({ type: 'damage received' });
   }
 
   public unblockAttack(): void {
@@ -33,6 +41,7 @@ export class Adventurer {
   public attack(monster: Monster) {
     if (!this.hasAttackedThisTurn) {
       const damage = random(19) + 1;
+      this._log.push({ type: 'attack' });
       monster.takeDamage(damage);
     }
   }

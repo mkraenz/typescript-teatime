@@ -12,5 +12,6 @@ import { AdventurerService } from './adventurer.service';
   ],
   controllers: [AdventurerController],
   providers: [AdventurerService],
+  exports: [AdventurerService],
 })
 export class AdventurerModule {}

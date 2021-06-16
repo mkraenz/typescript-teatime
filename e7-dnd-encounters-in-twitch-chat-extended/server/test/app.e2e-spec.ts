@@ -5,9 +5,9 @@ import * as mongoose from 'mongoose';
 import * as request from 'supertest';
 import { CreateAdventurerDto } from '../src/adventurer/create-adventurer.dto';
 import { GetAdventurerDto } from '../src/adventurer/get-adventurer.dto';
-import { UpdateAdventurerDto } from '../src/adventurer/update-adventurer.dto';
 import { AppModule } from '../src/app.module';
 import { CONFIG } from '../src/config';
+import { UpdateAdventurerDto } from '../src/update-adventurer.dto';
 
 let app: INestApplication;
 let mongodb: MongoMemoryServer;

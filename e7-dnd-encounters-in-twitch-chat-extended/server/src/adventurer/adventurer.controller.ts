@@ -10,10 +10,10 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { DuplicateEntityFilter } from '../common/exception-filters/duplicate-entity.filter';
+import { UpdateAdventurerDto } from '../update-adventurer.dto';
 import { AdventurerService } from './adventurer.service';
 import { CreateAdventurerDto } from './create-adventurer.dto';
 import { GetAdventurerDto } from './get-adventurer.dto';
-import { UpdateAdventurerDto } from './update-adventurer.dto';
 
 @Controller('adventurers')
 export class AdventurerController {
