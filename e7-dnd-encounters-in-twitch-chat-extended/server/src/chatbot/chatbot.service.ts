@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IEvent } from 'src/domain/events';
 import { ChatUserstate, Client } from 'tmi.js';
 import { AdventurerService } from '../adventurer/adventurer.service';
 import { Battle } from '../domain/battle';
@@ -9,20 +10,18 @@ const tmiConfig = {
     reconnect: true,
     secure: true,
   },
-  //  TODO for writing to Twitch chat
-  //   identity: {
-  //     username: 'bot-name',
-  //     password: 'oauth:my-bot-token',
-  //   },
   channels: ['typescriptteatime'],
 };
+
+const timeTillAttackInSeconds = 30;
 
 @Injectable()
 export class ChatbotService {
   private readonly tmiClient: Client;
   private readonly adventurers: AdventurerService;
-  private battle: Battle | null = null;
+  private battle?: Battle;
   private lastLogCount = 0;
+  private watchBattleLogs?: NodeJS.Timeout;
 
   constructor(adventurers: AdventurerService) {
     this.adventurers = adventurers;
@@ -44,15 +43,8 @@ export class ChatbotService {
     const msg = message.toLowerCase();
 
     if (msg === '!ambush') {
-      this.battle = new Battle();
-      setInterval(() => {
-        if (this.battle!.log.length > this.lastLogCount) {
-          for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
-            console.log(JSON.stringify(this.battle!.log[i], null, 2));
-          }
-          this.lastLogCount = this.battle!.log.length;
-        }
-      }, 10);
+      this.battle = new Battle(timeTillAttackInSeconds);
+      this.watchBattleLogs = setInterval(() => this.pollBattleLogs(), 10);
     }
     if (!this.battle) return;
 
@@ -61,41 +53,76 @@ export class ChatbotService {
     }
     if (msg.includes('!attack')) {
       this.battle.attack(username);
-      if (this.battle.winner === 'party') {
-        this.onVictory();
+    }
+  }
+
+  private pollBattleLogs() {
+    if (this.battle!.log.length > this.lastLogCount) {
+      for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
+        this.renderBattleEvent(this.battle!.log[i]);
+        // console.log(JSON.stringify(this.battle!.log[i], null, 2));
       }
+      this.lastLogCount = this.battle!.log.length;
     }
-    // TODO should be called on battle.gameloop tick
-    if (this.battle.winner === 'monster') {
-      this.onDefeat();
+    const battleEnded = this.battle?.log.find(
+      (e) => e.type === 'monster killed' || e.type === 'party killed',
+    );
+    if (battleEnded) {
+      this.endBattle();
     }
   }
 
-  private onDefeat() {
-    say(
-      `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${this.battle?.monsterName} lived happily ever after.`,
-    );
+  private endBattle() {
+    clearInterval(this.watchBattleLogs!);
+    this.battle = undefined;
   }
 
-  private onVictory() {
-    say(
-      `🏆🏆🏆🎉🏅 VICTORY! 😈 ${
-        this.battle?.monsterName
-      } has been struck down. @${this.battle?.adventurerNames.join(
-        ', @',
-      )} earned x00 EXP.`,
-    );
+  private renderBattleEvent(event: IEvent) {
+    switch (event.type) {
+      case 'adventurer killed':
+        return say(`⚰️⚰️⚰️ Oh no! @${event.name} has been killed.`);
+      case 'attack':
+        if (event.isMonster)
+          return say(`🔥 😈 ${event.attacker} attacks @${event.target}.`);
+        return say(`🗡️ @${event.attacker} attacks 😈 ${event.target}.`);
+      case 'damage received':
+        return say(
+          `${event.target} received ${event.damage} damage. ${event.hpLeft} ❤️ left.`,
+        );
+      case 'join':
+        say(`⚔️ @${event.member} joined the battle alongside you.`);
+        return say(
+          `@${this.battle!.adventurerNames.join(
+            ', @',
+          )} stand united in battle.`,
+        );
+      case 'monster appeared':
+        return say(
+          `⚔️ An ambush! You're party is in a ${event.monster.area}. A wild 😈 ${event.monster.name} appeared. Be prepared! The attack starts in ${timeTillAttackInSeconds} seconds. ❤️: ${event.monster.hp}`,
+        );
+      case 'monster killed':
+        return say(
+          `🏆🏆🏆🎉🏅 VICTORY! 😈 ${
+            event.monster
+          } has been struck down. @${this.battle!.adventurerNames.join(
+            ', @',
+          )} earned 300 EXP.`,
+        );
+      case 'party killed':
+        return say(
+          `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${event.monster} lived happily ever after.`,
+        );
+    }
   }
-
   private async joinParty(username: string, battle: Battle) {
-    // TODO handle case of existing adventurer
-    const adventurer = await this.adventurers.create({ username }, battle.log);
+    const adventurer = await this.adventurers.findOneOrCreate(
+      username,
+      battle.log,
+    );
     battle.join(adventurer);
-    say(`⚔️ ${username} joined the battle alongside you.`);
-    say(`${battle.adventurerNames.join(', ')} stand united in battle.`);
   }
 }
 
 const say = (text: string) => {
-  // console.log(text);
+  console.log(text);
 };

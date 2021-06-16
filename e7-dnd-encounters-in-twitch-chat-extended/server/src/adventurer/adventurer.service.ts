@@ -39,8 +39,17 @@ export class AdventurerService {
     return this.adventurerModel.find().exec();
   }
 
-  findOne(username: string) {
+  async findOne(username: string) {
     return this.adventurerModel.findOne({ username }).exec();
+  }
+
+  async findOneOrCreate(username: string, log: IEvent[] = []) {
+    const adventurer = await this.adventurerModel.findOne({ username }).exec();
+    if (adventurer) {
+      adventurer.log = log;
+      return adventurer;
+    }
+    return this.create({ username }, log);
   }
 
   async update(

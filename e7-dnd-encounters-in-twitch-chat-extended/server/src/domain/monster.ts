@@ -1,5 +1,5 @@
 import { random } from 'lodash';
-import { Adventurer } from '../adventurer/adventurer.schema';
+import type { Adventurer } from '../adventurer/adventurer.schema';
 import { IEvent } from './events';
 
 export class Monster {
@@ -24,12 +24,25 @@ export class Monster {
 
   public attack(adventurer: Adventurer) {
     const damage = random(19) + 1;
-    this.log.push({ type: 'attack' });
+    this.log.push({
+      type: 'attack',
+      isMonster: true,
+      attacker: this.name,
+      target: adventurer.username,
+    });
     adventurer.takeDamage(damage);
   }
 
   public takeDamage(damage: number) {
     this.hp = this.hp - damage;
-    this.log.push({ type: 'damage received' });
+    this.log.push({
+      type: 'damage received',
+      damage,
+      target: this.name,
+      hpLeft: this.hp,
+    });
+    if (this.hp <= 0) {
+      this.log.push({ type: 'monster killed', monster: this.name });
+    }
   }
 }

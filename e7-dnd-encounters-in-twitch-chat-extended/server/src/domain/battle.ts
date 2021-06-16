@@ -1,19 +1,22 @@
 import { random } from 'lodash';
 import type { Adventurer } from '../adventurer/adventurer.schema';
+import { pick } from '../common/utils';
 import { IEvent } from './events';
 import { Monster } from './monster';
 import { monsters } from './monsters.json';
 
-const timeTillAttackInSeconds = 30;
 export class Battle {
   private monster: Monster;
   private party: Adventurer[] = [];
   private gameloop: NodeJS.Timeout | null;
   public log: IEvent[] = [];
 
-  constructor() {
-    this.log.push({ type: 'monster appeared' });
+  constructor(timeTillAttackInSeconds: number) {
     this.monster = this.getMonster();
+    this.log.push({
+      type: 'monster appeared',
+      monster: pick(this.monster, ['area', 'hp', 'name']),
+    });
     // start game loop
     this.gameloop = global.setInterval(
       () => this.onTick(),
@@ -29,35 +32,39 @@ export class Battle {
     return this.monster.name;
   }
 
-  public get winner(): 'monster' | 'party' | null {
-    if (this.monster.isDead) return 'party';
-    const partyDown = this.party.every((adventurer) => adventurer.isDead);
-    if (partyDown) return 'monster';
-    return null;
-  }
-
   public attack(adventurerUsername: string) {
     const adventurer = this.party.find(
       (adventurer) => adventurer.username === adventurerUsername,
     );
     if (!adventurer) return;
     adventurer.attack(this.monster);
+    if (this.monster.isDead) {
+      this.endBattle();
+    }
   }
 
   private onTick() {
     if (this.monster.isDead) {
-      clearInterval(this.gameloop!);
-      this.gameloop = null;
+      this.endBattle();
     }
 
     const randomAdventurer = this.party[random(this.party.length - 1)];
     if (!randomAdventurer) {
-      return;
+      this.log.push({
+        type: 'party killed',
+        monster: this.monster.name,
+      });
+      return this.endBattle();
     }
     this.monster.attack(randomAdventurer);
     this.party.forEach((adventurer) => adventurer.unblockAttack());
 
     // TODO persist data
+  }
+
+  private endBattle() {
+    clearInterval(this.gameloop!);
+    this.gameloop = null;
   }
 
   private getMonster() {
@@ -67,6 +74,6 @@ export class Battle {
 
   public join(adventurer: Adventurer) {
     this.party.push(adventurer);
-    this.log.push({ type: 'join' });
+    this.log.push({ type: 'join', member: adventurer.username });
   }
 }

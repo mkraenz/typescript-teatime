@@ -1,7 +1,7 @@
 import { prop } from '@typegoose/typegoose';
 import { random } from 'lodash';
 import { IEvent } from '../domain/events';
-import { Monster } from '../domain/monster';
+import type { Monster } from '../domain/monster';
 
 export class Adventurer {
   @prop({ unique: true, required: true })
@@ -18,10 +18,6 @@ export class Adventurer {
 
   private _log: IEvent[] = [];
 
-  public get isDead() {
-    return this.hp < 0;
-  }
-
   public set log(log: IEvent[]) {
     this._log = log;
   }
@@ -30,18 +26,31 @@ export class Adventurer {
 
   public takeDamage(damage: number) {
     this.hp = this.hp - damage;
-    this._log.push({ type: 'damage received' });
+    this._log.push({
+      type: 'damage received',
+      damage,
+      target: this.username,
+      hpLeft: this.hp,
+    });
+
+    if (this.hp <= 0) {
+      this.log.push({ type: 'adventurer killed', name: this.username });
+    }
   }
 
   public unblockAttack(): void {
     this.hasAttackedThisTurn = false;
   }
 
-  // TODO probably need abstraction IMonster due to cyclic import
   public attack(monster: Monster) {
     if (!this.hasAttackedThisTurn) {
       const damage = random(19) + 1;
-      this._log.push({ type: 'attack' });
+      this._log.push({
+        type: 'attack',
+        isMonster: false,
+        attacker: this.username,
+        target: monster.name,
+      });
       monster.takeDamage(damage);
     }
   }

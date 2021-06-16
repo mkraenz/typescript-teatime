@@ -51,18 +51,20 @@
     - [x] module
     - [x] install packages
     - [x] start listening for messages in twitch chat
-  - [ ] migrate domain logic (monster fighting)
+  - [x] migrate domain logic (monster fighting)
     - [x] quick and dirty copy and paste
-    - [ ] object-orientated implementation
+    - [x] object-orientated implementation
       - [x] domain design
       - [x] handle victory
-      - [ ] fix dependency injection issues
-      - [ ] integration test battles
-      - [ ] handle defeat
-      - [ ] display attack messages
-      - [ ] throw out dead code
-      - [ ] persist progress
-      - [ ] resolve TODOs
+      - [x] fix dependency injection issues
+      - [x] handle defeat
+      - [x] display attack messages in console
+      - [x] throw out dead code
+  - [ ] can play multiple rounds with new adventurers each time
+  - [ ] persist progress
+  - [ ] integration test battles
+  - [ ] resolve TODOs
+  - [ ] display attack messages in a visible place
   - [ ] have server running all the time
   - [ ] write bot messages to twitch chat
 - [ ] apply values to fights
