@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CreateCatDto } from './create-cat.dto';
 
 @Controller()
 export class AppController {
@@ -14,16 +13,6 @@ export class AppController {
   @Get('hello')
   getHello() {
     return this.appService.getHello();
-  }
-
-  @Get('cats')
-  getCats() {
-    return this.appService.findAll();
-  }
-
-  @Post('cats')
-  createCat(@Body() cat: CreateCatDto) {
-    return this.appService.create(cat);
   }
 
   @Post('post')
