@@ -30,6 +30,9 @@ export class NestjsToAwsFargateWithAwsCdkStack extends cdk.Stack {
     });
     // DONT DO IN PRODUCTION. production should probably call aws_secretmanager from within application code
     const pw = db.secret?.secretValue.toString();
+    if (!pw) {
+      throw new Error("Missing database secret");
+    }
 
     const databaseUrl = `mongodb://${env.DATABASE_MASTER_USERNAME}:${pw}${db.clusterEndpoint.socketAddress}/?replicaSet=rs0&ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem`;
     new ecs_patterns.ApplicationLoadBalancedFargateService(
@@ -53,9 +56,12 @@ export class NestjsToAwsFargateWithAwsCdkStack extends cdk.Stack {
 }
 interface Env {
   DATABASE_MASTER_USERNAME?: string;
+  // DATABASE_MASTER_USER_PASSWORD?: string;
 }
 
 function assertEnv(env: Env): asserts env is Required<Env> {
   if (!env.DATABASE_MASTER_USERNAME)
     throw new Error("Missing DATABASE_MASTER_USERNAME");
+  // if (!env.DATABASE_MASTER_USER_PASSWORD)
+  //   throw new Error("Missing DATABASE_MASTER_USER_PASSWORD");
 }

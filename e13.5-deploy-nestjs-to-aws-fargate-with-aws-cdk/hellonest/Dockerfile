@@ -26,4 +26,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --only=production
 COPY --from=development /usr/src/app/dist ./dist
+# for connecting to AWS DocumentDB via TLS
+COPY rds-combined-ca-bundle.pem ./dist/rds-combined-ca-bundle.pem
 CMD ["node", "dist/main"]

@@ -13,8 +13,10 @@ import { Cat, CatSchema } from './cat.schema.';
             tls: true,
             tlsCAFile: 'rds-combined-ca-bundle.pem',
             dbName: 'teatime-turnbased-battles',
+            retryAttempts: 5,
+            useNewUrlParser: true,
           }
-        : undefined,
+        : { useNewUrlParser: true },
     ),
     MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
   ],
