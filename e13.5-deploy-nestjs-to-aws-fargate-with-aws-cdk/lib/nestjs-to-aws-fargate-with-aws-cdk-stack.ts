@@ -1,40 +1,31 @@
-import { DatabaseCluster } from "@aws-cdk/aws-docdb";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as ecs from "@aws-cdk/aws-ecs";
 import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
 import * as cdk from "@aws-cdk/core";
-import { RemovalPolicy } from "@aws-cdk/core";
-import * as dotenv from "dotenv";
+import type { Env } from "../hellonest/src/env";
 
-dotenv.config({ path: "./lib/.env" });
+type Props = {
+  vpc: ec2.Vpc;
+  /** `HOSTNAME:PORT` */
+  databaseUrl: string;
+  databaseCredentials: {
+    username: string;
+    password: string;
+  };
+} & cdk.StackProps;
 
 export class NestjsToAwsFargateWithAwsCdkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    const env = process.env;
-    assertEnv(env);
+    const cluster = new ecs.Cluster(this, "cluster", { vpc: props.vpc });
 
-    const vpc = new ec2.Vpc(this, "vpc", { maxAzs: 2 });
-    const cluster = new ecs.Cluster(this, "cluster", { vpc });
-    const db = new DatabaseCluster(this, "db", {
-      vpc,
-      instanceType: ec2.InstanceType.of(
-        ec2.InstanceClass.T3,
-        ec2.InstanceSize.MEDIUM
-      ),
-      removalPolicy: RemovalPolicy.DESTROY,
-      masterUser: {
-        username: env.DATABASE_MASTER_USERNAME,
-      },
-    });
-    // DONT DO IN PRODUCTION. production should probably call aws_secretmanager from within application code
-    const pw = db.secret?.secretValue.toString();
-    if (!pw) {
-      throw new Error("Missing database secret");
-    }
-
-    const databaseUrl = `mongodb://${env.DATABASE_MASTER_USERNAME}:${pw}${db.clusterEndpoint.socketAddress}/?replicaSet=rs0&ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem`;
+    const hellonestEnv: Env = {
+      DATABASE_URL: props.databaseUrl,
+      DATABASE_USE_TLS: "true",
+      DATABASE_PASSWORD: props.databaseCredentials.password,
+      DATABASE_USERNAME: props.databaseCredentials.username,
+    };
     new ecs_patterns.ApplicationLoadBalancedFargateService(
       this,
       "MyFargateService",
@@ -45,23 +36,9 @@ export class NestjsToAwsFargateWithAwsCdkStack extends cdk.Stack {
           image: ecs.ContainerImage.fromAsset("./hellonest"),
           containerName: "HelloNest",
           containerPort: 3000,
-          environment: {
-            DATABASE_URL: databaseUrl,
-            DATABASE_USE_TLS: "true",
-          },
+          environment: { ...hellonestEnv },
         },
       }
     );
   }
-}
-interface Env {
-  DATABASE_MASTER_USERNAME?: string;
-  // DATABASE_MASTER_USER_PASSWORD?: string;
-}
-
-function assertEnv(env: Env): asserts env is Required<Env> {
-  if (!env.DATABASE_MASTER_USERNAME)
-    throw new Error("Missing DATABASE_MASTER_USERNAME");
-  // if (!env.DATABASE_MASTER_USER_PASSWORD)
-  //   throw new Error("Missing DATABASE_MASTER_USER_PASSWORD");
 }
