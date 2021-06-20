@@ -7,6 +7,9 @@
 - [x] Change some code to have a hitcounter and return the count
 - [x] receive POST request
 - [x] see logs in cloudwatch
+- [x] setup AWS DocumentDB with CDK
+- [x] NestJS app with MongoDB / Mongoose locally
+- [x] NestJS app connects to AWS DocumentDB
 
 Test scenario
 
