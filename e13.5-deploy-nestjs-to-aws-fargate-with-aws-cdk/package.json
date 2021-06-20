@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy": "cdk deploy --profile typescriptteatime"
+    "deploy": "cdk deploy --profile typescriptteatime",
+    "destroy": "cdk destroy --profile typescriptteatime"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.109.0",
