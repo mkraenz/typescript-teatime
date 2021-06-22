@@ -8,7 +8,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk",
+    "cdk": "cdk --profile typescriptteatime",
     "deploy": "cdk deploy --profile typescriptteatime",
     "destroy": "cdk destroy --profile typescriptteatime"
   },
@@ -27,7 +27,12 @@
     "@aws-cdk/aws-ec2": "^1.109.0",
     "@aws-cdk/aws-ecs": "^1.109.0",
     "@aws-cdk/aws-ecs-patterns": "^1.109.0",
+    "@aws-cdk/aws-iam": "^1.109.0",
+    "@aws-cdk/aws-kms": "^1.109.0",
+    "@aws-cdk/aws-lambda": "^1.109.0",
+    "@aws-cdk/aws-secretsmanager": "^1.109.0",
     "@aws-cdk/core": "^1.109.0",
+    "cdk-ec2-key-pair": "^2.2.1",
     "dotenv": "^10.0.0",
     "source-map-support": "^0.5.16"
   }

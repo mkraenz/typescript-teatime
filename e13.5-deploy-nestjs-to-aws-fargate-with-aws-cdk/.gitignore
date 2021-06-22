@@ -8,3 +8,4 @@ node_modules
 cdk.out
 .env
 debug-docdb-ec2.pem
+ec2-debugger-keypair.pem

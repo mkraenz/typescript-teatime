@@ -12,7 +12,8 @@ test("Empty Stack", () => {
   const stack =
     new E135DeployNestjsToAwsFargateWithAwsCdk.NestjsToAwsFargateWithAwsCdkStack(
       app,
-      "MyTestStack"
+      "MyTestStack",
+      {}
     );
   // THEN
   expectCDK(stack).to(

@@ -3,30 +3,30 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Cat, CatSchema } from './cat.schema.';
-import { assertEnv } from './env';
+import { toConfig } from './env';
 
 const env = process.env;
-assertEnv(env);
+const cfg = toConfig(env);
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      `mongodb://${env.DATABASE_URL}/teawars?retryWrites=false`,
-      env.DATABASE_USE_TLS === 'true'
+      `mongodb://${cfg.database.host}:${cfg.database.port}/teawars?retryWrites=false`,
+      cfg.DATABASE_USE_TLS
         ? {
             ssl: true,
             tlsInsecure: true,
             tlsAllowInvalidHostnames: true,
-            tlsCAFile: 'rds-combined-ca-bundle.pem',
+            tlsCAFile: 'rds-combined-ca-bundle.pem', // AWS certificate bundle
             auth: {
-              password: env.DATABASE_PASSWORD,
-              user: env.DATABASE_USERNAME,
+              password: cfg.database.password,
+              user: cfg.database.username,
             },
             readPreference: 'secondaryPreferred',
             useUnifiedTopology: true,
             retryAttempts: 5,
             useNewUrlParser: true,
-            // replicaSet: 'rs0',
+            replicaSet: cfg.database.replicaSet,
           }
         : {
             useUnifiedTopology: true,

@@ -24,3 +24,7 @@ example command
 ```bash
 ssh -i "debug-docdb-ec2.pem" -L 27017:dbecc11111-uww709llll1.cluster-12345678.eu-west-1.docdb.amazonaws.com:27017 ubuntu@ec2-18-201-24-187.eu-west-1.compute.amazonaws.com -N
 ```
+
+```bash
+mongo --sslAllowInvalidHostnames --ssl --sslCAFile rds-combined-ca-bundle.pem --username <yourUsername> --password <yourPassword>
+```

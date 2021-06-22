@@ -23,3 +23,29 @@ Content-Type: application/json
     "breed": "Persian"
 }
 
+################################# On AWS
+
+GET http://hello-myfar-19hd44vs9vbwm-1656550319.eu-west-1.elb.amazonaws.com/hello
+
+### 
+GET http://hello-myfar-19hd44vs9vbwm-1656550319.eu-west-1.elb.amazonaws.com/cats
+
+###
+POST http://hello-myfar-19hd44vs9vbwm-1656550319.eu-west-1.elb.amazonaws.com/cats
+Content-Type: application/json
+
+{
+    "name": "Guffy",
+    "age": 3,
+    "breed": "Scottish Fold"
+}
+
+###
+POST http://hello-myfar-19hd44vs9vbwm-1656550319.eu-west-1.elb.amazonaws.com/cats
+Content-Type: application/json
+
+{
+    "name": "Luffy",
+    "age": 1,
+    "breed": "Persian"
+}
