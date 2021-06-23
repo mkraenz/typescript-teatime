@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IEvent } from 'src/domain/events';
+import { DocumentType } from '@typegoose/typegoose';
 import { ChatUserstate, Client } from 'tmi.js';
+import { Adventurer } from '../adventurer/adventurer.schema';
 import { AdventurerService } from '../adventurer/adventurer.service';
 import { Battle } from '../domain/battle';
+import { IEvent } from '../domain/events';
 
 const tmiConfig = {
   options: { debug: true },
@@ -14,6 +16,7 @@ const tmiConfig = {
 };
 
 const timeTillAttackInSeconds = 30;
+const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
 @Injectable()
 export class ChatbotService {
@@ -22,11 +25,12 @@ export class ChatbotService {
   private battle?: Battle;
   private lastLogCount = 0;
   private watchBattleLogs?: NodeJS.Timeout;
+  private joinedAdventurers: DocumentType<Adventurer>[] = [];
 
   constructor(adventurers: AdventurerService) {
     this.adventurers = adventurers;
     this.tmiClient = new Client(tmiConfig);
-    this.tmiClient.connect();
+    if (process.env.DONT_CONNECT_TO_TWITCH !== 'true') this.tmiClient.connect();
     this.tmiClient.on('message', this.handleMessage.bind(this));
   }
 
@@ -42,7 +46,8 @@ export class ChatbotService {
     if (!username) return;
     const msg = message.toLowerCase();
 
-    if (msg === '!ambush') {
+    if (DMs.includes(username) && msg === '!ambush') {
+      if (this.battle) return;
       this.battle = new Battle(timeTillAttackInSeconds);
       this.watchBattleLogs = setInterval(() => this.pollBattleLogs(), 10);
     }
@@ -54,13 +59,16 @@ export class ChatbotService {
     if (msg.includes('!attack')) {
       this.battle.attack(username);
     }
+    if (DMs.includes(username) && msg.includes('!debug-flee')) {
+      this.endBattle();
+    }
   }
 
-  private pollBattleLogs() {
-    if (this.battle!.log.length > this.lastLogCount) {
+  private async pollBattleLogs() {
+    const hasNewEvents = this.battle!.log.length > this.lastLogCount;
+    if (hasNewEvents) {
       for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
         this.renderBattleEvent(this.battle!.log[i]);
-        // console.log(JSON.stringify(this.battle!.log[i], null, 2));
       }
       this.lastLogCount = this.battle!.log.length;
     }
@@ -68,13 +76,26 @@ export class ChatbotService {
       (e) => e.type === 'monster killed' || e.type === 'party killed',
     );
     if (battleEnded) {
-      this.endBattle();
+      await this.endBattle();
+    }
+  }
+  private async saveAdventurerToDatabase() {
+    for (const adventurer of this.joinedAdventurers) {
+      adventurer.experience += 100;
+      adventurer.level = 1 + Math.floor(adventurer.experience / 300);
+      await adventurer.save();
     }
   }
 
-  private endBattle() {
+  private async endBattle() {
     clearInterval(this.watchBattleLogs!);
+    this.battle?.endBattle();
+    this.watchBattleLogs = undefined;
     this.battle = undefined;
+    this.lastLogCount = 0;
+
+    await this.saveAdventurerToDatabase();
+    this.joinedAdventurers = [];
   }
 
   private renderBattleEvent(event: IEvent) {
@@ -106,7 +127,7 @@ export class ChatbotService {
             event.monster
           } has been struck down. @${this.battle!.adventurerNames.join(
             ', @',
-          )} earned 300 EXP.`,
+          )} each earned 100 EXP.`,
         );
       case 'party killed':
         return say(
@@ -120,6 +141,7 @@ export class ChatbotService {
       battle.log,
     );
     battle.join(adventurer);
+    this.joinedAdventurers.push(adventurer);
   }
 }
 

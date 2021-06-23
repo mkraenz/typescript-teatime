@@ -58,13 +58,14 @@ export class Battle {
     }
     this.monster.attack(randomAdventurer);
     this.party.forEach((adventurer) => adventurer.unblockAttack());
-
-    // TODO persist data
   }
 
-  private endBattle() {
-    clearInterval(this.gameloop!);
-    this.gameloop = null;
+  /** Called automatically */
+  public endBattle() {
+    if (this.gameloop) {
+      clearInterval(this.gameloop);
+      this.gameloop = null;
+    }
   }
 
   private getMonster() {

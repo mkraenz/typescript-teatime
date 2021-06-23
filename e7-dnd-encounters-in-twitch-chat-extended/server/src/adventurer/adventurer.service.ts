@@ -13,15 +13,10 @@ export class AdventurerService {
     private adventurerModel: ReturnModelType<typeof Adventurer>,
   ) {}
 
-  async create(
-    createAdventurerDto: CreateAdventurerDto,
-    log: IEvent[] = [],
-  ): Promise<Adventurer> {
+  async create(createAdventurerDto: CreateAdventurerDto, log: IEvent[] = []) {
     const adventurer = new this.adventurerModel(createAdventurerDto);
     try {
-      const savedAdventurer = await adventurer.save({
-        validateBeforeSave: true,
-      });
+      const savedAdventurer = await adventurer.save();
       savedAdventurer.log = log;
       return savedAdventurer;
     } catch (error) {

@@ -60,14 +60,14 @@
       - [x] handle defeat
       - [x] display attack messages in console
       - [x] throw out dead code
-  - [ ] can play multiple rounds with new adventurers each time
-  - [ ] persist progress
+  - [x] persist progress
+  - [x] can play multiple rounds with new adventurers each time
+  - [x] fix tests
+  - [x] resolve TODOs
   - [ ] integration test battles
-  - [ ] resolve TODOs
   - [ ] display attack messages in a visible place
-  - [ ] have server running all the time
+  - [ ] Deployment: have server running all the time
   - [ ] write bot messages to twitch chat
-- [ ] apply values to fights
 
 ### On frontend
 
