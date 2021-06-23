@@ -92,3 +92,20 @@ Adventurers / Users
 - <https://docs.nestjs.com/recipes/mongodb>
 - <https://nestjs.com>
 - <https://mongoosejs.com>
+
+## Feature Ideas
+
+- rendering
+  - expose the gamelog to api
+  - browser-source running with phaserjs
+  - webpage + game with phaserjs
+- loot
+  - backpack - MVP: every item in backpack applies +1 dmg
+  - items
+  - equipment for character (1xhead, 1xweapon, 1x armor, 1x leg armor)
+- persisted health + revives / health potions
+
+## TODOs until next week episode 16
+
+- setup a base phaserjs project - reference Onitaoshi
+- deploy the app to AWS Fargate + AWS DocumentDB + accessable via a Loadbalancer
