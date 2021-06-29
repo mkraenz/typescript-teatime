@@ -5,8 +5,9 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
+// don't provide port WebSocketGateWay() to run on same port as web app https://github.com/nestjs/nest/issues/126#issuecomment-341832752
 @Injectable()
-@WebSocketGateway(3001)
+@WebSocketGateway()
 export class WebsocketGateway {
   @SubscribeMessage('events')
   handleEvent(@MessageBody() data: string): string {
