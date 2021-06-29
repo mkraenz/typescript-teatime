@@ -71,7 +71,7 @@
 
 ### On frontend
 
-- [ ] after one battle was lost, the next !ambush shoul d still work (currently the 2nd monster never attacks)
+- [x] after one battle was lost, the next !ambush shoul d still work (currently the 2nd monster never attacks)
 - [ ] autoscroll the page
 - [ ]
 

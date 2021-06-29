@@ -1,12 +1,7 @@
-// uses globals: tmi, dontdothisinrealcode, _ (lodash) included in index.html
+// uses globals: tmi, _ (lodash) included in index.html
 const client = new tmi.Client({
   options: { debug: true },
   connection: { reconnect: true },
-  // identity: {
-  //   username: "layaj37622",
-  //   // globals.js contains var dontdothisinrealcode = 'oauth:<mysecrettoken>' which is an oauth token generated as described in https://dev.twitch.tv/docs/irc
-  //   password: dontdothisinrealcode,
-  // },
   channels: ["typescriptteatime"],
 });
 client.connect();
