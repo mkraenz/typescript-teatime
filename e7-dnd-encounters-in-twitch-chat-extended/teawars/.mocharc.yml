@@ -1,0 +1,4 @@
+# more configs at https://github.com/mochajs/mocha/blob/master/example/config/.mocharc.yml
+allow-uncaught: false
+require: "ts-node/register"
+spec: "src/**/*.test.ts"

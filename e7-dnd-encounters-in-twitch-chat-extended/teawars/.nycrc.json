@@ -1,0 +1,13 @@
+{
+    "extension": ".ts",
+    "require": "ts-node/register",
+    "sourceMap": true,
+    "instrument": true,
+    "check-coverage": false,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90,
+    "exclude": ["**/*.d.ts", "**/*.test.ts"],
+    "reporter": ["text", "html", "lcov"]
+}

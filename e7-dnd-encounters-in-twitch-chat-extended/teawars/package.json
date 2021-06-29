@@ -1,0 +1,78 @@
+{
+    "name": "teawars",
+    "version": "0.1.0",
+    "description": "Teawars - visualization for Twitch Chat-based Turn-based Battle game of TypeScript Teatime",
+    "license": "MIT",
+    "scripts": {
+        "prebuild": "del-cli build",
+        "build": "webpack --mode production",
+        "build-serve": "webpack --mode production && webpack-dev-server --mode production",
+        "dev": "webpack --mode development && webpack-dev-server --mode development",
+        "lint": "npm run lint:eslint:fix && npm run lint:prettier:fix",
+        "lint:eslint": "eslint -c .eslintrc.js --ext .ts .",
+        "lint:eslint:fix": "npm run lint:eslint -- --fix",
+        "lint:prettier:fix": "prettier --write \"**/*.{graphql,json,md,yaml,yml}\"",
+        "type-check": "tsc --noEmit",
+        "test": "mocha",
+        "test:coverage": "nyc mocha",
+        "test:watch": "mocha --watch --watch-extensions ts",
+        "test:debug": "mocha --inspect-brk",
+        "sanity-check": "npm install && npm run test && npm run dev"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.2.11",
+        "@types/dat.gui": "^0.7.6",
+        "@types/lodash": "^4.14.170",
+        "@types/mocha": "^7.0.2",
+        "@types/sinon": "^9.0.4",
+        "@types/sinon-chai": "^3.2.4",
+        "@typescript-eslint/eslint-plugin": "^4.28.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^4.28.0",
+        "@typescript-eslint/parser": "^4.28.0",
+        "chai": "^4.2.0",
+        "dat.gui": "^0.7.7",
+        "del-cli": "^3.0.1",
+        "eslint": "^7.29.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jsdoc": "^35.4.0",
+        "eslint-plugin-prefer-arrow": "^1.2.3",
+        "eslint-plugin-react": "^7.24.0",
+        "expose-loader": "0.7.5",
+        "husky": "^4.2.5",
+        "lint-staged": "^10.2.11",
+        "mocha": "^7.1.2",
+        "nyc": "^15.0.1",
+        "prettier": "^2.3.2",
+        "sinon": "^9.0.2",
+        "sinon-chai": "^3.5.0",
+        "ts-loader": "7.0.4",
+        "ts-node": "^8.10.2",
+        "typescript": "4.x",
+        "webpack": "4.43.0",
+        "webpack-cli": "3.3.12",
+        "webpack-dev-server": "3.11.0"
+    },
+    "dependencies": {
+        "lodash": "^4.17.21",
+        "phaser": "^3.55.1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "commit-msg": "commit-message-validator"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint --fix -c .eslintrc.js --ext .ts ."
+        ],
+        "*.{json,md,yaml,yml}": [
+            "prettier --write"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/proSingularity/TODO.git"
+    }
+}
