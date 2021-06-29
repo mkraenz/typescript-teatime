@@ -1,0 +1,12 @@
+GET http://e135d-myfar-mwxuro9nuztc-1803118389.eu-west-1.elb.amazonaws.com/
+
+###
+POST http://e135d-myfar-mwxuro9nuztc-1803118389.eu-west-1.elb.amazonaws.com/post
+Content-Type: "application/json"
+
+{
+    "hey": 1,
+    "greatjob": true,
+    "thisteatimerocks": true,
+    "comments": "AWS CDK is magical!"
+}
