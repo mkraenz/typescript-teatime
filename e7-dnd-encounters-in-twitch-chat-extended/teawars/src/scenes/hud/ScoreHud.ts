@@ -1,6 +1,4 @@
 import { Scene } from "phaser";
-import { Event } from "../../events/Event";
-import { IBlaBlaEvent } from "../../events/interfaces";
 import { translations } from "../../localizations";
 import { TextConfig } from "../../styles/Text";
 import { Scenes } from "../Scenes";
@@ -28,9 +26,9 @@ export class ScoreHud extends Scene {
             )
             .setOrigin(0.5);
         const mainScene = this.scene.get(Scenes.Main);
-        mainScene.events.on(Event.Example, (data: IBlaBlaEvent) => {
-            // do stuff
-        });
+        // mainScene.events.on(Event.Example, (data: IBlaBlaEvent) => {
+        // do stuff
+        // });
     }
 
     private getScoreText() {

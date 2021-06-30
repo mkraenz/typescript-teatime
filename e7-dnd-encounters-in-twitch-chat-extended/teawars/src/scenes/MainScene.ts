@@ -1,6 +1,5 @@
 import { Scene } from "phaser";
 import { BackgroundImage } from "../components/BackgroundImage";
-import { Event } from "../events/Event";
 import { GRegistry } from "../gRegistry";
 import { GameOverScene, IGameOverSceneInitData } from "./GameOverScene";
 import { ScoreHud } from "./hud/ScoreHud";
@@ -68,12 +67,12 @@ export class MainScene extends Scene {
 
     private tearDown() {
         this.input.removeAllListeners();
-        this.children.getAll().forEach(c => c.destroy());
-        this.subScenes.forEach(key => {
+        this.children.getAll().forEach((c) => c.destroy());
+        this.subScenes.forEach((key) => {
             this.scene.remove(key);
         });
         this.subScenes = [];
         // prevent "cannot read property 'cut' of null" on scene.events.emit(Event.Type)
-        Object.values(Event).forEach(event => this.events.off(event));
+        // Object.values(Event).forEach(event => this.events.off(event));
     }
 }

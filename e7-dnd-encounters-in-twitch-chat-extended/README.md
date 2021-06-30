@@ -67,11 +67,11 @@
   - [ ] integration test battles
   - [ ] display attack messages in a visible place
   - [ ] Deployment: have server running all the time
-  - [ ] write bot messages to twitch chat
+  - [ ] ~~write bot messages to twitch chat~~
 
 ### On frontend
 
-- [x] after one battle was lost, the next !ambush shoul d still work (currently the 2nd monster never attacks)
+- [x] after one battle was lost, the next !ambush should still work (currently the 2nd monster never attacks)
 - [ ] autoscroll the page
 - [ ]
 

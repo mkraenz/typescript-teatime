@@ -26,12 +26,21 @@ export class ChatbotService {
   private lastLogCount = 0;
   private watchBattleLogs?: NodeJS.Timeout;
   private joinedAdventurers: DocumentType<Adventurer>[] = [];
+  private listenersToBattleLogChanges: ((log: IEvent[]) => void)[] = [];
 
   constructor(adventurers: AdventurerService) {
     this.adventurers = adventurers;
     this.tmiClient = new Client(tmiConfig);
     if (process.env.DONT_CONNECT_TO_TWITCH !== 'true') this.tmiClient.connect();
     this.tmiClient.on('message', this.handleMessage.bind(this));
+  }
+
+  public get battleLog() {
+    return this.battle?.log;
+  }
+
+  public subscribeToLog(callback: (log: IEvent[]) => void) {
+    this.listenersToBattleLogChanges.push(callback);
   }
 
   private async handleMessage(
@@ -68,7 +77,11 @@ export class ChatbotService {
     const hasNewEvents = this.battle!.log.length > this.lastLogCount;
     if (hasNewEvents) {
       for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
-        this.renderBattleEvent(this.battle!.log[i]);
+        const newEvent = this.battle!.log[i];
+        this.renderBattleEvent(newEvent);
+        this.listenersToBattleLogChanges.forEach((callback) => {
+          callback([newEvent]);
+        });
       }
       this.lastLogCount = this.battle!.log.length;
     }

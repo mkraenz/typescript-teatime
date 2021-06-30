@@ -1,10 +1,10 @@
-import { Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
+import * as io from "socket.io-client";
 import { BackgroundImage } from "../components/BackgroundImage";
-import { ButtonSm } from "../components/ui/ButtonSm";
+import { IEvent } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
-import { MainScene } from "./MainScene";
 import { Scenes } from "./Scenes";
 
 const cfg = {
@@ -24,6 +24,10 @@ const cfg = {
 };
 
 export class TitleScene extends Scene {
+    private client!: SocketIOClient.Socket;
+    private battleLog: IEvent[] = [];
+    private log!: GameObjects.Text;
+
     public constructor() {
         super({
             key: Scenes.Title,
@@ -31,11 +35,27 @@ export class TitleScene extends Scene {
     }
 
     public create(): void {
-        this.cameras.main.fadeIn(cfg.fadeIn);
         new BackgroundImage(this, "bg");
-        this.addTitle();
-        this.addPlayButton();
-        this.addLegals();
+        this.log = this.add.text(this.scale.width / 2, 100, "default");
+        this.client = io("http://localhost:3000");
+
+        this.client.on("init", (data: IEvent[]) => {
+            this.battleLog.push(...data);
+        });
+        this.client.on("append logs", (data: IEvent[]) => {
+            console.log(JSON.stringify(data));
+            this.battleLog.push(...data);
+            if (data.find((e) => e.type === "monster appeared")) {
+                this.add
+                    .image(800, this.scale.height / 2, "monster")
+                    .setDisplaySize(300, 300);
+            }
+        });
+    }
+
+    public update() {
+        const text = this.battleLog.map((x) => JSON.stringify(x)).join("\n");
+        this.log.setText(text);
     }
 
     private addTitle() {
@@ -49,32 +69,6 @@ export class TitleScene extends Scene {
             .setOrigin(0.5)
             .setShadow(4, 6, Color.Grey, 2, true, true)
             .setAlpha(1);
-    }
-
-    private addPlayButton() {
-        const bannerStartHeight = this.scale.height * cfg.playButton.relY;
-        new ButtonSm(this, bannerStartHeight, translations.play, () =>
-            this.goto(Scenes.Main, MainScene)
-        );
-    }
-
-    private addLegals() {
-        this.add
-            .text(
-                this.scale.width / 2,
-                this.scale.height * cfg.copyright.relY,
-                translations.copyright,
-                TextConfig.version
-            )
-            .setOrigin(0.5);
-        this.add
-            .text(
-                this.scale.width / 2,
-                this.scale.height * cfg.version.relY,
-                translations.version,
-                TextConfig.version
-            )
-            .setOrigin(0.5);
     }
 
     private goto(key: string, sceneClass: new (name: string) => Scene) {
