@@ -14,6 +14,7 @@ export interface Env {
    * {@link IDatabaseSecret}
    */
   DATABASE_AWS_SECRET?: string;
+  DATABASE_NAME?: string;
 }
 
 /**
@@ -41,6 +42,7 @@ interface IDatabaseSecret {
   host: string;
   ssl: boolean;
   username: string;
+  dbName: string;
 }
 
 export function toConfig(env: Env): Config {
@@ -56,6 +58,7 @@ export function toConfig(env: Env): Config {
     port: 27017,
     ssl: false,
     username: '',
+    dbName: env.DATABASE_NAME || 'teatime',
   };
   if (connectToAwsDocDb) {
     if (!env.DATABASE_AWS_SECRET) {
