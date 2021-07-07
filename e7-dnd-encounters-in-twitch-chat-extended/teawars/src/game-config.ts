@@ -14,11 +14,15 @@ export const gameConfig: Types.Core.GameConfig = {
             gravity: { y: 100 },
         },
     },
+    pixelArt: true,
     scale: {
         parent: "game",
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: window.innerWidth * window.devicePixelRatio,
-        height: window.innerHeight * window.devicePixelRatio,
+        // OBS browser overlay dimensions
+        width: 1440,
+        height: 1080,
+        // width: window.innerWidth * window.devicePixelRatio,
+        // height: window.innerHeight * window.devicePixelRatio,
     },
 };

@@ -11,6 +11,7 @@ interface DamageReceived {
   type: 'damage received';
   damage: number;
   target: string;
+  isMonster: boolean;
   hpLeft: number;
 }
 

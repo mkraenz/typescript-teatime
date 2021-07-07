@@ -24,6 +24,10 @@ Thanks for your help, **maceisgrace**!
 - [x 2D JRPG Dot Character by clam](https://opengameart.org/content/2d-jrpg-dot-character)
 - [x LPC Medieval Fantasy Characters](https://opengameart.org/content/lpc-medieval-fantasy-character-sprites)
 
+### Backgrounds
+
+- [RPG Battle backgrounds](https://opengameart.org/content/backgrounds-3)
+
 ### UI
 
 - [Health and Mana Bars](https://opengameart.org/content/health-and-mana-bars)

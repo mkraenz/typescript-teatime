@@ -30,14 +30,20 @@ export class LoadingScene extends Scene {
         const img = (filename: string) => `./assets/images/${filename}`;
         const sound = (filename: string) => `./assets/sounds/${filename}`;
         this.load
-            .image("monster", img("pisilohe10.png"))
-            .image("ui-field", img("ui-field.png"))
-            .image("ui-window", img("ui-window.png"))
-            .image("bg", img("space_rt.png"))
-            .audio("hot", sound("rise01.mp3 "))
-            .audio("too-hot", sound("rise02.mp3"))
-            .audio("boiling", sound("boiling.mp3"))
-            .audio("coin", sound("sfx_coin_double1.wav"));
+            .image("monster", img("monsters/JosephSeraph/WailingPrince.png"))
+            .image("empty-health-bar", img("empty-health-bar.png"))
+            .image("red-health-bar", img("red-health-bar.png"))
+            .image("bg1", img("bg/battleback7.png"))
+            .spritesheet(
+                "adventurers",
+                img("adventurers/adventurers.sprite.32x32.png"),
+                {
+                    frameWidth: 24,
+                    spacing: 1,
+                    frameHeight: 32,
+                    endFrame: 8,
+                }
+            );
     }
 
     private makeLoadingBar() {

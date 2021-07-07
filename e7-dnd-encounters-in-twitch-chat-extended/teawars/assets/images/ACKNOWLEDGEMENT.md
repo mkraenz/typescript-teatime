@@ -1,12 +1,11 @@
 # Acknowledgement
 
-## Credit
+## Credit and Big Thank You
 
-- <https://opengameart.org/content/space-skybox-1>
-- <https://opengameart.org/content/shiny-sun>
-- <https://opengameart.org/content/star>
-- [Menu UI](https://cga-creative-game-assets.itch.io/gold-2d-mobile-ui-for-casual-game)
-- [Dragon pisilohe10.png](https://opengameart.org/content/dragons)
+- [JS Monster Pack 4 Ascent by JosephSeraph under CC-BY 3.0](https://opengameart.org/content/js-monster-pack-4-ascent)
+- [Health and Mana Bars by lancel under CC-BY-SA 3.0](https://opengameart.org/content/health-and-mana-bars)
+- [2D JRPG Dot Characters by clam (submitted by OpenGameSeeker) under CC0](https://opengameart.org/content/2d-jrpg-dot-character)
+- [RPG Battle backgrounds by Nidhoggn under CC0](https://opengameart.org/content/backgrounds-3)
 
 ### Generating favicon.ico
 

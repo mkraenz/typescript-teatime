@@ -8,13 +8,13 @@ export class Adventurer {
   public username!: string;
 
   @prop({ default: 150 })
-  public hp: number = 150;
+  public hp = 150;
 
   @prop({ default: 1 })
-  public level: number = 1;
+  public level = 1;
 
   @prop({ default: 0 })
-  public experience: number = 0;
+  public experience = 0;
 
   private _log: IEvent[] = [];
 
@@ -31,6 +31,7 @@ export class Adventurer {
       damage,
       target: this.username,
       hpLeft: this.hp,
+      isMonster: false,
     });
 
     if (this.hp <= 0) {

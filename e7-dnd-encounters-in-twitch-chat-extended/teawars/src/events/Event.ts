@@ -7,26 +7,27 @@ export type IEvent =
     | MonsterKilled
     | PartyKilled;
 
-interface DamageReceived {
+export interface DamageReceived {
     type: "damage received";
     damage: number;
     target: string;
+    isMonster: boolean;
     hpLeft: number;
 }
 
-interface Attacked {
+export interface Attacked {
     type: "attack";
     target: string;
     attacker: string;
     isMonster: boolean;
 }
 
-interface Joined {
+export interface Joined {
     type: "join";
     member: string;
 }
 
-interface Ambushed {
+export interface Ambushed {
     type: "monster appeared";
     monster: {
         name: string;
@@ -35,17 +36,17 @@ interface Ambushed {
     };
 }
 
-interface AdventurerKilled {
+export interface AdventurerKilled {
     type: "adventurer killed";
     name: string;
 }
 
-interface MonsterKilled {
+export interface MonsterKilled {
     type: "monster killed";
     monster: string;
 }
 
-interface PartyKilled {
+export interface PartyKilled {
     type: "party killed";
     monster: string;
 }

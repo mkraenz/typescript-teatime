@@ -40,6 +40,7 @@ export class Monster {
       damage,
       target: this.name,
       hpLeft: this.hp,
+      isMonster: true,
     });
     if (this.hp <= 0) {
       this.log.push({ type: 'monster killed', monster: this.name });
