@@ -68,7 +68,7 @@ export class ChatbotService {
     if (msg.includes('!attack')) {
       this.battle.attack(username);
     }
-    if (DMs.includes(username) && msg.includes('!debug-flee')) {
+    if (DMs.includes(username) && msg.includes('!flee')) {
       this.endBattle();
     }
   }

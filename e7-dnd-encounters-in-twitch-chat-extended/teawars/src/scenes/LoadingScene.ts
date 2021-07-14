@@ -88,7 +88,7 @@ export class LoadingScene extends Scene {
             } else {
                 this.scene.add(Scenes.Title, TitleScene, true);
             }
-            this.scene.remove(this);
+            // this.scene.remove(this);
         });
     }
 
