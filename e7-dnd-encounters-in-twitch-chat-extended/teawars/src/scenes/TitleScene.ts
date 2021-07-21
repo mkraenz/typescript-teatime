@@ -2,13 +2,16 @@ import { GameObjects, Scene } from "phaser";
 import * as io from "socket.io-client";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
+import { DamageText } from "../components/DamageText";
 import { Healthbar } from "../components/Healthbar";
+import { Monster } from "../components/Monster";
 import {
     Ambushed,
     Attacked,
     DamageReceived,
     IEvent,
     Joined,
+    MonsterKilled,
 } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
@@ -39,6 +42,7 @@ export class TitleScene extends Scene {
     private log!: GameObjects.Text;
     private healthbar!: Healthbar;
     private party!: Adventurer[];
+    private monster?: Monster;
     // private adventurer!: Adventurer;
 
     public constructor() {
@@ -55,6 +59,11 @@ export class TitleScene extends Scene {
         this.party = [];
 
         // this.adventurer = new Adventurer(this, "player1");
+        // const gui = new GUI();
+        // gui.add(this.adventurer, "username");
+        // gui.add(this.adventurer, "x");
+        // gui.add(this.adventurer, "y");
+        // gui.add(this.adventurer, "attack");
 
         // this.add.image(1100, 620, "monster").setDisplaySize(300, 300); // TODO fixed display size only working for sqare images
 
@@ -104,73 +113,68 @@ export class TitleScene extends Scene {
             const adventurerReceivedDamage = events.find(
                 (e) => e.type === "damage received" && !e.isMonster
             ) as Maybe<DamageReceived>;
+            const monsterAttacked = events.find(
+                (e) => e.type === "attack" && e.isMonster
+            ) as Maybe<Attacked>;
             const adventurerAttacked = events.find(
                 (e) => e.type === "attack" && !e.isMonster
             ) as Maybe<Attacked>;
+            const adventurersWin = events.find(
+                (e) => e.type === "monster killed"
+            ) as Maybe<MonsterKilled>;
 
             if (ambush) {
-                // TODO fixed display size only working for sqare images
-                this.add.image(1100, 620, "monster").setDisplaySize(300, 300);
+                this.monster = new Monster(this);
                 this.healthbar = new Healthbar(this, ambush.monster.hp);
             }
             if (joined) {
                 this.addAdventurer(joined.member);
             }
 
-            if (adventurerAttacked) {
-                // TODO next stream: use code inside of Adventurer to animate
+            if (adventurerAttacked && this.monster) {
                 const adventurer = this.party.find(
                     (a) => a.username === adventurerAttacked.attacker
                 )!;
-
-                const x = adventurer.x;
-                const y = adventurer.y;
-                const startPoint = new Phaser.Math.Vector2(x, y);
-                const controlPoint1 = new Phaser.Math.Vector2(x, y - 100);
-                const controlPoint2 = new Phaser.Math.Vector2(
-                    1000,
-                    0.8 * 620 + 0.2 * adventurer.y
-                );
-                const endPoint = new Phaser.Math.Vector2(1100, 620); // TODO extract monster class
-
-                const curve = new Phaser.Curves.CubicBezier(
-                    startPoint,
-                    controlPoint1,
-                    controlPoint2,
-                    endPoint
-                );
-
-                this.tweens.add({
-                    targets: adventurer,
-                    t: 0.8,
-                    ease: "Sine.easeInOut",
-                    duration: 1000,
-                    yoyo: true,
-                });
+                adventurer.attack(this.monster);
             }
 
             if (monsterReceivedDamage) {
                 this.healthbar.setHealth(monsterReceivedDamage.hpLeft);
-                const hitNumber = this.add.text(
-                    1100,
-                    620 - 200,
-                    monsterReceivedDamage.damage.toString(),
-                    { fontSize: "64px" }
-                );
-                this.time.delayedCall(1000, () => hitNumber.destroy());
+                if (this.monster) {
+                    new DamageText(
+                        this,
+                        this.monster,
+                        monsterReceivedDamage.damage
+                    );
+                    this.monster.takeDamage();
+                }
+            }
+
+            if (monsterAttacked && this.monster) {
+                const adventurer = this.party.find(
+                    (a) => a.username === monsterAttacked.target
+                )!;
+                if (adventurer) {
+                    this.monster.attack(adventurer);
+                }
             }
 
             if (adventurerReceivedDamage) {
                 const adventurer = this.party.find(
                     (a) => a.username === adventurerReceivedDamage.target
                 )!;
-                const damageText = this.add.text(
-                    adventurer.x,
-                    adventurer.y - 200,
-                    adventurerReceivedDamage.damage.toString(),
-                    { fontSize: "64px" }
-                );
-                this.time.delayedCall(1000, () => damageText.destroy());
+                if (adventurer) {
+                    new DamageText(
+                        this,
+                        adventurer,
+                        adventurerReceivedDamage.damage
+                    );
+                    adventurer.takeDamage();
+                }
+            }
+
+            if (adventurersWin) {
+                this.monster?.die();
             }
         });
     }
@@ -183,7 +187,9 @@ export class TitleScene extends Scene {
     public update() {
         const text = this.battleLog.map((x) => JSON.stringify(x)).join("\n");
         this.log.setText(text);
+        this.party.forEach((a) => a.update());
         // this.adventurer.update();
+        this.monster?.update();
     }
 
     private addTitle() {

@@ -8,7 +8,7 @@
         "build": "webpack --mode production",
         "build-serve": "webpack --mode production && webpack-dev-server --mode production",
         "dev": "webpack --mode development && webpack-dev-server --mode development",
-        "dev:server": "../server && npm run dev",
+        "dev:server": "cd ../server && npm run dev",
         "lint": "npm run lint:eslint:fix && npm run lint:prettier:fix",
         "lint:eslint": "eslint -c .eslintrc.js --ext .ts .",
         "lint:eslint:fix": "npm run lint:eslint -- --fix",

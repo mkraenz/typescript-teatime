@@ -6,6 +6,7 @@ export class GetAdventurerDto {
       adventurer.username,
       adventurer.level,
       adventurer.experience,
+      adventurer.hp,
     );
   }
 
@@ -13,5 +14,6 @@ export class GetAdventurerDto {
     public username: string,
     public level: number,
     public experience: number,
+    public hp: number,
   ) {}
 }

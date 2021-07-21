@@ -1,22 +1,15 @@
-import { random } from "lodash";
 import { Curves, GameObjects, Math, Scene } from "phaser";
 
-export class Adventurer extends GameObjects.Image {
+export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: Math.Vector2 };
     private curve?: Curves.CubicBezier;
 
-    constructor(scene: Scene, public readonly username: string) {
-        super(scene, 0, 0, "adventurers");
+    constructor(scene: Scene) {
+        super(scene, 1100, 620, "monster");
         scene.add.existing(this);
 
-        this.setRandomPosition(
-            200,
-            500,
-            scene.scale.width / 2 - 200,
-            scene.scale.height / 4
-        )
-            .setScale(4.5)
-            .setFrame(random(7));
+        // TODO fixed display size only working for sqare images
+        this.setDisplaySize(300, 300);
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -68,5 +61,9 @@ export class Adventurer extends GameObjects.Image {
         const red = 0xff0000;
         this.setTint(red);
         this.scene.time.delayedCall(300, () => this.clearTint());
+    }
+
+    public die() {
+        this.destroy();
     }
 }

@@ -55,7 +55,7 @@ export class ChatbotService {
     if (!username) return;
     const msg = message.toLowerCase();
 
-    if (DMs.includes(username) && msg === '!ambush') {
+    if (DMs.includes(username) && msg.includes('!ambush')) {
       if (this.battle) return;
       this.battle = new Battle(timeTillAttackInSeconds);
       this.watchBattleLogs = setInterval(() => this.pollBattleLogs(), 10);
