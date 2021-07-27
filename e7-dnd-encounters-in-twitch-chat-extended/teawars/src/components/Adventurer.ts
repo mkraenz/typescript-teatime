@@ -1,11 +1,19 @@
 import { random } from "lodash";
 import { Curves, GameObjects, Math, Scene } from "phaser";
+import { AdventurerHealthbar } from "./AdventurerHealthbar";
+import { DamageText } from "./DamageText";
 
 export class Adventurer extends GameObjects.Image {
     private path?: { t: number; vec: Math.Vector2 };
     private curve?: Curves.CubicBezier;
+    private healthbar!: AdventurerHealthbar;
 
-    constructor(scene: Scene, public readonly username: string) {
+    constructor(
+        scene: Scene,
+        public readonly username: string,
+        hp: number,
+        maxHp: number
+    ) {
         super(scene, 0, 0, "adventurers");
         scene.add.existing(this);
 
@@ -17,6 +25,8 @@ export class Adventurer extends GameObjects.Image {
         )
             .setScale(4.5)
             .setFrame(random(7));
+
+        this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -41,7 +51,7 @@ export class Adventurer extends GameObjects.Image {
         };
     }
 
-    public attack(target: GameObjects.Image) {
+    public attack(target: { x: number; y: number }, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
         this.path = path;
         this.curve = curve;
@@ -50,7 +60,7 @@ export class Adventurer extends GameObjects.Image {
             targets: this.path,
             t: 0.8,
             ease: "Sine.easeInOut",
-            duration: 1000,
+            duration: jumpDuration,
             yoyo: true,
         });
     }
@@ -62,11 +72,28 @@ export class Adventurer extends GameObjects.Image {
             this.x = newPos.x;
             this.y = newPos.y;
         }
+        this.healthbar.update();
     }
 
-    public takeDamage() {
+    public takeDamage(amount: number) {
+        this.healthbar.takeDamage(amount);
+
+        new DamageText(this.scene, this, amount);
+
         const red = 0xff0000;
         this.setTint(red);
         this.scene.time.delayedCall(300, () => this.clearTint());
+    }
+
+    public die() {
+        this.setRotation(-Phaser.Math.PI2 / 4);
+    }
+
+    public debugAttack() {
+        this.attack({ x: 1000, y: this.scene.scale.height / 2 }, 1000);
+    }
+
+    public debugTakeDamage() {
+        this.takeDamage(20);
     }
 }

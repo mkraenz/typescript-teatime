@@ -75,6 +75,11 @@ export class Battle {
 
   public join(adventurer: Adventurer) {
     this.party.push(adventurer);
-    this.log.push({ type: 'join', member: adventurer.username });
+    this.log.push({
+      type: 'join',
+      member: adventurer.username,
+      hp: adventurer.hp,
+      maxHp: adventurer.maxHp,
+    });
   }
 }

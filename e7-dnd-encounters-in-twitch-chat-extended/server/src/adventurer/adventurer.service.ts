@@ -50,14 +50,16 @@ export class AdventurerService {
   async update(
     username: string,
     update: {
-      experience: number;
+      experience?: number;
+      hp?: number;
     },
   ): Promise<Adventurer> {
     const adventurer = await this.adventurerModel.findOne({ username });
     if (!adventurer) {
       throw new Error('Entity not found');
     }
-    adventurer.experience = update.experience;
+    adventurer.experience = update.experience ?? adventurer.experience;
+    adventurer.hp = update.hp ?? adventurer.hp;
     return adventurer.save();
   }
 

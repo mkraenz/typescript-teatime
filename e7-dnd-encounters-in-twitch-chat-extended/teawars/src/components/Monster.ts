@@ -1,15 +1,20 @@
 import { Curves, GameObjects, Math, Scene } from "phaser";
+import { DamageText } from "./DamageText";
+import { MonsterHealthbar } from "./MonsterHealthbar";
 
 export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: Math.Vector2 };
     private curve?: Curves.CubicBezier;
+    private healthbar!: MonsterHealthbar;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, { hp }: { hp: number }) {
         super(scene, 1100, 620, "monster");
         scene.add.existing(this);
 
         // TODO fixed display size only working for sqare images
         this.setDisplaySize(300, 300);
+
+        this.healthbar = new MonsterHealthbar(scene, hp);
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -34,7 +39,7 @@ export class Monster extends GameObjects.Image {
         };
     }
 
-    public attack(target: GameObjects.Image) {
+    public attack(target: GameObjects.Image, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
         this.path = path;
         this.curve = curve;
@@ -43,7 +48,7 @@ export class Monster extends GameObjects.Image {
             targets: this.path,
             t: 0.8,
             ease: "Sine.easeInOut",
-            duration: 1000,
+            duration: jumpDuration,
             yoyo: true,
         });
     }
@@ -57,13 +62,17 @@ export class Monster extends GameObjects.Image {
         }
     }
 
-    public takeDamage() {
+    public takeDamage(amount: number) {
+        this.healthbar.takeDamage(amount);
+
+        new DamageText(this.scene, this, amount);
+
         const red = 0xff0000;
         this.setTint(red);
         this.scene.time.delayedCall(300, () => this.clearTint());
     }
 
     public die() {
-        this.destroy();
+        this.setVisible(false);
     }
 }

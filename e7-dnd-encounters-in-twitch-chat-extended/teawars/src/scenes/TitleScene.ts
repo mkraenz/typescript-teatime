@@ -1,9 +1,7 @@
-import { GameObjects, Scene } from "phaser";
+import { Scene } from "phaser";
 import * as io from "socket.io-client";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
-import { DamageText } from "../components/DamageText";
-import { Healthbar } from "../components/Healthbar";
 import { Monster } from "../components/Monster";
 import {
     Ambushed,
@@ -32,6 +30,7 @@ const cfg = {
     version: {
         relY: 0.93,
     },
+    jumpAttackDuration: 1000,
 };
 
 type Maybe<T> = T | undefined;
@@ -39,11 +38,8 @@ type Maybe<T> = T | undefined;
 export class TitleScene extends Scene {
     private client!: SocketIOClient.Socket;
     private battleLog!: IEvent[];
-    private log!: GameObjects.Text;
-    private healthbar!: Healthbar;
     private party!: Adventurer[];
     private monster?: Monster;
-    // private adventurer!: Adventurer;
 
     public constructor() {
         super({
@@ -53,45 +49,19 @@ export class TitleScene extends Scene {
 
     public create(): void {
         new BackgroundImage(this, "bg1");
-        this.log = this.add.text(50, 100, "default");
-
         this.battleLog = [];
         this.party = [];
 
-        // this.adventurer = new Adventurer(this, "player1");
-        // const gui = new GUI();
-        // gui.add(this.adventurer, "username");
-        // gui.add(this.adventurer, "x");
-        // gui.add(this.adventurer, "y");
-        // gui.add(this.adventurer, "attack");
-
-        // this.add.image(1100, 620, "monster").setDisplaySize(300, 300); // TODO fixed display size only working for sqare images
-
-        // times(4, () => {
-        //     const adventurer = this.add
-        //         .image(0, 0, "adventurers")
-        //         .setRandomPosition(
-        //             200,
-        //             500,
-        //             this.scale.width / 2 - 200,
-        //             this.scale.height / 4
-        //         )
-        //         .setScale(4.5)
-        //         .setFrame(random(7));
-        // });
-
-        // const gui = new GUI();
-        // gui.add(emptyHealthbar, "x", 0, this.scale.width);
-        // gui.add(emptyHealthbar, "y", 0, this.scale.height);
-        // gui.add(emptyHealthbar, "scale", 1, 10);
-        // const obj = {
-        //     frame: 0,
-        //     nextFrame: () => {
-        //         obj.frame++;
-        //         adventurer.setFrame(obj.frame);
-        //     },
-        // };
-        // gui.add(obj, "nextFrame");
+        // TODO add debug config
+        if (false) {
+            // this.addAdventurer("player1", 100, 300);
+            // const gui = new GUI();
+            // gui.add(this.party[0], "username");
+            // gui.add(this.party[0], "x");
+            // gui.add(this.party[0], "y");
+            // gui.add(this.party[0], "debugTakeDamage");
+            // gui.add(this.party[0], "die");
+        }
 
         this.client = io("http://localhost:3000");
 
@@ -124,30 +94,23 @@ export class TitleScene extends Scene {
             ) as Maybe<MonsterKilled>;
 
             if (ambush) {
-                this.monster = new Monster(this);
-                this.healthbar = new Healthbar(this, ambush.monster.hp);
+                this.monster = new Monster(this, ambush.monster);
             }
             if (joined) {
-                this.addAdventurer(joined.member);
+                this.addAdventurer(joined.member, joined.hp, joined.maxHp);
             }
 
             if (adventurerAttacked && this.monster) {
                 const adventurer = this.party.find(
                     (a) => a.username === adventurerAttacked.attacker
                 )!;
-                adventurer.attack(this.monster);
+                adventurer.attack(this.monster, cfg.jumpAttackDuration);
             }
 
             if (monsterReceivedDamage) {
-                this.healthbar.setHealth(monsterReceivedDamage.hpLeft);
-                if (this.monster) {
-                    new DamageText(
-                        this,
-                        this.monster,
-                        monsterReceivedDamage.damage
-                    );
-                    this.monster.takeDamage();
-                }
+                this.onAttackImpact(() => {
+                    this.monster?.takeDamage(monsterReceivedDamage.damage);
+                });
             }
 
             if (monsterAttacked && this.monster) {
@@ -155,40 +118,36 @@ export class TitleScene extends Scene {
                     (a) => a.username === monsterAttacked.target
                 )!;
                 if (adventurer) {
-                    this.monster.attack(adventurer);
+                    this.monster.attack(adventurer, cfg.jumpAttackDuration);
                 }
             }
 
             if (adventurerReceivedDamage) {
-                const adventurer = this.party.find(
-                    (a) => a.username === adventurerReceivedDamage.target
-                )!;
-                if (adventurer) {
-                    new DamageText(
-                        this,
-                        adventurer,
-                        adventurerReceivedDamage.damage
+                this.onAttackImpact(() => {
+                    const adventurer = this.party.find(
+                        (a) => a.username === adventurerReceivedDamage.target
                     );
-                    adventurer.takeDamage();
-                }
+                    adventurer?.takeDamage(adventurerReceivedDamage.damage);
+                });
             }
 
             if (adventurersWin) {
-                this.monster?.die();
+                this.onAttackImpact(() => this.monster?.die());
             }
         });
     }
 
-    private addAdventurer(username: string) {
-        this.party.push(new Adventurer(this, username));
+    private onAttackImpact(cb: () => void) {
+        this.time.delayedCall(cfg.jumpAttackDuration, cb);
+    }
+
+    private addAdventurer(username: string, hp: number, maxHp: number) {
+        this.party.push(new Adventurer(this, username, hp, maxHp));
     }
 
     // automatically called every 1/60th of a second
     public update() {
-        const text = this.battleLog.map((x) => JSON.stringify(x)).join("\n");
-        this.log.setText(text);
         this.party.forEach((a) => a.update());
-        // this.adventurer.update();
         this.monster?.update();
     }
 

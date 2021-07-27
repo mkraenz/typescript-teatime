@@ -44,9 +44,10 @@ export class AdventurerController {
   }
 
   @Patch()
-  async update(@Body() { username, experience }: UpdateAdventurerDto) {
+  async update(@Body() { username, experience, hp }: UpdateAdventurerDto) {
     const adventurer = await this.adventurers.update(username, {
       experience,
+      hp,
     });
     return GetAdventurerDto.of(adventurer);
   }

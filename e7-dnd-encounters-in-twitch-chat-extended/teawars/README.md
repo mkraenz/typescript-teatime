@@ -89,3 +89,22 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 ### Assets and UI
 
 - [UIHere.com](https://www.uihere.com/free-cliparts/user-interface-design-game-game-ui-buttons-gold-coins-online-1035811)
+
+## TODOs
+
+- [x] display boss monster
+- [x] display adventurers on join event
+- [x] health bar monster
+- [x] monster disappears when dead
+- [x] on attack, adventurers do jump attack towards monster
+- [x] on attack, monster does jump attack towards specific adventurer
+- [x] display damage numbers
+- [x] cleanup: only console.log raw events
+- [x] sync attack with damage receival
+- [x] backend exposes hp
+- [x] add health bar adventurers
+- [x] backend exposes max health
+- [ ] names adventurers
+- [ ] monster name
+- [ ] backend exposes event log (for debugging)
+- [ ] ? on end, clear party after x seconds ?

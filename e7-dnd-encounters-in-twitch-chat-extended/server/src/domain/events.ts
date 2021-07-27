@@ -25,6 +25,8 @@ interface Attacked {
 interface Joined {
   type: 'join';
   member: string;
+  maxHp: number;
+  hp: number;
 }
 
 interface Ambushed {

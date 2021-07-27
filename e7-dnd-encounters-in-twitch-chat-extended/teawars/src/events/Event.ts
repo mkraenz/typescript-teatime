@@ -25,6 +25,8 @@ export interface Attacked {
 export interface Joined {
     type: "join";
     member: string;
+    maxHp: number;
+    hp: number;
 }
 
 export interface Ambushed {

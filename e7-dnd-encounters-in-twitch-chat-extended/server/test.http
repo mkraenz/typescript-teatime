@@ -37,8 +37,8 @@ PATCH http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "Pickle Rick",
-    "experience": 100
+    "username": "typescriptteatime",
+    "hp": 75
 }
 
 ###

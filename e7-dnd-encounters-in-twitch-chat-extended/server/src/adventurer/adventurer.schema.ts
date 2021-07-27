@@ -8,6 +8,9 @@ export class Adventurer {
   public username!: string;
 
   @prop({ default: 150 })
+  public maxHp = 150;
+
+  @prop({ default: 150 })
   public hp = 150;
 
   @prop({ default: 1 })
