@@ -109,10 +109,33 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] backend streamelements bot must not !join battle
 - [x] rename titlescene
 - [x] monster name
-- [ ] names adventurers
+- [x] names adventurers
+- [c] monster assets
+  - [x] pick image according to monster name -> mapping problem
+  - [x] display size of differently sized images -> asset problem
+  - [x] data-driven (defined everything in JSON)
+- [ ] chore: fill in monster asset details
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
-- [ ] monster assets
+- [ ] backend Bug: when party dies see below
+- [ ] bug: characters in front should be visible and hide characters in the back
+- [ ] disallow joining twice
 - [ ] !move left 3
 - [ ] !heal @username
 - [ ] ? on end, clear party after x seconds ?
+
+### Bug
+
+```log
+/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/adventurer/adventurer.schema.js:37
+            this.log.push({ type: 'adventurer killed', name: this.username });
+                     ^
+
+TypeError: Cannot read property 'push' of undefined
+    at model.takeDamage (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/adventurer/adventurer.schema.js:37:22)
+    at Monster.attack (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/monster.js:23:20)
+    at Battle.onTick (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/battle.js:46:22)
+    at Timeout._onTimeout (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/battle.js:17:55)
+    at listOnTimeout (internal/timers.js:531:17)
+    at processTimers (internal/timers.js:475:7)
+```

@@ -1,12 +1,13 @@
 import { GameObjects, Scene } from "phaser";
+import { monsterSprites } from "../../assets/images/monsters/monsters";
 import { DEV } from "../dev-config";
 import { GRegistry } from "../gRegistry";
 import { translations } from "../localizations";
 import { Color, toHex } from "../styles/Color";
 import { setDefaultTextStyle, TextConfig } from "../styles/Text";
 import { GameOverScene } from "./GameOverScene";
-import { Scenes } from "./Scenes";
 import { MainScene } from "./MainScene";
+import { Scenes } from "./Scenes";
 
 export class LoadingScene extends Scene {
     private halfWidth!: number;
@@ -27,9 +28,9 @@ export class LoadingScene extends Scene {
 
     private preloadAssets() {
         const img = (filename: string) => `./assets/images/${filename}`;
+        const monsterImg = (filename: string) => img(`monsters/${filename}`);
         const sound = (filename: string) => `./assets/sounds/${filename}`;
         this.load
-            .image("monster", img("monsters/JosephSeraph/WailingPrince.png"))
             .image("empty-health-bar", img("empty-health-bar.png"))
             .image("red-health-bar", img("red-health-bar.png"))
             .image("bg1", img("bg/battleback7.png"))
@@ -41,6 +42,9 @@ export class LoadingScene extends Scene {
                     frameHeight: 32,
                 }
             );
+        monsterSprites.forEach((sprite) => {
+            this.load.image(sprite.key, monsterImg(sprite.path));
+        });
     }
 
     private makeLoadingBar() {

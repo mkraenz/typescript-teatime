@@ -1,12 +1,14 @@
 import { random } from "lodash";
 import { Curves, GameObjects, Math, Scene } from "phaser";
+import { AdventurerName } from "../AdventurerName";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
 
 export class Adventurer extends GameObjects.Image {
     private path?: { t: number; vec: Math.Vector2 };
     private curve?: Curves.CubicBezier;
-    private healthbar!: AdventurerHealthbar;
+    private healthbar: AdventurerHealthbar;
+    private nameLabel: GameObjects.Text;
 
     constructor(
         scene: Scene,
@@ -27,6 +29,7 @@ export class Adventurer extends GameObjects.Image {
             .setFrame(random(21));
 
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
+        this.nameLabel = new AdventurerName(scene, username, this);
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -72,6 +75,8 @@ export class Adventurer extends GameObjects.Image {
             this.x = newPos.x;
             this.y = newPos.y;
         }
+
+        this.nameLabel.update();
         this.healthbar.update();
     }
 

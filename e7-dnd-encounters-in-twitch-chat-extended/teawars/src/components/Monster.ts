@@ -1,22 +1,27 @@
-import { Curves, GameObjects, Math, Scene } from "phaser";
+import { startCase } from "lodash";
+import { Curves, GameObjects, Math as PMath, Scene } from "phaser";
+import {
+    monsterMapping,
+    monsterSprites,
+} from "../../assets/images/monsters/monsters";
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
 export class Monster extends GameObjects.Image {
-    private path?: { t: number; vec: Math.Vector2 };
+    private path?: { t: number; vec: PMath.Vector2 };
     private curve?: Curves.CubicBezier;
     private healthbar!: MonsterHealthbar;
 
     constructor(scene: Scene, { hp, name }: { hp: number; name: string }) {
-        super(scene, 1100, 620, "monster");
+        super(scene, 1100, 620, getSpriteKey(name));
         scene.add.existing(this);
 
         // TODO fixed display size only working for sqare images
-        this.setDisplaySize(300, 300);
+        this.setNormalizedSize();
 
         this.healthbar = new MonsterHealthbar(scene, hp);
         const label = this.scene.add
-            .text(scene.scale.width / 2, 84, name, {
+            .text(scene.scale.width / 2, 84, startCase(name), {
                 fontSize: "bold 60px",
                 align: "center",
                 color: "rgb(255,255,255,0.7)",
@@ -26,6 +31,21 @@ export class Monster extends GameObjects.Image {
         // const gui = new GUI();
         // gui.add(this, "debugTakeDamage");
         // gui.add(this, "debugAttack");
+    }
+
+    /** normalizes sprite to fit the greater of height and width to 300px */
+    private setNormalizedSize() {
+        const normalizedSize = 300;
+        const spriteCfg = monsterSprites.find(
+            (s) => s.key === this.texture.key
+        );
+        if (!spriteCfg) {
+            throw new Error("Monster Sprite config not found");
+        }
+
+        const max = Math.max(spriteCfg.width, spriteCfg.height);
+        const factor = normalizedSize / max;
+        this.setScale(factor);
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -95,3 +115,8 @@ export class Monster extends GameObjects.Image {
         this.takeDamage(20);
     }
 }
+
+const getSpriteKey = (_name: string) => {
+    const mapping = monsterMapping.find(({ name }) => name === _name);
+    return mapping && mapping.key ? mapping.key : "greengoo";
+};

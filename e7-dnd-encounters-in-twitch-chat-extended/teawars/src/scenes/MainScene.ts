@@ -55,7 +55,7 @@ export class MainScene extends Scene {
 
         // TODO add debug config
         if (cfg.debug) {
-            // this.addAdventurer("player1", 100, 300);
+            this.addAdventurer("Amazing Adventurer", 100, 300);
             this.addMonster({ area: "Forest", hp: 21, name: "Sephiroth" });
             // const gui = new GUI();
             // gui.add(this.party[0], "username");
@@ -153,7 +153,7 @@ export class MainScene extends Scene {
 
     // automatically called every 1/60th of a second
     public update() {
-        this.party.forEach((a) => a.update());
+        this.party.forEach((adventurer) => adventurer.update());
         this.monster?.update();
     }
 
