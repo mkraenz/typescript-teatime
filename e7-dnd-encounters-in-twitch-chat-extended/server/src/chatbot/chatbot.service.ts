@@ -15,6 +15,7 @@ const tmiConfig = {
   channels: ['typescriptteatime'],
 };
 
+const banned = ['streamelements'];
 const timeTillAttackInSeconds = 30;
 const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
@@ -52,7 +53,7 @@ export class ChatbotService {
     if (self) return; // Ignore message by chatbot itself
 
     const username = tags.username;
-    if (!username) return;
+    if (!username || banned.includes(username)) return;
     const msg = message.toLowerCase();
 
     if (DMs.includes(username) && msg.includes('!ambush')) {

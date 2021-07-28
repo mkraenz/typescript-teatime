@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "nest start --watch",
+    "dev": "docker start mongo && nest start --watch",
     "start:dev": "nest start --watch",
     "start:db": "docker run -d -p 27017:27017 --name mongo mongo",
     "start:debug": "nest start --debug --watch",
