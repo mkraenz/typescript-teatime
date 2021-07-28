@@ -38,10 +38,8 @@ export class LoadingScene extends Scene {
                 "adventurers",
                 img("adventurers/adventurers.sprite.32x32.png"),
                 {
-                    frameWidth: 24,
-                    spacing: 1,
+                    frameWidth: 32,
                     frameHeight: 32,
-                    endFrame: 8,
                 }
             );
     }

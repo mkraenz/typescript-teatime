@@ -104,7 +104,15 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] backend exposes hp
 - [x] add health bar adventurers
 - [x] backend exposes max health
+- [x] announcements
+- [x] more adventurers WHOOO
+- [ ] backend streamelements bot must not !join battle
 - [ ] names adventurers
 - [ ] monster name
-- [ ] backend exposes event log (for debugging)
+- [ ] rename titlescene
+- [ ] backend exposes battles with event log as GET /battles
+- [ ] backend persists battles
+- [ ] monster assets
+- [ ] !move left 3
+- [ ] !heal @username
 - [ ] ? on end, clear party after x seconds ?

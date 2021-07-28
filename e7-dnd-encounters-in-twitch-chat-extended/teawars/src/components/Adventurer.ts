@@ -24,7 +24,7 @@ export class Adventurer extends GameObjects.Image {
             scene.scale.height / 4
         )
             .setScale(4.5)
-            .setFrame(random(7));
+            .setFrame(random(21));
 
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
     }
