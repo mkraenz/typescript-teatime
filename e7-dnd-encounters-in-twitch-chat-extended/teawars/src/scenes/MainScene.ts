@@ -17,6 +17,7 @@ import { TextConfig } from "../styles/Text";
 import { Scenes } from "./Scenes";
 
 const cfg = {
+    debug: false,
     fadeIn: 200,
     title: {
         relY: 0.4,
@@ -53,8 +54,9 @@ export class MainScene extends Scene {
         this.party = [];
 
         // TODO add debug config
-        if (false) {
+        if (cfg.debug) {
             // this.addAdventurer("player1", 100, 300);
+            this.addMonster({ area: "Forest", hp: 21, name: "Sephiroth" });
             // const gui = new GUI();
             // gui.add(this.party[0], "username");
             // gui.add(this.party[0], "x");
@@ -94,7 +96,7 @@ export class MainScene extends Scene {
             ) as Maybe<MonsterKilled>;
 
             if (ambush) {
-                this.monster = new Monster(this, ambush.monster);
+                this.addMonster(ambush.monster);
             }
             if (joined) {
                 this.addAdventurer(joined.member, joined.hp, joined.maxHp);
@@ -135,6 +137,10 @@ export class MainScene extends Scene {
                 this.onAttackImpact(() => this.monster?.die());
             }
         });
+    }
+
+    private addMonster(cfg: Ambushed["monster"]) {
+        this.monster = new Monster(this, cfg);
     }
 
     private onAttackImpact(cb: () => void) {

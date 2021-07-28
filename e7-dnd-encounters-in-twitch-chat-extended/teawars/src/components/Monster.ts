@@ -7,7 +7,7 @@ export class Monster extends GameObjects.Image {
     private curve?: Curves.CubicBezier;
     private healthbar!: MonsterHealthbar;
 
-    constructor(scene: Scene, { hp }: { hp: number }) {
+    constructor(scene: Scene, { hp, name }: { hp: number; name: string }) {
         super(scene, 1100, 620, "monster");
         scene.add.existing(this);
 
@@ -15,6 +15,17 @@ export class Monster extends GameObjects.Image {
         this.setDisplaySize(300, 300);
 
         this.healthbar = new MonsterHealthbar(scene, hp);
+        const label = this.scene.add
+            .text(scene.scale.width / 2, 84, name, {
+                fontSize: "bold 60px",
+                align: "center",
+                color: "rgb(255,255,255,0.7)",
+            })
+            .setOrigin(0.5);
+
+        // const gui = new GUI();
+        // gui.add(this, "debugTakeDamage");
+        // gui.add(this, "debugAttack");
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -39,7 +50,7 @@ export class Monster extends GameObjects.Image {
         };
     }
 
-    public attack(target: GameObjects.Image, jumpDuration: number) {
+    public attack(target: { x: number; y: number }, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
         this.path = path;
         this.curve = curve;
@@ -74,5 +85,13 @@ export class Monster extends GameObjects.Image {
 
     public die() {
         this.setVisible(false);
+    }
+
+    public debugAttack() {
+        this.attack({ x: 200, y: this.scene.scale.height / 2 + 50 }, 1000);
+    }
+
+    public debugTakeDamage() {
+        this.takeDamage(20);
     }
 }

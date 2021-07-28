@@ -108,8 +108,8 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] more adventurers WHOOO
 - [x] backend streamelements bot must not !join battle
 - [x] rename titlescene
+- [x] monster name
 - [ ] names adventurers
-- [ ] monster name
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
 - [ ] monster assets
