@@ -1,78 +1,174 @@
 import { Scene } from "phaser";
+import * as io from "socket.io-client";
+import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
-import { GRegistry } from "../gRegistry";
-import { GameOverScene, IGameOverSceneInitData } from "./GameOverScene";
-import { ScoreHud } from "./hud/ScoreHud";
+import { Monster } from "../components/Monster";
+import {
+    Ambushed,
+    Attacked,
+    DamageReceived,
+    IEvent,
+    Joined,
+    MonsterKilled,
+} from "../events/Event";
+import { translations } from "../localizations";
+import { Color } from "../styles/Color";
+import { TextConfig } from "../styles/Text";
 import { Scenes } from "./Scenes";
 
+const cfg = {
+    fadeIn: 200,
+    title: {
+        relY: 0.4,
+    },
+    playButton: {
+        relY: 0.62,
+    },
+    copyright: {
+        relY: 0.95,
+    },
+    version: {
+        relY: 0.93,
+    },
+    jumpAttackDuration: 1000,
+};
+
+type Maybe<T> = T | undefined;
+
 export class MainScene extends Scene {
-    private subScenes: string[] = [];
-    private gotoPendingDirtyFlag = false;
+    private client!: SocketIOClient.Socket;
+    private battleLog!: IEvent[];
+    private party!: Adventurer[];
+    private monster?: Monster;
 
     public constructor() {
-        super({ key: Scenes.Main });
+        super({
+            key: Scenes.Main,
+        });
     }
 
     public create(): void {
-        new BackgroundImage(this, "bg");
-        this.addSubScene(Scenes.Score, ScoreHud);
-        this.input.keyboard.on("keydown-R", () => this.restart());
-    }
+        new BackgroundImage(this, "bg1");
+        this.battleLog = [];
+        this.party = [];
 
-    public update() {
-        // bla
-    }
-
-    private gameOver() {
-        this.sound.stopAll();
-        const data: IGameOverSceneInitData = {
-            score: GRegistry.getScore(this),
-        };
-        this.goto(Scenes.GameOver, GameOverScene, data);
-    }
-
-    private restart() {
-        console.log("restarted");
-        this.tearDown();
-        this.scene.restart();
-    }
-
-    private addSubScene<T extends {}>(
-        key: string,
-        scene: new () => Scene,
-        initData?: T
-    ) {
-        this.scene.add(key, scene, true, initData);
-        this.subScenes.push(key);
-    }
-
-    private goto(
-        key: string,
-        sceneClass: new (name: string) => Scene,
-        data?: { [key: string]: any }
-    ) {
-        // consider removing the fadeOut
-        if (this.gotoPendingDirtyFlag) {
-            // do not trigger scene change twice
-            return;
+        // TODO add debug config
+        if (false) {
+            // this.addAdventurer("player1", 100, 300);
+            // const gui = new GUI();
+            // gui.add(this.party[0], "username");
+            // gui.add(this.party[0], "x");
+            // gui.add(this.party[0], "y");
+            // gui.add(this.party[0], "debugTakeDamage");
+            // gui.add(this.party[0], "die");
         }
+
+        this.client = io("http://localhost:3000");
+
+        this.client.on("init", (data: IEvent[]) => {
+            this.battleLog.push(...data);
+        });
+        this.client.on("append logs", (events: IEvent[]) => {
+            console.log(JSON.stringify(events));
+            this.battleLog.push(...events);
+            const ambush = events.find(
+                (e) => e.type === "monster appeared"
+            ) as Maybe<Ambushed>;
+            const joined = events.find(
+                (e) => e.type === "join"
+            ) as Maybe<Joined>;
+            const monsterReceivedDamage = events.find(
+                (e) => e.type === "damage received" && e.isMonster
+            ) as Maybe<DamageReceived>;
+            const adventurerReceivedDamage = events.find(
+                (e) => e.type === "damage received" && !e.isMonster
+            ) as Maybe<DamageReceived>;
+            const monsterAttacked = events.find(
+                (e) => e.type === "attack" && e.isMonster
+            ) as Maybe<Attacked>;
+            const adventurerAttacked = events.find(
+                (e) => e.type === "attack" && !e.isMonster
+            ) as Maybe<Attacked>;
+            const adventurersWin = events.find(
+                (e) => e.type === "monster killed"
+            ) as Maybe<MonsterKilled>;
+
+            if (ambush) {
+                this.monster = new Monster(this, ambush.monster);
+            }
+            if (joined) {
+                this.addAdventurer(joined.member, joined.hp, joined.maxHp);
+            }
+
+            if (adventurerAttacked && this.monster) {
+                const adventurer = this.party.find(
+                    (a) => a.username === adventurerAttacked.attacker
+                )!;
+                adventurer.attack(this.monster, cfg.jumpAttackDuration);
+            }
+
+            if (monsterReceivedDamage) {
+                this.onAttackImpact(() => {
+                    this.monster?.takeDamage(monsterReceivedDamage.damage);
+                });
+            }
+
+            if (monsterAttacked && this.monster) {
+                const adventurer = this.party.find(
+                    (a) => a.username === monsterAttacked.target
+                )!;
+                if (adventurer) {
+                    this.monster.attack(adventurer, cfg.jumpAttackDuration);
+                }
+            }
+
+            if (adventurerReceivedDamage) {
+                this.onAttackImpact(() => {
+                    const adventurer = this.party.find(
+                        (a) => a.username === adventurerReceivedDamage.target
+                    );
+                    adventurer?.takeDamage(adventurerReceivedDamage.damage);
+                });
+            }
+
+            if (adventurersWin) {
+                this.onAttackImpact(() => this.monster?.die());
+            }
+        });
+    }
+
+    private onAttackImpact(cb: () => void) {
+        this.time.delayedCall(cfg.jumpAttackDuration, cb);
+    }
+
+    private addAdventurer(username: string, hp: number, maxHp: number) {
+        this.party.push(new Adventurer(this, username, hp, maxHp));
+    }
+
+    // automatically called every 1/60th of a second
+    public update() {
+        this.party.forEach((a) => a.update());
+        this.monster?.update();
+    }
+
+    private addTitle() {
+        this.add
+            .text(
+                this.scale.width / 2,
+                this.scale.height * cfg.title.relY,
+                translations.title,
+                TextConfig.title
+            )
+            .setOrigin(0.5)
+            .setShadow(4, 6, Color.Grey, 2, true, true)
+            .setAlpha(1);
+    }
+
+    private goto(key: string, sceneClass: new (name: string) => Scene) {
         this.cameras.main.once("camerafadeoutcomplete", () => {
-            this.tearDown();
-            this.scene.add(key, sceneClass, true, data);
+            this.scene.add(key, sceneClass, true);
             this.scene.remove(this);
         });
-        this.gotoPendingDirtyFlag = true;
-        this.cameras.main.fadeOut(50);
-    }
-
-    private tearDown() {
-        this.input.removeAllListeners();
-        this.children.getAll().forEach((c) => c.destroy());
-        this.subScenes.forEach((key) => {
-            this.scene.remove(key);
-        });
-        this.subScenes = [];
-        // prevent "cannot read property 'cut' of null" on scene.events.emit(Event.Type)
-        // Object.values(Event).forEach(event => this.events.off(event));
+        this.cameras.main.fadeOut(500);
     }
 }

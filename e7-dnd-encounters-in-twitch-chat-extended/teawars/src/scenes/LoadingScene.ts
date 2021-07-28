@@ -5,9 +5,8 @@ import { translations } from "../localizations";
 import { Color, toHex } from "../styles/Color";
 import { setDefaultTextStyle, TextConfig } from "../styles/Text";
 import { GameOverScene } from "./GameOverScene";
-import { MainScene } from "./MainScene";
 import { Scenes } from "./Scenes";
-import { TitleScene } from "./TitleScene";
+import { MainScene } from "./MainScene";
 
 export class LoadingScene extends Scene {
     private halfWidth!: number;
@@ -81,10 +80,8 @@ export class LoadingScene extends Scene {
             if (DEV.startInGameOverScene) {
                 GRegistry.setScore(this, 13650);
                 this.scene.add(Scenes.GameOver, GameOverScene, true);
-            } else if (DEV.skipTitle) {
-                this.scene.add(Scenes.Main, MainScene, true);
             } else {
-                this.scene.add(Scenes.Title, TitleScene, true);
+                this.scene.add(Scenes.Main, MainScene, true);
             }
             // this.scene.remove(this);
         });

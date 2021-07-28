@@ -106,10 +106,10 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] backend exposes max health
 - [x] announcements
 - [x] more adventurers WHOOO
-- [ ] backend streamelements bot must not !join battle
+- [x] backend streamelements bot must not !join battle
+- [x] rename titlescene
 - [ ] names adventurers
 - [ ] monster name
-- [ ] rename titlescene
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
 - [ ] monster assets
