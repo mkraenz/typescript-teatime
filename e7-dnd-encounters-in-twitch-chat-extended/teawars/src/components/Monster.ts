@@ -54,8 +54,9 @@ export class Monster extends GameObjects.Image {
                 )}`
             );
         }
-
-        const max = Math.max(spriteCfg.width, spriteCfg.height);
+        const texture = this.scene.textures.get(this.texture.key);
+        const image = texture.getSourceImage();
+        const max = Math.max(image.width, image.height);
         const factor = normalizedSize / max;
         this.setScale(factor);
     }

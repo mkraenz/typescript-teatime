@@ -17,11 +17,19 @@
 - [JS Monster Pack Elementals 3 by JosephSeraph under CC-BY 3.0](https://opengameart.org/content/js-monster-set-elementals-iii)
   - Changes: Split into one file per monster, removed background
   - Files are under `./JosephSeraph/elementals3/`
-- [10 Basic RPG Enemies by Redshrike under CC-BY 3.0](https://opengameart.org/content/10-basic-rpg-enemies)
-  - Changes: Split into one file per monster, removed background, some sprites not included
+- [10 Basic RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/10-basic-rpg-enemies)
+  - Changes: Split into one file per monster, removed background
   - Files are under `./Redshrike/`
-- [./var/ratman.42x46.png by MrBeast & Redshrike under CC-BY 3.0](https://opengameart.org/content/rat-men-rpg-enemies)
-  - Changes: Split one ratman out into separate file, not using other sprites
+- [9 more RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/more-rpg-enemies)
+  - Changes: Split into one file per monster, removed background, flipped sprite horizontally
+  - Files are under `./Redshrike/more`
+- [3 RPG Enemy Remixes RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/3-rpg-enemy-remixes)
+  - Attribution: Stephen "Redshrike" Challener (Sprites) 5hiroi (concepts) Heather Lee Harvey (concept) (EmeraldActivities.com) www.OpenGameArt.org
+  - Changes: Split into one file per monster, removed background, flipped sprite horizontally
+  - Files are under `./Redshrike/3-rpg-enemy-remixes`
+- [Ratman by MrBeast & Redshrike under CC-BY 3.0](https://opengameart.org/content/rat-men-rpg-enemies)
+  - Changes: Split into into file per monster
+  - Files are under `./MrBeastAndRedshift`
 - [wizard.50x90.png by Blarumyrran under CC0](https://opengameart.org/content/wizard-0)
 - [Health and Mana Bars by lancel under CC-BY-SA 3.0](https://opengameart.org/content/health-and-mana-bars)
   - Changes: none

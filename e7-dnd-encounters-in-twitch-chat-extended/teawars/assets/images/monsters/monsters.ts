@@ -1,280 +1,252 @@
 export const monsterSprites: Array<{
     path: string; // relative to /assets/images/monsters/
-    width: number;
-    height: number; // max(width, height) -> scale that max dim is 300px
-    flip?: true;
     key: string;
+    flip?: true;
 }> = [
     {
         path: "JosephSeraph/ascent/Bird.png",
-        width: 64,
-        height: 64,
         key: "bird",
     },
     {
         path: "JosephSeraph/ascent/GreenGoo.png",
-        width: 64,
-        height: 64,
         key: "greengoo",
     },
     {
         path: "JosephSeraph/ascent/LaserDrone.png",
-        width: 64,
-        height: 64,
         key: "laserdrone",
     },
     {
         path: "JosephSeraph/ascent/Outlaw.png",
-        width: 64,
-        height: 96,
         key: "outlaw",
     },
     {
         path: "JosephSeraph/ascent/Pirate.png",
-        width: 64,
-        height: 96,
         key: "pirate",
     },
     {
         path: "JosephSeraph/ascent/Salamander.png",
-        width: 96,
-        height: 64,
         key: "salamander",
     },
     {
         path: "JosephSeraph/ascent/ScoutMachine.png",
-        width: 96,
-        height: 64,
         key: "scoutmachine",
     },
     {
         path: "JosephSeraph/ascent/Shello.png",
-        width: 64,
-        height: 64,
         key: "golemshello",
     },
     {
         path: "JosephSeraph/ascent/WailingPrince.png",
-        width: 128,
-        height: 128,
         key: "wailingprince",
     },
     {
         path: "JosephSeraph/ascent/Witch.png",
-        width: 96,
-        height: 96,
         key: "witch",
     },
     // aeon monsters 1
     {
         path: "JosephSeraph/aeon-monsters-1/goblin-violet.png",
-        width: 46,
-        height: 48,
-        flip: true,
         key: "goblinviolet",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/goblin.png",
-        width: 46,
-        height: 48,
-        flip: true,
         key: "goblin",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/mothman.png",
-        width: 58,
-        height: 61,
-        flip: true,
         key: "mothman",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/mothman-beige.png",
-        width: 58,
-        height: 61,
-        flip: true,
         key: "mothmanbeige",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/shiva.png",
-        width: 47,
-        height: 47,
-        flip: true,
         key: "shiva",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/shiva-beige.png",
-        width: 47,
-        height: 47,
-        flip: true,
         key: "shivabeige",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/wolf.png",
-        width: 44,
-        height: 48,
-        flip: true,
         key: "wolf",
+        flip: true,
     },
     {
         path: "JosephSeraph/aeon-monsters-1/wolf-green.png",
-        width: 44,
-        height: 48,
-        flip: true,
         key: "wolfgreen",
+        flip: true,
     },
     {
         path: "JosephSeraph/elementals1/earth.48x62.png",
-        width: 48,
-        height: 62,
         key: "earthelemental",
     },
     {
         path: "JosephSeraph/elementals1/fire.48x61.png",
-        width: 48,
-        height: 61,
-        flip: true,
         key: "fireelemental",
+        flip: true,
     },
     {
         path: "JosephSeraph/elementals1/ice.48x62.png",
-        width: 48,
-        height: 62,
         key: "iceelemental",
     },
     {
         path: "JosephSeraph/elementals1/thunder.48x64.png",
-        width: 48,
-        height: 64,
         key: "thunderelemental",
     },
     {
         path: "JosephSeraph/elementals2/angel.79x80.png",
-        width: 79,
-        height: 80,
         key: "angel",
     },
     {
         path: "JosephSeraph/elementals2/death-and-angel.59x57.png",
-        width: 59,
-        height: 57,
         key: "deathandangel",
     },
     {
         path: "JosephSeraph/elementals2/devil.80x79.png",
-        width: 80,
-        height: 79,
         key: "devil",
     },
     {
         path: "JosephSeraph/elementals2/nymph.48x62.png",
-        width: 48,
-        height: 62,
         key: "nymph",
     },
     {
         path: "JosephSeraph/elementals3/cursed-armor.48x64.png",
-        width: 48,
-        height: 64,
         key: "cursedarmor",
     },
     {
         path: "JosephSeraph/elementals3/minotaur.48x64.png",
-        width: 48,
-        height: 64,
         key: "minotaur",
     },
     {
         path: "JosephSeraph/elementals3/tree-woman.47x64.png",
-        width: 47,
-        height: 64,
         key: "treewoman",
     },
     {
         path: "JosephSeraph/elementals3/wind-woman.48x61.png",
-        width: 48,
-        height: 61,
         key: "windwoman",
     },
     {
-        path: "Redshrike/dark-mage.32x33.png",
-        width: 32,
-        height: 33,
+        path: "MrBeastAndRedshift/ratking.png",
+        key: "ratking",
         flip: true,
-        key: "darkmage",
     },
     {
-        path: "Redshrike/flying-eye.19x27.png",
-        width: 19,
-        height: 27,
+        path: "MrBeastAndRedshift/ratman-muscle.png",
+        key: "ratmanmuscle",
         flip: true,
-        key: "flyingeye",
     },
     {
-        path: "Redshrike/goblin-warrior.33x32.png",
-        width: 33,
-        height: 32,
-        flip: true,
-        key: "goblinwarrior",
-    },
-    {
-        path: "Redshrike/moscito.38x34.png",
-        width: 38,
-        height: 34,
-        flip: true,
-        key: "moscito",
-    },
-    {
-        path: "Redshrike/skeleton.29x35.png",
-        width: 29,
-        height: 35,
-        flip: true,
-        key: "skeleton",
-    },
-    {
-        path: "Redshrike/slime.24x19.png",
-        width: 24,
-        height: 19,
-        flip: true,
-        key: "slime",
-    },
-    {
-        path: "Redshrike/spider.30x24.png",
-        width: 30,
-        height: 24,
-        flip: true,
-        key: "spider",
-    },
-    {
-        path: "Redshrike/turtle.41x22.png",
-        width: 31,
-        height: 22,
-        flip: true,
-        key: "turtle",
-    },
-    {
-        path: "Redshrike/wyrm-green.28x45.png",
-        width: 28,
-        height: 45,
-        flip: true,
-        key: "wyrmgreen",
-    },
-    {
-        path: "Redshrike/zombie-critter.26x31.png",
-        width: 26,
-        height: 31,
-        flip: true,
-        key: "zombiecritter",
-    },
-    {
-        path: "var/ratman.42x46.png",
-        width: 42,
-        height: 46,
+        path: "MrBeastAndRedshift/ratman.42x46.png",
         key: "ratman",
     },
     {
+        path: "Redshrike/3-rpg-enemy-remixes/anglerman.png",
+        key: "anglerman",
+    },
+    {
+        path: "Redshrike/3-rpg-enemy-remixes/dirg.png",
+        key: "dirg",
+    },
+    {
+        path: "Redshrike/3-rpg-enemy-remixes/naga.png",
+        key: "naga",
+    },
+    {
+        path: "Redshrike/more/bird-spearman.png",
+        key: "birdspearman",
+    },
+    {
+        path: "Redshrike/more/blue-devil.png",
+        key: "bluedevil",
+    },
+    {
+        path: "Redshrike/more/green-abomination.png",
+        key: "greenabomination",
+    },
+    {
+        path: "Redshrike/more/harpy.png",
+        key: "harpy",
+    },
+    {
+        path: "Redshrike/more/hobgoblin.png",
+        key: "hobgoblin",
+    },
+    {
+        path: "Redshrike/more/octopus-demon.png",
+        key: "mindflayer", // gedankenschinder
+    },
+    {
+        path: "Redshrike/more/octopus.png",
+        key: "octopus",
+    },
+    {
+        path: "Redshrike/more/plump-helmet-man.png",
+        key: "plumphelmetman",
+    },
+    {
+        path: "Redshrike/more/shrimp-dragon.png",
+        key: "shrimpdragon",
+    },
+    {
+        path: "Redshrike/dark-mage.32x33.png",
+        key: "darkmage",
+        flip: true,
+    },
+    {
+        path: "Redshrike/flying-eye.19x27.png",
+        key: "flyingeye",
+        flip: true,
+    },
+    {
+        path: "Redshrike/goblin-warrior.33x32.png",
+        key: "goblinwarrior",
+        flip: true,
+    },
+    {
+        path: "Redshrike/moscito.38x34.png",
+        key: "moscito",
+        flip: true,
+    },
+    {
+        path: "Redshrike/skeleton.29x35.png",
+        key: "skeleton",
+        flip: true,
+    },
+    {
+        path: "Redshrike/slime.24x19.png",
+        key: "slime",
+        flip: true,
+    },
+    {
+        path: "Redshrike/spider.30x24.png",
+        key: "spider",
+        flip: true,
+    },
+    {
+        path: "Redshrike/turtle.41x22.png",
+        key: "turtle",
+        flip: true,
+    },
+    {
+        path: "Redshrike/wyrm-green.28x45.png",
+        key: "wyrmgreen",
+        flip: true,
+    },
+    {
+        path: "Redshrike/zombie-critter.26x31.png",
+        key: "zombiecritter",
+        flip: true,
+    },
+    {
         path: "var/wizard.50x90.png",
-        width: 50,
-        height: 90,
         key: "wizardwithstaff",
     },
 ];
@@ -331,14 +303,13 @@ export const monsterMapping: Array<{
     },
     {
         name: "commoner",
-        key: "pirate",
-        tint: 0xf7f7af,
+        key: "hobgoblin",
         scale: 0.5,
     },
     {
         name: "cultist",
         key: "darkmage", // todo
-        scale: 0.8,
+        scale: 0.7,
     },
     {
         name: "guard",
@@ -368,7 +339,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "beholder",
-        key: "flyingeye",
+        key: "anglerman",
     },
     {
         name: "death tyrant",
@@ -377,124 +348,147 @@ export const monsterMapping: Array<{
     },
     {
         name: "spectator",
-        key: "",
+        key: "flyingeye",
+        scale: 0.5,
     },
     {
         name: "crawling claw",
-        key: "",
+        key: "turtle",
     },
     {
         name: "death knight",
-        key: "",
+        key: "bluedevil",
+        tint: 0x898989,
     },
     {
         name: "demilich",
-        key: "",
+        key: "windwoman",
     },
     {
         name: "flameskull",
-        key: "flyingeye",
-        tint: 0xff4b4b,
+        key: "anglerman",
+        tint: 0xf75050,
     },
     {
         name: "ghost",
-        key: "",
+        key: "windwoman",
+        tint: 0x9f9fcd,
     },
     {
         name: "ghast",
-        key: "",
+        key: "greenabomination",
+        tint: 0x9ed9f7,
     },
     {
         name: "ghoul",
-        key: "",
+        key: "greenabomination",
     },
     {
         name: "gibbering mouther",
-        key: "",
+        key: "slime",
+        tint: 0xff00a5,
     },
+    // 30
     {
         name: "clay golem",
-        key: "",
+        key: "dirg",
     },
     {
         name: "flesh golem",
-        key: "",
+        key: "dirg",
+        tint: 0xe65870,
     },
     {
         name: "iron golem",
-        key: "",
+        key: "dirg",
+        tint: 0x9c94de,
     },
     {
         name: "stone golem",
-        key: "",
+        key: "golemshello",
+        tint: 0xf0bfac,
     },
     {
         name: "gorgon",
-        key: "",
+        key: "minotaur",
     },
     {
         name: "grell",
-        key: "",
+        key: "mindflayer",
+        scale: 0.5,
     },
     {
         name: "helmed horror",
-        key: "",
+        key: "cursedarmor",
     },
     {
         name: "homunculus",
-        key: "",
+        key: "ratking",
     },
     {
         name: "intellect devourer",
-        key: "",
+        key: "zombiecritter",
+        tint: 0xe3647b,
+        scale: 0.5,
     },
     {
         name: "invisible stalker",
-        key: "",
+        key: "windwoman",
     },
+    // 40
     {
         name: "lamia",
-        key: "",
+        key: "naga",
     },
     {
         name: "lich",
-        key: "",
+        key: "deathandangel",
     },
     {
         name: "medusa",
-        key: "",
+        key: "octopus",
     },
     {
         name: "dust mephit",
-        key: "",
+        key: "thunderelemental",
+        scale: 0.7,
     },
     {
         name: "ice mephit",
-        key: "",
+        key: "icelemental",
+        scale: 0.7,
     },
     {
         name: "magma mephit",
-        key: "",
+        key: "fireelemental",
+        scale: 0.7,
     },
     {
         name: "mud mephit",
-        key: "",
+        key: "earthelemental",
+        scale: 0.7,
     },
     {
         name: "smoke mephit",
-        key: "",
+        key: "windwoman",
+        alpha: 0.7,
+        tint: 0x827f82,
     },
     {
         name: "steam mephit",
-        key: "",
+        key: "iceelemental",
+        scale: 0.5,
+        alpha: 0.7,
     },
     {
         name: "mimic",
-        key: "",
+        key: "spider",
+        scale: 0.8,
     },
+    // 50
     {
         name: "mind flayer",
-        key: "",
+        key: "mindflayer",
     },
     {
         name: "minotaur",
@@ -502,67 +496,85 @@ export const monsterMapping: Array<{
     },
     {
         name: "monodrone",
-        key: "",
+        key: "laserdrone",
+        scale: 0.3,
     },
     {
         name: "duodrone",
-        key: "",
+        key: "laserdrone",
+        scale: 0.5,
     },
     {
         name: "tridrone",
-        key: "",
+        key: "laserdrone",
+        scale: 0.7,
     },
     {
         name: "quadrone",
-        key: "",
+        key: "laserdrone",
+        scale: 0.9,
     },
     {
         name: "pentadrone",
-        key: "",
+        key: "laserdrone",
+        scale: 1.3,
     },
     {
         name: "mummy",
-        key: "",
+        key: "skeleton",
+        scale: 0.6,
     },
     {
         name: "mummy lord",
-        key: "",
+        key: "skeleton",
     },
     {
         name: "bone naga",
-        key: "",
+        key: "naga",
+        tint: 0xada0c0,
     },
+    // 60
     {
         name: "spirit naga",
-        key: "",
+        key: "naga",
+        tint: 0x23d2d2,
+        alpha: 0.6,
     },
     {
         name: "guardian naga",
-        key: "",
+        key: "naga",
+        scale: 1.3,
     },
     {
         name: "black pudding",
-        key: "",
+        key: "greengoo",
+        tint: 0x232450,
     },
     {
         name: "gelatinous cube",
-        key: "",
+        key: "slime",
+        scale: 0.8,
     },
     {
         name: "gray ooze",
-        key: "",
+        key: "slime",
+        tint: 0x343434,
+        scale: 0.4,
     },
     {
         name: "ochre jelly",
-        key: "",
+        key: "greengoo",
+        tint: 0xc5620a,
+        scale: 0.7,
     },
     {
         name: "shadow",
-        key: "",
+        key: "deathandangel",
     },
     {
         name: "shield guardian",
-        key: "",
+        key: "golemshello",
+        scale: 1.2,
     },
     {
         name: "skeleton",
@@ -573,125 +585,145 @@ export const monsterMapping: Array<{
         key: "minotaur",
         tint: 0x888888,
     },
+    // 70
     {
         name: "warhorse skeleton",
-        key: "",
+        key: "skeleton",
+        scale: 1.3,
     },
     {
         name: "specter",
-        key: "",
+        key: "deathandangel",
     },
     {
         name: "wight",
-        key: "",
+        key: "mothman",
     },
     {
         name: "wraith",
-        key: "",
+        key: "deathandangel",
     },
     {
         name: "zombie",
-        key: "",
+        key: "plumphelmetman",
     },
     {
         name: "beholder zombie",
-        key: "",
+        key: "plumphelmetman",
     },
     {
         name: "ogre zombie",
-        key: "",
+        key: "goblin",
     },
     {
         name: "aarakocra",
-        key: "",
+        key: "harpy",
     },
     {
         name: "azer",
-        key: "",
+        key: "fireelemental",
     },
     {
         name: "cambion",
-        key: "",
+        key: "bluedevil",
     },
+    // 80
     {
         name: "couatl",
-        key: "",
+        key: "naga",
+        tint: 0x8e9dfa,
     },
     {
         name: "balor",
-        key: "",
+        key: "minotaur",
+        tint: 0xff742a,
     },
     {
         name: "barlgura",
-        key: "",
+        key: "ratmanmuscle",
+        scale: 1.4,
     },
     {
         name: "chasme",
-        key: "",
+        key: "spider",
     },
     {
         name: "dretch",
-        key: "",
+        key: "dirg",
     },
     {
         name: "glabrezu",
-        key: "",
+        key: "minotaur",
+        scale: 1.2,
     },
     {
         name: "goristo",
-        key: "",
+        key: "minotaur",
     },
     {
         name: "hezrou",
-        key: "",
+        key: "minotaur",
     },
     {
         name: "manes",
-        key: "",
+        key: "greenabomination",
     },
     {
         name: "marilith",
-        key: "",
+        key: "naga",
+        scale: 1.2,
+        tint: 0x39d7ff,
     },
+    // 90
     {
         name: "nalfeshnee",
-        key: "",
+        key: "ratmanmuscle",
+        scale: 1.5,
+        tint: 0xe8aa89,
     },
     {
         name: "quasit",
-        key: "",
+        key: "wyrm-green",
     },
     {
         name: "shadow demon",
-        key: "",
+        key: "deathandangel",
+        alpha: 0.7,
+        tint: 0x484848,
     },
     {
         name: "vrock",
-        key: "",
+        key: "birdspearman",
     },
     {
         name: "yochlol",
-        key: "",
+        key: "treewoman",
+        tint: 0xff9126,
     },
     {
         name: "barbed devil",
-        key: "",
+        key: "shrimpdragon",
     },
     {
         name: "bearded devil",
-        key: "",
+        key: "devil",
+        tint: 0xde3b3b,
     },
     {
         name: "bone devil",
-        key: "",
+        key: "shrimpdragon",
+        tint: 0xffef98,
+        scale: 1.2,
     },
     {
         name: "chain devil",
-        key: "",
+        key: "cursedarmor",
+        tint: 0xf24c4c,
     },
+    // 100
     {
         name: "erinyes",
-        key: "",
+        key: "angel",
     },
     {
         name: "horned devil",
@@ -700,23 +732,26 @@ export const monsterMapping: Array<{
     {
         name: "ice devil",
         key: "devil",
-        tint: 0x44ffff, // todo check
+        tint: 0x3c99e3, // todo check
     },
     {
         name: "imp",
-        key: "",
+        key: "bluedevil",
+        scale: 0.3,
     },
     {
         name: "lemure",
-        key: "",
+        key: "plumphelmetman",
     },
     {
         name: "pit fiend",
-        key: "",
+        key: "minotaur",
+        scale: 1.2,
     },
     {
         name: "spined devil",
-        key: "",
+        key: "greenabomination",
+        tint: 0xff2d2d,
     },
     {
         name: "air elemental",
@@ -726,6 +761,7 @@ export const monsterMapping: Array<{
         name: "earth elemental",
         key: "earthelemental",
     },
+    // 110
     {
         name: "fire elemental",
         key: "fireelemental",
@@ -888,7 +924,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "harpy",
-        key: "",
+        key: "harpy",
     },
     {
         name: "hippogriff",

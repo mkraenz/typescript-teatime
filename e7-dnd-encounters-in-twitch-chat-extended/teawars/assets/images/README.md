@@ -14,10 +14,11 @@ Thanks for your help, **maceisgrace**!
 - [x] [JS Monster Pack Elementals 3](https://opengameart.org/content/js-monster-set-elementals-iii)
 - [x] [JS Monster Pack 4 Ascent](https://opengameart.org/content/js-monster-pack-4-ascent)
 - [x] [Wizard](https://opengameart.org/content/wizard-0)
-- [ ] [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
 - [x] [Rat Man](https://opengameart.org/content/rat-men-rpg-enemies)
 - [x] [10 Basic RPG Enemies](https://opengameart.org/content/10-basic-rpg-enemies)
-- [ ] [9 more RPG Enemies](https://opengameart.org/content/more-rpg-enemies)
+- [x] [9 more RPG Enemies](https://opengameart.org/content/more-rpg-enemies)
+- [x] [3 RPG Enemy Remixes](https://opengameart.org/content/3-rpg-enemy-remixes)
+- [ ] [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
 
 ### Chars
 

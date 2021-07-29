@@ -115,13 +115,17 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
   - [x] display size of differently sized images -> asset problem
   - [x] data-driven (defined everything in JSON)
 - [ ] chore: fill in monster asset details -> more monsters = more fun
-  - [ ] first 20 monsters
-  - [ ] first 40 monsters
-  - [ ] first 60 monsters
-  - [ ] first 80 monsters
+  - [x] first 20 monsters
+  - [x] first 30 monsters
+  - [x] first 40 monsters
+  - [x] first 60 monsters
+  - [x] first 80 monsters
+  - [x] first 100 monsters
+  - [ ] first 125 monsters
 - [ ] dynamically determine sprite dimensions -> reduce annoying and error prone human work
-- [ ] allow tinting monster assets via JSON -> greater variety
-- [ ] allow scaling monster assets via JSON -> greater variety
+- [ ] allow tinting for monster assets via JSON -> greater variety
+- [ ] allow scaling for monster assets via JSON -> greater variety
+- [ ] allow alpha for monster assets via JSON -> greater variety
 - [ ] bug: characters in front should be visible and hide characters in the back
 - [ ] choose background according to enemy area
 - [ ] backend Bug: when party dies. see below
