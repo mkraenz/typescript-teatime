@@ -114,11 +114,20 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
   - [x] pick image according to monster name -> mapping problem
   - [x] display size of differently sized images -> asset problem
   - [x] data-driven (defined everything in JSON)
-- [ ] chore: fill in monster asset details
+- [ ] chore: fill in monster asset details -> more monsters = more fun
+  - [ ] first 20 monsters
+  - [ ] first 40 monsters
+  - [ ] first 60 monsters
+  - [ ] first 80 monsters
+- [ ] dynamically determine sprite dimensions -> reduce annoying and error prone human work
+- [ ] allow tinting monster assets via JSON -> greater variety
+- [ ] allow scaling monster assets via JSON -> greater variety
+- [ ] bug: characters in front should be visible and hide characters in the back
+- [ ] choose background according to enemy area
+- [ ] backend Bug: when party dies. see below
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
-- [ ] backend Bug: when party dies see below
-- [ ] bug: characters in front should be visible and hide characters in the back
+- [ ] backend backup database after stream
 - [ ] disallow joining twice
 - [ ] !move left 3
 - [ ] !heal @username

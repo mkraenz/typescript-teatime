@@ -8,12 +8,16 @@ Thanks for your help, **maceisgrace**!
 
 ### Monsters
 
-- [JS Monster Pack Aeon Monsters I](https://opengameart.org/content/js-monsters-aeon-monsters-i)
-- [JS Monster Pack Elementals 1](https://opengameart.org/content/js-monster-set-elementals)
-- [JS Monster Pack Elementals 2](https://opengameart.org/content/js-monster-set-elementals-ii)
-- [JS Monster Pack Elementals 3](https://opengameart.org/content/js-monster-set-elementals-iii)
-- [JS Monster Pack 4 Ascent](https://opengameart.org/content/js-monster-pack-4-ascent)
-- [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
+- [x] [JS Monster Pack Aeon Monsters I](https://opengameart.org/content/js-monsters-aeon-monsters-i)
+- [x] [JS Monster Pack Elementals 1](https://opengameart.org/content/js-monster-set-elementals)
+- [x] [JS Monster Pack Elementals 2](https://opengameart.org/content/js-monster-set-elementals-ii)
+- [x] [JS Monster Pack Elementals 3](https://opengameart.org/content/js-monster-set-elementals-iii)
+- [x] [JS Monster Pack 4 Ascent](https://opengameart.org/content/js-monster-pack-4-ascent)
+- [x] [Wizard](https://opengameart.org/content/wizard-0)
+- [ ] [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
+- [x] [Rat Man](https://opengameart.org/content/rat-men-rpg-enemies)
+- [x] [10 Basic RPG Enemies](https://opengameart.org/content/10-basic-rpg-enemies)
+- [ ] [9 more RPG Enemies](https://opengameart.org/content/more-rpg-enemies)
 
 ### Chars
 
@@ -42,6 +46,13 @@ Thanks for your help, **maceisgrace**!
 
 ### Collections
 
+- [More from JosephSeraph](https://lightningseraph.tumblr.com/Resources)
 - [Collections on left sidebar](https://opengameart.org/content/antifareas-rpg-sprite-set-1-enlarged-w-transparent-background)
 - [Collection Quality Art for 2D RPGs](https://opengameart.org/content/quality-art-for-2d-rpgs)
 - [itch.io Assets](https://itch.io/game-assets/tag-drm-free)
+
+## Sounds
+
+### BGM
+
+- [8-bit battle loop](https://opengameart.org/content/8-bit-battle-loop)

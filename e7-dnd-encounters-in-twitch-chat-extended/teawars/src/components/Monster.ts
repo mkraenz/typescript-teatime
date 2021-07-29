@@ -1,3 +1,4 @@
+import { GUI } from "dat.gui";
 import { startCase } from "lodash";
 import { Curves, GameObjects, Math as PMath, Scene } from "phaser";
 import {
@@ -7,6 +8,7 @@ import {
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
+const cfg = { tint: 0xff66ff };
 export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: PMath.Vector2 };
     private curve?: Curves.CubicBezier;
@@ -15,6 +17,7 @@ export class Monster extends GameObjects.Image {
     constructor(scene: Scene, { hp, name }: { hp: number; name: string }) {
         super(scene, 1100, 620, getSpriteKey(name));
         scene.add.existing(this);
+        this.name = name;
 
         // TODO fixed display size only working for sqare images
         this.setNormalizedSize();
@@ -27,8 +30,11 @@ export class Monster extends GameObjects.Image {
                 color: "rgb(255,255,255,0.7)",
             })
             .setOrigin(0.5);
+        // this.setAlpha(0.8);
 
-        // const gui = new GUI();
+        const gui = new GUI();
+        gui.addColor(cfg, "tint");
+
         // gui.add(this, "debugTakeDamage");
         // gui.add(this, "debugAttack");
     }
@@ -40,7 +46,13 @@ export class Monster extends GameObjects.Image {
             (s) => s.key === this.texture.key
         );
         if (!spriteCfg) {
-            throw new Error("Monster Sprite config not found");
+            throw new Error(
+                `Monster Sprite config not found for ${JSON.stringify(
+                    { textureKey: this.texture.key, name: this.name },
+                    null,
+                    2
+                )}`
+            );
         }
 
         const max = Math.max(spriteCfg.width, spriteCfg.height);
@@ -91,6 +103,7 @@ export class Monster extends GameObjects.Image {
             this.x = newPos.x;
             this.y = newPos.y;
         }
+        this.setTint(cfg.tint);
     }
 
     public takeDamage(amount: number) {
