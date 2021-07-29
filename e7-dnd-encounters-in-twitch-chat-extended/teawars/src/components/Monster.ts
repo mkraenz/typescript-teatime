@@ -8,7 +8,8 @@ import {
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const cfg = { tint: 0xff66ff };
+const cfg = { debug: false, tint: 0x44ffff, clearTint: true, alpha: 1 };
+
 export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: PMath.Vector2 };
     private curve?: Curves.CubicBezier;
@@ -30,13 +31,15 @@ export class Monster extends GameObjects.Image {
                 color: "rgb(255,255,255,0.7)",
             })
             .setOrigin(0.5);
-        // this.setAlpha(0.8);
 
-        const gui = new GUI();
-        gui.addColor(cfg, "tint");
-
-        // gui.add(this, "debugTakeDamage");
-        // gui.add(this, "debugAttack");
+        if (cfg.debug) {
+            const gui = new GUI();
+            gui.addColor(cfg, "tint");
+            gui.add(cfg, "clearTint");
+            gui.add(cfg, "alpha", 0, 1);
+            gui.add(this, "debugTakeDamage");
+            gui.add(this, "debugAttack");
+        }
     }
 
     /** normalizes sprite to fit the greater of height and width to 300px */
@@ -104,7 +107,14 @@ export class Monster extends GameObjects.Image {
             this.x = newPos.x;
             this.y = newPos.y;
         }
-        this.setTint(cfg.tint);
+
+        if (cfg.debug) {
+            this.setTint(cfg.tint);
+            this.setAlpha(cfg.alpha);
+            if (cfg.clearTint) {
+                this.clearTint();
+            }
+        }
     }
 
     public takeDamage(amount: number) {
