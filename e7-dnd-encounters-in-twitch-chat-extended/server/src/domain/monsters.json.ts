@@ -783,13 +783,13 @@ export const monsters = [
     hp: 21,
   },
   {
-    name: 'faerie dragon r/o/y',
+    name: 'yellow faerie dragon',
     area: 'nature',
     type: 'fey',
     hp: 21,
   },
   {
-    name: 'faerie dragon g/b/i/v',
+    name: 'violet faerie dragon',
     area: 'nature',
     type: 'fey',
     hp: 21,
