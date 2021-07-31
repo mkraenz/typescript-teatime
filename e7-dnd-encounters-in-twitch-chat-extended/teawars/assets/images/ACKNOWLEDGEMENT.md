@@ -23,6 +23,9 @@
 - [9 more RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/more-rpg-enemies)
   - Changes: Split into one file per monster, removed background, flipped sprite horizontally
   - Files are under `./Redshrike/more`
+- [RPG Enemies: 11 Dragons by Stephen "Redshrike" Challener, MrBeast, Surt, Blarumyrran, Sharm, Zabin under CC-BY 3.0](https://opengameart.org/content/rpg-enemies-11-dragons)
+  - Changes: Split into one file per monster, flipped sprite horizontally, removed duplicate sprites from other packages
+  - Files are under `./dragons`
 - [3 RPG Enemy Remixes RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/3-rpg-enemy-remixes)
   - Attribution: Stephen "Redshrike" Challener (Sprites) 5hiroi (concepts) Heather Lee Harvey (concept) (EmeraldActivities.com) www.OpenGameArt.org
   - Changes: Split into one file per monster, removed background, flipped sprite horizontally

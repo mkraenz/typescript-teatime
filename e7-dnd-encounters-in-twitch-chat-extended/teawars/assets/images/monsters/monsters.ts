@@ -4,6 +4,46 @@ export const monsterSprites: Array<{
     flip?: true;
 }> = [
     {
+        path: "dragons/dragon-bat.png",
+        key: "batdragon",
+    },
+    {
+        path: "dragons/dragon-brown-red.png",
+        key: "earthdragon",
+    },
+    {
+        path: "dragons/dragon-rad.png",
+        key: "helldragon",
+    },
+    {
+        path: "dragons/dragon-silver.png",
+        key: "silverdragon",
+    },
+    {
+        path: "dragons/dragon-snake.png",
+        key: "snakedragon",
+    },
+    {
+        path: "dragons/dragon-snake.png",
+        key: "snakedragon",
+    },
+    {
+        path: "dragons/dragon-zombie.png",
+        key: "zombiedragon",
+    },
+    {
+        path: "dragons/dragoran.png",
+        key: "dragoran",
+    },
+    {
+        path: "dragons/spyro.png",
+        key: "spryo",
+    },
+    {
+        path: "dragons/wyrm-medieval.png",
+        key: "medievalwyrm",
+    },
+    {
         path: "JosephSeraph/ascent/Bird.png",
         key: "bird",
     },
@@ -139,9 +179,17 @@ export const monsterSprites: Array<{
         flip: true,
     },
     {
+        path: "MrBeastAndRedshift/ratman-guard.png",
+        key: "ratmanguard",
+    },
+    {
         path: "MrBeastAndRedshift/ratman-muscle.png",
         key: "ratmanmuscle",
         flip: true,
+    },
+    {
+        path: "MrBeastAndRedshift/ratman-thief.png",
+        key: "ratmanthief",
     },
     {
         path: "MrBeastAndRedshift/ratman.42x46.png",
@@ -772,19 +820,19 @@ export const monsterMapping: Array<{
     },
     {
         name: "dao",
-        key: "",
+        key: "ratmanmuscle",
     },
     {
         name: "djinni",
-        key: "",
+        key: "windwoman",
     },
     {
         name: "efreeti",
-        key: "",
+        key: "goblin",
     },
     {
         name: "marid",
-        key: "",
+        key: "shiva",
     },
     {
         name: "hell hound",
@@ -792,15 +840,22 @@ export const monsterMapping: Array<{
     },
     {
         name: "needle blight",
-        key: "",
+        key: "treewoman",
+        tint: 0xb28df0,
+        scale: 0.8,
     },
     {
         name: "twig blight",
-        key: "",
+        key: "treewoman",
+        tint: 0x44bdff,
+        scale: 0.6,
     },
+    // 120
     {
         name: "vine blight",
-        key: "",
+        key: "treewoman",
+        tint: 0x44ffff,
+        scale: 0.9,
     },
     {
         name: "driad",
@@ -808,119 +863,139 @@ export const monsterMapping: Array<{
     },
     {
         name: "pixie",
-        key: "nymph",
+        key: "shivabeige",
     },
     {
         name: "bugbear",
-        key: "",
+        key: "ratman",
     },
     {
         name: "bugbear chief",
-        key: "",
+        key: "ratking",
     },
     {
         name: "bulette",
-        key: "",
+        key: "turtle",
+        tint: 0xffc844,
     },
     {
         name: "bullywug",
-        key: "",
+        key: "zombiecritter",
+        scale: 0.7,
     },
     {
         name: "centaur",
-        key: "",
+        key: "minotaur",
     },
     {
         name: "chimera",
-        key: "",
+        key: "shrimpdragon",
     },
+    // 130
     {
         name: "cockatrice",
-        key: "",
+        key: "bird",
+        scale: 0.6,
     },
     {
         name: "cyclops",
-        key: "",
+        key: "dirg",
+        scale: 1.5,
+        tint: 0xe3c126,
     },
     {
         name: "displacer beast",
-        key: "",
+        key: "snakedragon",
     },
     {
         name: "dracolich",
-        key: "",
+        key: "zombiedragon",
+        scale: 2,
     },
     {
         name: "ettin",
-        key: "",
+        key: "hobgoblin",
+        scale: 2.2,
     },
     {
-        name: "faerie dragon r/o/y",
-        key: "",
+        name: "yellow faerie dragon",
+        key: "batdragon",
+        tint: 0xc2e328,
     },
     {
-        name: "faerie dragon g/b/i/v",
-        key: "",
+        name: "violet faerie dragon",
+        key: "batdragon",
+        tint: 0xff48d4,
     },
     {
         name: "galeb duhr",
-        key: "",
+        key: "dirg",
     },
     {
         name: "cloud giant",
-        key: "",
+        key: "mothmanbeige",
     },
+    // 140
     {
         name: "fire giant",
-        key: "",
+        key: "fireelemental",
+        scale: 1.8,
     },
     {
         name: "frost giant",
-        key: "",
+        key: "iceelemental",
+        scale: 1.8,
     },
     {
         name: "hill giant",
-        key: "",
+        key: "golemshello",
+        scale: 1.8,
     },
     {
         name: "stone giant",
-        key: "",
+        key: "earthelemental",
     },
     {
         name: "storm giant",
-        key: "",
+        key: "thunderelemental",
+        scale: 1.8,
     },
     {
         name: "gnoll",
-        key: "",
+        key: "ratmanguard",
+        scale: 0.8,
     },
     {
         name: "gnoll pack lord",
-        key: "",
+        key: "ratmanthief",
     },
     {
         name: "gnoll fang of yeenoghu",
-        key: "",
+        key: "ratman",
+        scale: 1.2,
     },
     {
         name: "goblin",
-        key: "",
+        key: "goblin",
+        scale: 0.4,
     },
+    // 150
     {
         name: "goblin boss",
-        key: "",
+        key: "goblinwarrior",
+        scale: 0.7,
     },
     {
         name: "griffon",
-        key: "",
+        key: "birdspearman",
     },
     {
         name: "night hag",
-        key: "",
+        key: "witch",
     },
     {
         name: "half-dragon",
-        key: "",
+        key: "shrimpdragon",
     },
     {
         name: "harpy",
@@ -928,23 +1003,27 @@ export const monsterMapping: Array<{
     },
     {
         name: "hippogriff",
-        key: "",
+        key: "harpy",
     },
     {
         name: "hobgoblin",
-        key: "",
+        key: "goblinviolet",
+        scale: 0.6,
     },
     {
         name: "hobgoblin captain",
-        key: "",
+        key: "goblinviolet",
+        scale: 1,
     },
     {
         name: "hobgoblin warlord",
-        key: "",
+        key: "goblinwarrior",
+        scale: 1,
     },
+    // 160
     {
         name: "hydra",
-        key: "",
+        key: "silverdragon",
     },
     {
         name: "jackalwere",
@@ -1140,7 +1219,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "wyvern",
-        key: "",
+        key: "medievalwyrm",
     },
     {
         name: "yeti",
@@ -1164,15 +1243,17 @@ export const monsterMapping: Array<{
     },
     {
         name: "bandit",
-        key: "",
+        key: "outlaw",
+        scale: 0.8,
     },
     {
         name: "bandit captain",
-        key: "",
+        key: "outlaw",
+        scale: 1.1,
     },
     {
         name: "scout",
-        key: "",
+        key: "ratmanthief",
     },
     {
         name: "magmin",
@@ -1212,7 +1293,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "succubus",
-        key: "",
+        key: "witch",
     },
     {
         name: "xorn",
@@ -1240,7 +1321,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "basilisk",
-        key: "",
+        key: "wyrmgreen",
     },
     {
         name: "behir",
@@ -1296,7 +1377,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "gas spore",
-        key: "",
+        key: "plumphelmetman",
     },
     {
         name: "shrieker",
@@ -1304,7 +1385,8 @@ export const monsterMapping: Array<{
     },
     {
         name: "violet fungus",
-        key: "",
+        key: "plumphelmetman",
+        tint: 0xc37ee6,
     },
     {
         name: "deep gnome",

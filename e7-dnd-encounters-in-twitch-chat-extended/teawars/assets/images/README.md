@@ -1,5 +1,7 @@
 # Assets
 
+See `ACKNOWLEDGEMENTS.md` for a list of assets used in this project. Thanks to all the amazing people allowing us to use their work! You guys are awesome!
+
 ## Shortlist
 
 Not yet used assets but high-quality candidates to make it into The Teawars.
@@ -18,7 +20,7 @@ Thanks for your help, **maceisgrace**!
 - [x] [10 Basic RPG Enemies](https://opengameart.org/content/10-basic-rpg-enemies)
 - [x] [9 more RPG Enemies](https://opengameart.org/content/more-rpg-enemies)
 - [x] [3 RPG Enemy Remixes](https://opengameart.org/content/3-rpg-enemy-remixes)
-- [ ] [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
+- [x] [RPG Enemies: 11 Dragons](https://opengameart.org/content/rpg-enemies-11-dragons)
 
 ### Chars
 
