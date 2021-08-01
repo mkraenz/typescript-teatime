@@ -12,16 +12,12 @@ export const monsterSprites: Array<{
         key: "earthdragon",
     },
     {
-        path: "dragons/dragon-rad.png",
+        path: "dragons/dragon-red.png",
         key: "helldragon",
     },
     {
         path: "dragons/dragon-silver.png",
         key: "silverdragon",
-    },
-    {
-        path: "dragons/dragon-snake.png",
-        key: "snakedragon",
     },
     {
         path: "dragons/dragon-snake.png",
@@ -37,7 +33,7 @@ export const monsterSprites: Array<{
     },
     {
         path: "dragons/spyro.png",
-        key: "spryo",
+        key: "spyro",
     },
     {
         path: "dragons/wyrm-medieval.png",
@@ -1027,127 +1023,161 @@ export const monsterMapping: Array<{
     },
     {
         name: "jackalwere",
-        key: "",
+        key: "wolf",
+        scale: 0.8,
+        tint: 0xe8dbdd,
     },
     {
         name: "kenku",
-        key: "",
+        key: "ratmanthief",
+        tint: 0x94d8e1,
     },
     {
         name: "winged kobold",
-        key: "",
+        key: "mothmanbeige",
+        scale: 0.4,
     },
     {
         name: "kobold",
-        key: "",
+        key: "goblin",
+        scale: 0.4,
     },
     {
         name: "kraken",
-        key: "",
+        key: "mindflayer",
     },
     {
         name: "lizardfolk",
-        key: "",
+        key: "sombiecritter",
     },
     {
         name: "lizardfolk shaman",
-        key: "",
+        key: "wyrmgreen",
     },
     {
         name: "lizardfolk royal",
-        key: "",
+        key: "greenabomination",
     },
     {
         name: "werebear",
-        key: "",
+        key: "dragoran",
+        scale: 1.2,
     },
+    // 170
     {
         name: "wereboar",
-        key: "",
+        key: "zombiecritter",
+        scale: 0.5,
+        tint: 0xff901e,
     },
     {
         name: "weretiger",
-        key: "",
+        key: "wolfgreen",
     },
     {
         name: "werewolf",
-        key: "",
+        key: "wolf",
+        scale: 1.1,
+        tint: 0x8e7b7b,
     },
     {
         name: "manticore",
-        key: "",
+        key: "moscito",
     },
     {
         name: "merfolk",
-        key: "",
+        key: "nympf",
+        tint: 0x5384f2,
     },
     {
         name: "merrow",
-        key: "",
+        key: "windwoman",
+        scale: 0.8,
+        tint: 0x5384f2,
     },
     {
         name: "nightmare",
-        key: "",
+        key: "helldragon",
     },
     {
         name: "ogre",
-        key: "",
+        key: "dirg",
+        scale: 1.2,
     },
     {
         name: "half-ogre",
-        key: "",
+        key: "dirg",
+        scale: 0.6,
     },
     {
         name: "oni",
-        key: "",
+        key: "minotaur",
     },
+    // 180
     {
         name: "orc",
-        key: "",
+        key: "ratmuscle",
+        scale: 1.2,
+        tint: 0xafedaf,
     },
     {
         name: "orc war chief",
-        key: "",
+        key: "ratking",
+        scale: 1.2,
+        tint: 0xafedaf,
     },
     {
         name: "orc eye of gruumsh",
-        key: "",
+        key: "goblinwarrior",
+        scale: 1.2,
+        tint: 0xafedaf,
     },
     {
         name: "orog",
-        key: "",
+        key: "ratmuscle",
+        scale: 1.2,
+        tint: 0xafb9ed,
     },
     {
         name: "owlbear",
-        key: "",
+        key: "dragoran",
+        scale: 0.9,
+        tint: 0x82ffe7,
     },
     {
         name: "pegasus",
-        key: "",
+        key: "angel",
     },
     {
         name: "peryton",
-        key: "",
+        key: "birdspearman",
     },
     {
         name: "pseudodragon",
-        key: "",
+        key: "batdragon",
+        scale: 1.7,
     },
     {
         name: "purple worm",
-        key: "",
+        key: "wyrmgreen",
+        tint: 0xaf26f2,
     },
     {
         name: "remorhaz",
-        key: "",
+        key: "snakedragon",
+        scale: 2,
+        tint: 0x44ffff,
     },
+    // 190
     {
         name: "young remorhaz",
-        key: "",
+        key: "snakedragon",
+        tint: 0x44ffff,
     },
     {
         name: "roc",
-        key: "",
+        key: "bird",
+        scale: 2,
     },
     {
         name: "sahuagin",
@@ -1261,7 +1291,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "fire snake",
-        key: "",
+        key: "spyro",
     },
     {
         name: "salamander",
