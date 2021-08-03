@@ -1,7 +1,7 @@
 // ALL CREDIT GOES TO https://github.com/jforstneric/5e_encounter_generator
 // AND THE MAKERS OF DnD. You rock!
 
-export const monsters = [
+const monsterData = [
   {
     name: 'doppelganger',
     area: 'city',
@@ -1599,3 +1599,7 @@ export const monsters = [
     hp: 21,
   },
 ].map((m) => Object.freeze(m));
+
+// TODO update as new monster sprites are added
+const index = monsterData.findIndex((m) => m.name === 'roc');
+export const monsters = monsterData.slice(0, index + 1);
