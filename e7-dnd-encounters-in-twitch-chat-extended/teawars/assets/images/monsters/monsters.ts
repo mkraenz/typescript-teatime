@@ -1,3 +1,5 @@
+import { random } from "lodash";
+
 export const monsterSprites: Array<{
     path: string; // relative to /assets/images/monsters/
     key: string;
@@ -1380,7 +1382,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "drow",
-        key: "",
+        key: "outlaw",
     },
     {
         name: "drow elite warrior",
@@ -1512,3 +1514,6 @@ export const monsterMapping: Array<{
         key: "",
     },
 ].map((m) => Object.freeze(m));
+
+export const randomMonsterCfg = () =>
+    monsterMapping[random(monsterMapping.length)];

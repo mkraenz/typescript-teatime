@@ -20,10 +20,10 @@ export class Adventurer extends GameObjects.Image {
         scene.add.existing(this);
 
         this.setRandomPosition(
-            200,
+            150,
             500,
             scene.scale.width / 2 - 200,
-            scene.scale.height / 4
+            scene.scale.height / 3
         )
             .setScale(4.5)
             .setFrame(random(21));
