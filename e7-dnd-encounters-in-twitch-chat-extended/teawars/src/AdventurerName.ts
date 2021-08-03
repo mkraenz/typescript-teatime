@@ -13,12 +13,13 @@ export class AdventurerName extends GameObjects.Text {
     constructor(
         scene: Scene,
         name: string,
-        public followed: { x: number; y: number }
+        public readonly followed: { x: number; y: number }
     ) {
         super(scene, anywhere, anywhere, name, Cfg.styles);
         scene.add.existing(this);
 
         this.setOrigin(0.5);
+        this.setDepth(followed.y);
     }
 
     public update() {

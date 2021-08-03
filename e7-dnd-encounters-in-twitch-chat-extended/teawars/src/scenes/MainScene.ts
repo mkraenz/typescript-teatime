@@ -1,3 +1,4 @@
+import { range } from "lodash";
 import { Scene } from "phaser";
 import * as io from "socket.io-client";
 import { Adventurer } from "../components/Adventurer";
@@ -17,7 +18,10 @@ import { TextConfig } from "../styles/Text";
 import { Scenes } from "./Scenes";
 
 const cfg = {
-    debug: false,
+    dev: {
+        enabled: false,
+        adventurers: 5,
+    },
     fadeIn: 200,
     title: {
         relY: 0.4,
@@ -53,12 +57,14 @@ export class MainScene extends Scene {
         this.battleLog = [];
         this.party = [];
 
-        if (cfg.debug) {
-            this.addAdventurer("Amazing Adventurer", 100, 300);
+        if (cfg.dev.enabled) {
+            range(cfg.dev.adventurers).forEach((i) =>
+                this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
+            );
             this.addMonster({
                 area: "Forest",
                 hp: 21,
-                name: "hobgoblin",
+                name: "quasit",
             });
             // const gui = new GUI();
             // gui.add(this.party[0], "username");

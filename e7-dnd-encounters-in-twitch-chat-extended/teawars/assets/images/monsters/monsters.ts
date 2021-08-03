@@ -728,7 +728,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "quasit",
-        key: "wyrm-green",
+        key: "wyrmgreen",
     },
     {
         name: "shadow demon",

@@ -20,6 +20,7 @@ export class Monster extends GameObjects.Image {
         scene.add.existing(this);
         this.name = name;
 
+        this.setDepth(this.y);
         const spriteCfg = monsterSprites.find(
             (s) => s.key === this.texture.key
         );
@@ -93,7 +94,7 @@ export class Monster extends GameObjects.Image {
 
         this.scene.tweens.add({
             targets: this.path,
-            t: 0.8,
+            t: 0.7,
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,

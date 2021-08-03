@@ -27,6 +27,7 @@ export class Adventurer extends GameObjects.Image {
         )
             .setScale(4.5)
             .setFrame(random(21));
+        this.setDepth(this.y);
 
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
