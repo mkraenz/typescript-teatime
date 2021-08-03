@@ -204,7 +204,7 @@ export const monsterSprites: Array<{
         key: "naga",
     },
     {
-        path: "Redshrike/more/bird-spearman.png",
+        path: "Redshrike/more/bird-pikeman.png",
         key: "birdspearman",
     },
     {

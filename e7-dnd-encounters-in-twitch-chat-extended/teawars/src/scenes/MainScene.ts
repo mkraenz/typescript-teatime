@@ -1,4 +1,4 @@
-import { range } from "lodash";
+import { random, range } from "lodash";
 import { Scene } from "phaser";
 import * as io from "socket.io-client";
 import { Adventurer } from "../components/Adventurer";
@@ -53,7 +53,7 @@ export class MainScene extends Scene {
     }
 
     public create(): void {
-        new BackgroundImage(this, "bg1");
+        new BackgroundImage(this, `bg${random(1, 10)}`);
         this.battleLog = [];
         this.party = [];
 

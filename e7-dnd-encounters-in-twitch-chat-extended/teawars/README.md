@@ -126,7 +126,8 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] allow scaling for monster assets via JSON -> greater variety
 - [x] allow alpha for monster assets via JSON -> greater variety
 - [x] bug: characters in front should be visible and hide characters in the back
-- [ ] choose background according to enemy area
+- [x] randomize background
+- [ ] ~~choose background according to enemy area~~
 - [ ] backend Bug: when party dies. see below
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles

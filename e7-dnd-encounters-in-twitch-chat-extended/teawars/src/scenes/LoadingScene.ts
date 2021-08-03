@@ -1,3 +1,4 @@
+import { range } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { monsterSprites } from "../../assets/images/monsters/monsters";
 import { DEV } from "../dev-config";
@@ -30,10 +31,12 @@ export class LoadingScene extends Scene {
         const img = (filename: string) => `./assets/images/${filename}`;
         const monsterImg = (filename: string) => img(`monsters/${filename}`);
         const sound = (filename: string) => `./assets/sounds/${filename}`;
+        range(1, 11).forEach((i) =>
+            this.load.image(`bg${i}`, img(`bg/battleback${i}.png`))
+        );
         this.load
             .image("empty-health-bar", img("empty-health-bar.png"))
             .image("red-health-bar", img("red-health-bar.png"))
-            .image("bg1", img("bg/battleback7.png"))
             .spritesheet(
                 "adventurers",
                 img("adventurers/adventurers.sprite.32x32.png"),
