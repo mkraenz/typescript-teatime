@@ -110,19 +110,18 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] rename titlescene
 - [x] monster name
 - [x] names adventurers
-- [c] monster assets
+- [x] monster assets
   - [x] pick image according to monster name -> mapping problem
   - [x] display size of differently sized images -> asset problem
   - [x] data-driven (defined everything in JSON)
 - [ ] chore: fill in monster asset details -> more monsters = more fun
   - [x] first 20 monsters
-  - [x] first 30 monsters
-  - [x] first 40 monsters
-  - [x] first 60 monsters
-  - [x] first 80 monsters
+  - [x] first 50 monsters
   - [x] first 100 monsters
-  - [ ] first 125 monsters
-- [ ] dynamically determine sprite dimensions -> reduce annoying and error prone human work
+  - [x] first 150 monsters
+  - [ ] first 200 monsters
+  - [ ] all monsters
+- [x] dynamically determine sprite dimensions -> reduce annoying and error prone human work
 - [ ] allow tinting for monster assets via JSON -> greater variety
 - [ ] allow scaling for monster assets via JSON -> greater variety
 - [ ] allow alpha for monster assets via JSON -> greater variety

@@ -300,6 +300,7 @@ export const monsterMapping: Array<{
     key: string;
     alpha?: number;
     scale?: number;
+    tint?: number;
 }> = [
     {
         name: "doppelganger",

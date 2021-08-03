@@ -53,10 +53,13 @@ export class MainScene extends Scene {
         this.battleLog = [];
         this.party = [];
 
-        // TODO add debug config
         if (cfg.debug) {
             this.addAdventurer("Amazing Adventurer", 100, 300);
-            this.addMonster({ area: "Forest", hp: 21, name: "Sephiroth" });
+            this.addMonster({
+                area: "Forest",
+                hp: 21,
+                name: "hobgoblin",
+            });
             // const gui = new GUI();
             // gui.add(this.party[0], "username");
             // gui.add(this.party[0], "x");

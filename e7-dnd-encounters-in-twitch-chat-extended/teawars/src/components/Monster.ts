@@ -20,8 +20,20 @@ export class Monster extends GameObjects.Image {
         scene.add.existing(this);
         this.name = name;
 
-        // TODO fixed display size only working for sqare images
-        this.setNormalizedSize();
+        const spriteCfg = monsterSprites.find(
+            (s) => s.key === this.texture.key
+        );
+        if (spriteCfg?.flip) {
+            this.setFlipX(true);
+        }
+
+        const renderProps = monsterMapping.find((cfg) => cfg.name === name);
+        if (!renderProps) {
+            throw new Error("Monster mapping not found");
+        }
+        this.setTint(renderProps.tint);
+        this.setNormalizedSize(renderProps.scale);
+        this.setAlpha(renderProps.alpha);
 
         this.healthbar = new MonsterHealthbar(scene, hp);
         const label = this.scene.add
@@ -43,20 +55,8 @@ export class Monster extends GameObjects.Image {
     }
 
     /** normalizes sprite to fit the greater of height and width to 300px */
-    private setNormalizedSize() {
-        const normalizedSize = 300;
-        const spriteCfg = monsterSprites.find(
-            (s) => s.key === this.texture.key
-        );
-        if (!spriteCfg) {
-            throw new Error(
-                `Monster Sprite config not found for ${JSON.stringify(
-                    { textureKey: this.texture.key, name: this.name },
-                    null,
-                    2
-                )}`
-            );
-        }
+    private setNormalizedSize(scale = 1) {
+        const normalizedSize = 300 * scale;
         const texture = this.scene.textures.get(this.texture.key);
         const image = texture.getSourceImage();
         const max = Math.max(image.width, image.height);
