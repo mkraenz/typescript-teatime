@@ -128,7 +128,7 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] bug: characters in front should be visible and hide characters in the back
 - [x] randomize background
 - [ ] ~~choose background according to enemy area~~
-- [x] backend Bug: when party dies. see below
+- [x] backend Bug: when party dies
 - [x] backend: disallow joining twice
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
@@ -136,19 +136,3 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [ ] !move left 3
 - [ ] !heal @username
 - [ ] ? on end, clear party after x seconds ?
-
-### Bug
-
-```log
-/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/adventurer/adventurer.schema.js:37
-            this.log.push({ type: 'adventurer killed', name: this.username });
-                     ^
-
-TypeError: Cannot read property 'push' of undefined
-    at model.takeDamage (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/adventurer/adventurer.schema.js:37:22)
-    at Monster.attack (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/monster.js:23:20)
-    at Battle.onTick (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/battle.js:46:22)
-    at Timeout._onTimeout (/home/mirco/programming/typescript-teatime/e7-dnd-encounters-in-twitch-chat-extended/server/dist/domain/battle.js:17:55)
-    at listOnTimeout (internal/timers.js:531:17)
-    at processTimers (internal/timers.js:475:7)
-```
