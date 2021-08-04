@@ -4,6 +4,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { AdventurerModule } from './adventurer/adventurer.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BattleModule } from './battle/battle.module';
 import { ChatbotModule } from './chatbot/chatbot.module';
 import { toConfig } from './env';
 import { MongoUriModule } from './mongo-uri/mongo-uri.module';
@@ -43,6 +44,7 @@ import { MongoUriModule } from './mongo-uri/mongo-uri.module';
     }),
     AdventurerModule,
     ChatbotModule,
+    BattleModule,
   ],
   controllers: [AppController],
   providers: [

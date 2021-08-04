@@ -47,3 +47,11 @@ DELETE http://localhost:3000/adventurers
 ###
 
 GET http://localhost:3000/
+
+
+### GET battles
+
+GET http://localhost:3000/battles
+
+### Test create battle
+GET http://localhost:3000/battles/test

@@ -7,9 +7,9 @@ export class UpdateAdventurerDto {
 
   @IsOptional()
   @IsInt()
-  experience!: number;
+  experience?: number;
 
   @IsOptional()
   @IsInt()
-  hp!: number;
+  hp?: number;
 }

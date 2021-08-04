@@ -6,5 +6,6 @@ import { WebsocketGateway } from './websocket.gateway';
 @Module({
   imports: [AdventurerModule],
   providers: [ChatbotService, WebsocketGateway],
+  exports: [ChatbotService],
 })
 export class ChatbotModule {}

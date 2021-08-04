@@ -70,7 +70,7 @@ describe('/adventurers', () => {
 
   it('should respond with 400 Bad Request for integer username on POST', async () => {
     const adventurerDto: CreateAdventurerDto = {
-      // @ts-expect-error
+      // @ts-expect-error test incorrect type
       ajhsdlfj: 2,
     };
 
@@ -101,6 +101,8 @@ describe('/adventurers', () => {
       username: 'berny90theone',
       experience: 0,
       level: 1,
+      hp: 150,
+      maxHp: 150,
     };
 
     await request(app.getHttpServer())
@@ -124,6 +126,8 @@ describe('/adventurers', () => {
       username: 'Pickle Rick',
       experience: 0,
       level: 1,
+      hp: 150,
+      maxHp: 150,
     };
     await request(app.getHttpServer())
       .post('/adventurers')
@@ -157,6 +161,8 @@ describe('/adventurers', () => {
       username: 'Pickle Rick',
       experience: 9001,
       level: 1,
+      hp: 150,
+      maxHp: 150,
     };
 
     await request(app.getHttpServer())
