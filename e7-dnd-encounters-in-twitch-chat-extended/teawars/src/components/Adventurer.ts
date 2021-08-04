@@ -10,10 +10,14 @@ export class Adventurer extends GameObjects.Image {
     private healthbar: AdventurerHealthbar;
     private nameLabel: GameObjects.Text;
 
+    private get isDead() {
+        return this.hp < 0;
+    }
+
     constructor(
         scene: Scene,
         public readonly username: string,
-        hp: number,
+        private hp: number,
         maxHp: number
     ) {
         super(scene, 0, 0, "adventurers");
@@ -28,6 +32,10 @@ export class Adventurer extends GameObjects.Image {
             .setScale(4.5)
             .setFrame(random(21));
         this.setDepth(this.y);
+
+        if (this.isDead) {
+            this.die();
+        }
 
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
@@ -89,6 +97,10 @@ export class Adventurer extends GameObjects.Image {
         const red = 0xff0000;
         this.setTint(red);
         this.scene.time.delayedCall(300, () => this.clearTint());
+
+        if (this.isDead) {
+            this.die();
+        }
     }
 
     public die() {
