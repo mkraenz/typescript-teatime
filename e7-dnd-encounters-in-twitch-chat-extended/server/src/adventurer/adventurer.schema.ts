@@ -52,7 +52,7 @@ export class Adventurer {
 
   public attack(monster: Monster) {
     if (!this.hasAttackedThisTurn) {
-      const damage = random(19) + 1;
+      const damage = random(19) + this.level;
       this.log.push({
         type: 'attack',
         isMonster: false,
