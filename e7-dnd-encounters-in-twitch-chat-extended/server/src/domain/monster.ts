@@ -42,7 +42,7 @@ export class Monster {
       hpLeft: this.hp,
       isMonster: true,
     });
-    if (this.hp <= 0) {
+    if (this.isDead) {
       this.log.push({ type: 'monster killed', monster: this.name });
     }
   }

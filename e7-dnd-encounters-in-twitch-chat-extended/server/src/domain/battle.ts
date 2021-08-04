@@ -1,4 +1,4 @@
-import { random } from 'lodash';
+import { isEmpty, random } from 'lodash';
 import type { Adventurer } from '../adventurer/adventurer.schema';
 import { pick } from '../common/utils';
 import { IEvent } from './events';
@@ -48,22 +48,24 @@ export class Battle {
       this.endBattle();
     }
 
-    const randomAdventurer = this.party[random(this.party.length - 1)];
-    if (!randomAdventurer) {
+    const aliveAdventurers = this.party.filter((a) => !a.isDead);
+    if (isEmpty(aliveAdventurers)) {
       this.log.push({
         type: 'party killed',
         monster: this.monster.name,
       });
-      return this.endBattle();
+      return;
     }
+    const randomAdventurer =
+      aliveAdventurers[random(aliveAdventurers.length - 1)];
     this.monster.attack(randomAdventurer);
     this.party.forEach((adventurer) => adventurer.unblockAttack());
   }
 
-  /** Called automatically */
+  /** Called from external */
   public endBattle() {
     if (this.gameloop) {
-      clearInterval(this.gameloop);
+      global.clearInterval(this.gameloop);
       this.gameloop = null;
     }
   }
@@ -74,6 +76,9 @@ export class Battle {
   }
 
   public join(adventurer: Adventurer) {
+    if (this.party.some((a) => a.username === adventurer.username)) {
+      throw new Error(`${adventurer.username} is already in the party`);
+    }
     this.party.push(adventurer);
     this.log.push({
       type: 'join',

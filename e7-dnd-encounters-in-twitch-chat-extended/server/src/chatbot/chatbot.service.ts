@@ -102,7 +102,7 @@ export class ChatbotService {
   }
 
   private async endBattle() {
-    clearInterval(this.watchBattleLogs!);
+    global.clearInterval(this.watchBattleLogs!);
     this.battle?.endBattle();
     this.watchBattleLogs = undefined;
     this.battle = undefined;
@@ -154,8 +154,17 @@ export class ChatbotService {
       username,
       battle.log,
     );
-    battle.join(adventurer);
-    this.joinedAdventurers.push(adventurer);
+    try {
+      battle.join(adventurer);
+      this.joinedAdventurers.push(adventurer);
+    } catch (error) {
+      if ((error as Error).message.includes('already in the party')) {
+        console.log(`${username} can only !join once. Ignoring.`);
+        // expected error. ignore
+      } else {
+        throw error;
+      }
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 import { random, range } from "lodash";
 import { Scene } from "phaser";
 import * as io from "socket.io-client";
+import { randomMonsterCfg } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
@@ -64,7 +65,7 @@ export class MainScene extends Scene {
             this.addMonster({
                 area: "Forest",
                 hp: 21,
-                name: "quasit",
+                name: randomMonsterCfg().name,
             });
             // const gui = new GUI();
             // gui.add(this.party[0], "username");

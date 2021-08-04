@@ -28,7 +28,6 @@ export class WebsocketGateway implements OnGatewayConnection {
   }
 
   appendLogs(logs: IEvent[]) {
-    console.log('loglength', logs.length);
     this.server.emit('append logs', [...logs]);
   }
 }

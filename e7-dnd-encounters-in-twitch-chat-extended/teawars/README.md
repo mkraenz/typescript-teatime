@@ -128,11 +128,11 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [x] bug: characters in front should be visible and hide characters in the back
 - [x] randomize background
 - [ ] ~~choose background according to enemy area~~
-- [ ] backend Bug: when party dies. see below
+- [x] backend Bug: when party dies. see below
+- [x] backend: disallow joining twice
 - [ ] backend exposes battles with event log as GET /battles
 - [ ] backend persists battles
-- [ ] backend backup database after stream
-- [ ] disallow joining twice
+- [ ] backend autobackup database after stream
 - [ ] !move left 3
 - [ ] !heal @username
 - [ ] ? on end, clear party after x seconds ?

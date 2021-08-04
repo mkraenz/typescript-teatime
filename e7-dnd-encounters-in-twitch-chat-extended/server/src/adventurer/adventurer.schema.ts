@@ -19,17 +19,21 @@ export class Adventurer {
   @prop({ default: 0 })
   public experience = 0;
 
-  private _log: IEvent[] = [];
+  private log: IEvent[] = [];
 
-  public set log(log: IEvent[]) {
-    this._log = log;
+  public setLog(log: IEvent[]) {
+    this.log = log;
+  }
+
+  public get isDead() {
+    return this.hp <= 0;
   }
 
   private hasAttackedThisTurn = false;
 
   public takeDamage(damage: number) {
     this.hp = this.hp - damage;
-    this._log.push({
+    this.log.push({
       type: 'damage received',
       damage,
       target: this.username,
@@ -37,7 +41,7 @@ export class Adventurer {
       isMonster: false,
     });
 
-    if (this.hp <= 0) {
+    if (this.isDead) {
       this.log.push({ type: 'adventurer killed', name: this.username });
     }
   }
@@ -49,7 +53,7 @@ export class Adventurer {
   public attack(monster: Monster) {
     if (!this.hasAttackedThisTurn) {
       const damage = random(19) + 1;
-      this._log.push({
+      this.log.push({
         type: 'attack',
         isMonster: false,
         attacker: this.username,

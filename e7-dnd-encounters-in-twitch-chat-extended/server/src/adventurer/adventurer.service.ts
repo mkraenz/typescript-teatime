@@ -17,7 +17,7 @@ export class AdventurerService {
     const adventurer = new this.adventurerModel(createAdventurerDto);
     try {
       const savedAdventurer = await adventurer.save();
-      savedAdventurer.log = log;
+      savedAdventurer.setLog(log);
       return savedAdventurer;
     } catch (error) {
       const isDuplicationError = error.message.includes(
@@ -41,7 +41,7 @@ export class AdventurerService {
   async findOneOrCreate(username: string, log: IEvent[] = []) {
     const adventurer = await this.adventurerModel.findOne({ username }).exec();
     if (adventurer) {
-      adventurer.log = log;
+      adventurer.setLog(log);
       return adventurer;
     }
     return this.create({ username }, log);
