@@ -5,7 +5,23 @@ export type IEvent =
   | Ambushed
   | AdventurerKilled
   | MonsterKilled
-  | PartyKilled;
+  | PartyKilled
+  | ReceivedHeal
+  | Healed;
+
+interface Healed {
+  type: 'healed';
+  actor: string;
+  amount: number;
+  receiver: string;
+}
+
+interface ReceivedHeal {
+  type: 'received heal';
+  target: string;
+  amount: number;
+  currentHp: number;
+}
 
 interface DamageReceived {
   type: 'damage received';
@@ -22,7 +38,7 @@ interface Attacked {
   isMonster: boolean;
 }
 
-interface Joined {
+export interface Joined {
   type: 'join';
   member: string;
   maxHp: number;

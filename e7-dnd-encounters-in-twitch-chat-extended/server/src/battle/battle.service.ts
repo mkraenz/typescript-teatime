@@ -10,13 +10,15 @@ type Awaited<T> = T extends Promise<infer U> ? U : never;
 @Injectable()
 export class BattleService {
   private battle: Awaited<ReturnType<BattleService['create']>> | null = null;
+  // WORKAROUND: battle.log.get is shimmed by mongoose, thus returning only the result of the database. Hence battle.log.push({}) does effectively nothing
+  private log: IEvent[] | null = null;
   private hasChanged = false;
   private saveDaemon: NodeJS.Timeout | null = null;
 
   constructor(
     @InjectModel(Battle)
     private battleModel: ReturnModelType<typeof Battle>,
-    private readonly chatbot: ChatbotService,
+    chatbot: ChatbotService,
   ) {
     // TODO fix type
     chatbot.subscribeToLog(
@@ -62,12 +64,15 @@ export class BattleService {
     );
   }
 
-  private async appendLogs(logs: IEvent[]) {
+  public async appendLogs(logs: IEvent[]) {
     if (!this.battle) {
       this.battle = await this.create(logs);
+      this.log = [...logs];
       this.startSaveDaemon();
     } else {
-      this.battle.log.push(...logs);
+      this.log?.push(...logs);
+      this.battle.log = this.log || [];
+
       this.hasChanged = true;
     }
   }

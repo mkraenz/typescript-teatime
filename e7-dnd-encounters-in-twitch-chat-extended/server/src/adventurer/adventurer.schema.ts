@@ -29,7 +29,7 @@ export class Adventurer {
     return this.hp <= 0;
   }
 
-  private hasAttackedThisTurn = false;
+  private hasActedThisTurn = false;
 
   public takeDamage(damage: number) {
     this.hp = this.hp - damage;
@@ -46,12 +46,37 @@ export class Adventurer {
     }
   }
 
+  public heal(receiver: string) {
+    const amount = random(10) + 1;
+    this.log.push({
+      type: 'healed',
+      receiver,
+      actor: this.username,
+      amount,
+    });
+    this.hasActedThisTurn = true;
+    return amount;
+  }
+
+  public receivesHeal(healedHp: number) {
+    this.log.push({
+      type: 'received heal',
+      target: this.username,
+      amount: healedHp,
+      currentHp: this.hp,
+    });
+    this.hp += healedHp;
+    if (this.hp > this.maxHp) {
+      this.hp = this.maxHp;
+    }
+  }
+
   public unblockAttack(): void {
-    this.hasAttackedThisTurn = false;
+    this.hasActedThisTurn = false;
   }
 
   public attack(monster: Monster) {
-    if (!this.hasAttackedThisTurn) {
+    if (!this.hasActedThisTurn) {
       const damage = random(19) + this.level;
       this.log.push({
         type: 'attack',
@@ -59,6 +84,7 @@ export class Adventurer {
         attacker: this.username,
         target: monster.name,
       });
+      this.hasActedThisTurn = true;
       monster.takeDamage(damage);
     }
   }

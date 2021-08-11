@@ -5,7 +5,9 @@ export type IEvent =
     | Ambushed
     | AdventurerKilled
     | MonsterKilled
-    | PartyKilled;
+    | PartyKilled
+    | ReceivedHeal
+    | Healed;
 
 export interface DamageReceived {
     type: "damage received";
@@ -52,3 +54,17 @@ export interface PartyKilled {
     type: "party killed";
     monster: string;
 }
+
+interface Healed {
+    type: 'healed';
+    actor: string;
+    amount: number;
+    receiver: string;
+  }
+  
+  interface ReceivedHeal {
+    type: 'received heal';
+    target: string;
+    amount: number;
+    currentHp: number;
+  }

@@ -80,3 +80,23 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## heal command
+
+multiple players
+one loses HP
+
+then players can heal each other.
+
+!attack
+!heal @TypeScriptTeatime
+
+- [x] listen for !heal on backend
+- [x] !heal can only be called in battle and by a player
+- [x] grep 2nd parameter (i.e. @TypeScriptTeatime)
+- [x] exhaust healing player's action
+- [x] delegate to Adventurer.receiveHeal(amount)
+- [x] hp += some random value
+- [x] Condition: max(hp) === maxHP
+
+Follow-up: fuzzy matching the username

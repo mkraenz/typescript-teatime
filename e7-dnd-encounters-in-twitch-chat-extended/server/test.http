@@ -37,7 +37,7 @@ PATCH http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "typescriptteatime",
+    "username": "maceisgrace",
     "hp": 75
 }
 
@@ -55,3 +55,5 @@ GET http://localhost:3000/battles
 
 ### Test create battle
 GET http://localhost:3000/battles/test
+### 
+GET http://localhost:3000/battles/test2

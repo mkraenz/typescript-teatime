@@ -32,15 +32,26 @@ export class Battle {
     return this.monster.name;
   }
 
-  public attack(adventurerUsername: string) {
-    const adventurer = this.party.find(
-      (adventurer) => adventurer.username === adventurerUsername,
-    );
+  public attack(username: string) {
+    const adventurer = this.getAdventurer(username);
     if (!adventurer) return;
     adventurer.attack(this.monster);
     if (this.monster.isDead) {
       this.endBattle();
     }
+  }
+
+  public getAdventurer(username: string): Adventurer | undefined {
+    return this.party.find((a) => a.username === username);
+  }
+
+  public heal(healer: string, healed: string) {
+    const healingAdventurer = this.getAdventurer(healer);
+    const healedAdventurer = this.getAdventurer(healed);
+    if (!healingAdventurer || !healedAdventurer) return;
+
+    const healedHp = healingAdventurer.heal(healedAdventurer.username);
+    healedAdventurer.receivesHeal(healedHp);
   }
 
   private onTick() {

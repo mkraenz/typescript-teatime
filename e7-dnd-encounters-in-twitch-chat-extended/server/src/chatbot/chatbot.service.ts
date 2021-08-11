@@ -64,14 +64,26 @@ export class ChatbotService {
     if (!this.battle) return;
 
     if (msg.includes('!join')) {
-      await this.joinParty(username, this.battle);
+      return await this.joinParty(username, this.battle);
     }
     if (msg.includes('!attack')) {
-      this.battle.attack(username);
+      return this.battle.attack(username);
+    }
+    if (msg.includes('!heal')) {
+      // using message to handle uppercase characters in username receiving heal
+      return this.handleHeal(this.battle, message, username);
     }
     if (DMs.includes(username) && msg.includes('!flee')) {
-      this.endBattle();
+      return this.endBattle();
     }
+  }
+
+  private handleHeal(battle: Battle, msg: string, username: string) {
+    const healed = msg.split(' ')[1];
+    if (!healed || healed[0] !== '@')
+      return say(`Invalid command by @${username}: ${msg}`);
+    const healedWithoutAt = healed.substring(1);
+    return battle.heal(username, healedWithoutAt);
   }
 
   private async pollBattleLogs() {
@@ -123,6 +135,14 @@ export class ChatbotService {
       case 'damage received':
         return say(
           `${event.target} received ${event.damage} damage. ${event.hpLeft} ❤️ left.`,
+        );
+      case 'healed':
+        return say(
+          `${event.actor} tries to heal ${event.receiver} for ${event.amount}`,
+        );
+      case 'received heal':
+        return say(
+          `${event.target} got healed for ${event.amount} to ${event.currentHp} ❤️.`,
         );
       case 'join':
         say(`⚔️ @${event.member} joined the battle alongside you.`);

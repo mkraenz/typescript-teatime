@@ -41,4 +41,24 @@ export class BattleController {
     ]);
     return GetBattleDto.of(battle);
   }
+
+  @Get('test2')
+  async createASync() {
+    await this.battles.appendLogs([
+      {
+        type: 'monster appeared',
+        monster: {
+          name: 'beholder',
+          area: 'the void',
+          hp: 263,
+        },
+      },
+    ]);
+    await this.battles.appendLogs([
+      { type: 'join', member: 'maceisgrace', hp: 99999, maxHp: 100000 },
+    ]);
+    await this.battles.appendLogs([
+      { type: 'join', member: 'typescriptteatime', hp: 99999, maxHp: 100000 },
+    ]);
+  }
 }
