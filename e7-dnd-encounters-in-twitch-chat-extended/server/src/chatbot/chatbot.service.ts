@@ -147,7 +147,7 @@ export class ChatbotService {
       case 'join':
         say(`⚔️ @${event.member} joined the battle alongside you.`);
         return say(
-          `@${this.battle!.adventurerNames.join(
+          `@${this.battle?.adventurerNames.join(
             ', @',
           )} stand united in battle.`,
         );
@@ -159,7 +159,7 @@ export class ChatbotService {
         return say(
           `🏆🏆🏆🎉🏅 VICTORY! 😈 ${
             event.monster
-          } has been struck down. @${this.battle!.adventurerNames.join(
+          } has been struck down. @${this.battle?.adventurerNames.join(
             ', @',
           )} each earned 100 EXP.`,
         );
