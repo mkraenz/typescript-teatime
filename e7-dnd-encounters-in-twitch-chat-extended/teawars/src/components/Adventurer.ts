@@ -39,6 +39,9 @@ export class Adventurer extends GameObjects.Image {
 
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
+
+        // const gui = new GUI();
+        // gui.add(this, "debugReceiveHeal");
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -87,6 +90,25 @@ export class Adventurer extends GameObjects.Image {
 
         this.nameLabel.update();
         this.healthbar.update();
+    }
+
+    public debugReceiveHeal() {
+        this.receiveHeal(20);
+    }
+
+    public receiveHeal(currentHp: number) {
+        this.healthbar.receiveHeal(currentHp);
+
+        const emitter = this.scene.add.particles(
+            "shapes",
+            // eslint-disable-next-line @typescript-eslint/no-implied-eval
+            new Function(
+                `return ${this.scene.cache.text.get("heal-effect") as string}`
+            )()
+        );
+        emitter.setX(this.x);
+        emitter.setY(this.y);
+        emitter.setDepth(9999999);
     }
 
     public takeDamage(amount: number) {

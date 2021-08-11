@@ -55,16 +55,16 @@ export interface PartyKilled {
     monster: string;
 }
 
-interface Healed {
-    type: 'healed';
+export interface Healed {
+    type: "healed";
     actor: string;
     amount: number;
     receiver: string;
-  }
-  
-  interface ReceivedHeal {
-    type: 'received heal';
+}
+
+export interface ReceivedHeal {
+    type: "received heal";
     target: string;
     amount: number;
     currentHp: number;
-  }
+}

@@ -9,9 +9,11 @@ import {
     Ambushed,
     Attacked,
     DamageReceived,
+    Healed,
     IEvent,
     Joined,
     MonsterKilled,
+    ReceivedHeal,
 } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
@@ -20,8 +22,8 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
-        adventurers: 5,
+        enabled: true,
+        adventurers: 1,
     },
     fadeIn: 200,
     title: {
@@ -104,6 +106,12 @@ export class MainScene extends Scene {
             const adventurersWin = events.find(
                 (e) => e.type === "monster killed"
             ) as Maybe<MonsterKilled>;
+            const receivedHeal = events.find(
+                (e) => e.type === "received heal"
+            ) as Maybe<ReceivedHeal>;
+            const heal = events.find(
+                (e) => e.type === "healed"
+            ) as Maybe<Healed>;
 
             if (ambush) {
                 this.addMonster(ambush.monster);
@@ -141,6 +149,13 @@ export class MainScene extends Scene {
                     );
                     adventurer?.takeDamage(adventurerReceivedDamage.damage);
                 });
+            }
+
+            if (receivedHeal) {
+                const adventurer = this.party.find(
+                    (a) => a.username === receivedHeal.target
+                );
+                adventurer?.receiveHeal(receivedHeal.currentHp);
             }
 
             if (adventurersWin) {

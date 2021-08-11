@@ -31,6 +31,11 @@ export class AdventurerHealthbar extends GameObjects.Image {
         this.cropRedbar(this.hp);
     }
 
+    public receiveHeal(currentHp: number) {
+        this.hp = currentHp;
+        this.cropRedbar(this.hp);
+    }
+
     private cropRedbar(hp: number) {
         const factor = Math.max(hp / this.maxHp, 0);
         this.setCrop(0, 0, this.width * factor, this.height);

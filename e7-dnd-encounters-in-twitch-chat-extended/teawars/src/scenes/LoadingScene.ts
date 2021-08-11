@@ -44,7 +44,13 @@ export class LoadingScene extends Scene {
                     frameWidth: 32,
                     frameHeight: 32,
                 }
-            );
+            )
+            .atlas(
+                "shapes",
+                "assets/particles/shapes.png",
+                "assets/particles/shapes.json"
+            )
+            .text("heal-effect", "assets/particles/heal.json");
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));
         });
