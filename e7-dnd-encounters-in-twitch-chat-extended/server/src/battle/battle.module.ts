@@ -13,6 +13,7 @@ import { BattleService } from './battle.service';
         schemaOptions: {
           // dont care about schema here
           strict: false,
+          timestamps: true,
         },
       },
     ]),

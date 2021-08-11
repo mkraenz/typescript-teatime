@@ -3,8 +3,11 @@ import { Battle } from './battle.schema';
 
 export class GetBattleDto {
   static of(battle: Battle) {
-    return new GetBattleDto(battle.log);
+    return new GetBattleDto(battle.log, battle.createdAt);
   }
 
-  constructor(public log: IEvent[]) {}
+  constructor(
+    public readonly log: IEvent[],
+    public readonly createdAt?: Date,
+  ) {}
 }

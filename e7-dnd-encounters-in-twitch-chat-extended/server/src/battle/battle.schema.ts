@@ -1,8 +1,8 @@
 import { prop } from '@typegoose/typegoose';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { IEvent } from '../domain/events';
 
-export class Battle {
-  @prop({ default: [] })
+export class Battle extends TimeStamps {
   @prop({
     type: [String],
     default: [],
