@@ -22,7 +22,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
+        enabled: false,
         adventurers: 1,
     },
     fadeIn: 200,
