@@ -47,7 +47,7 @@ export class Adventurer {
   }
 
   public heal(receiver: string) {
-    const amount = random(10) + 1;
+    const amount = random(15) + this.level;
     this.log.push({
       type: 'healed',
       receiver,
