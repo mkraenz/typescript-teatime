@@ -5,10 +5,11 @@ import {
     monsterMapping,
     monsterSprites,
 } from "../../assets/images/monsters/monsters";
+import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const cfg = { debug: false, tint: 0x44ffff, clearTint: true, alpha: 1 };
+const cfg = { dev: true, tint: 0x44ffff, clearTint: true, alpha: 1 };
 
 export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: PMath.Vector2 };
@@ -44,8 +45,9 @@ export class Monster extends GameObjects.Image {
                 color: "rgb(255,255,255,0.7)",
             })
             .setOrigin(0.5);
+        setTextShadow(label);
 
-        if (cfg.debug) {
+        if (cfg.dev) {
             const gui = new GUI();
             gui.addColor(cfg, "tint");
             gui.add(cfg, "clearTint");
@@ -109,7 +111,7 @@ export class Monster extends GameObjects.Image {
             this.y = newPos.y;
         }
 
-        if (cfg.debug) {
+        if (cfg.dev) {
             this.setTint(cfg.tint);
             this.setAlpha(cfg.alpha);
             if (cfg.clearTint) {

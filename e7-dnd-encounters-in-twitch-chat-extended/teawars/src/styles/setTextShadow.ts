@@ -1,7 +1,7 @@
 import { GameObjects } from "phaser";
+import { Color } from "./Color";
 
-export const setTextShadow = (text: GameObjects.Text, color = "#ffffffa0") => {
+export const setTextShadow = (text: GameObjects.Text, color = Color.Black) => {
     text.setStroke(text.style.color, 1.3);
-    text.setAlpha(0.7);
-    text.setShadow(0, 0, color, 6, true, true);
+    text.setShadow(2, 2, color, 2, true, true);
 };

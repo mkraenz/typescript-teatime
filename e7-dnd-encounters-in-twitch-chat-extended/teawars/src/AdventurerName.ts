@@ -1,4 +1,5 @@
 import { GameObjects, Scene } from "phaser";
+import { setTextShadow } from "./styles/setTextShadow";
 
 const Cfg = {
     styles: {
@@ -20,6 +21,7 @@ export class AdventurerName extends GameObjects.Text {
 
         this.setOrigin(0.5);
         this.setDepth(followed.y);
+        setTextShadow(this);
     }
 
     public update() {

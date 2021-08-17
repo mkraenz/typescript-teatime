@@ -1,4 +1,6 @@
 import { GameObjects, Scene } from "phaser";
+import { Color } from "../styles/Color";
+import { setTextShadow } from "../styles/setTextShadow";
 
 const Cfg = {
     styles: {
@@ -17,7 +19,24 @@ export class DamageText extends GameObjects.Text {
         );
         scene.add.existing(this);
 
-        this.setDestroyTimeout();
+        this.setTextColor(damage < 0);
+        // this.setDestroyTimeout();
+        scene.add.tween({
+            targets: [this],
+            y: this.y - 200,
+            duration: 1500,
+            alpha: 0,
+            onComplete: () => this.destroy(),
+        });
+        setTextShadow(this);
+    }
+
+    private setTextColor(isHeal: boolean) {
+        if (isHeal) {
+            this.setColor(Color.LawnGreen);
+        } else {
+            this.setColor(Color.Red);
+        }
     }
 
     private setDestroyTimeout() {

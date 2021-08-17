@@ -1,3 +1,4 @@
+import { GUI } from "dat.gui";
 import { random } from "lodash";
 import { Curves, GameObjects, Math, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
@@ -40,8 +41,8 @@ export class Adventurer extends GameObjects.Image {
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
 
-        // const gui = new GUI();
-        // gui.add(this, "debugReceiveHeal");
+        const gui = new GUI();
+        gui.add(this, "debugReceiveHeal");
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -92,7 +93,7 @@ export class Adventurer extends GameObjects.Image {
         this.healthbar.update();
     }
 
-    public receiveHeal(currentHp: number) {
+    public receiveHeal(currentHp: number, amountHealed: number) {
         this.healthbar.receiveHeal(currentHp);
 
         const emitter = this.scene.add.particles(
@@ -105,6 +106,8 @@ export class Adventurer extends GameObjects.Image {
         emitter.setX(this.x);
         emitter.setY(this.y);
         emitter.setDepth(9999999);
+
+        new DamageText(this.scene, this, -amountHealed);
     }
 
     public takeDamage(amount: number) {
@@ -134,6 +137,6 @@ export class Adventurer extends GameObjects.Image {
     }
 
     public debugReceiveHeal() {
-        this.receiveHeal(130);
+        this.receiveHeal(130, 14);
     }
 }

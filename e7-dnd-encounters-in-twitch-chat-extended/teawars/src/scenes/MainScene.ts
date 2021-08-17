@@ -22,7 +22,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
+        enabled: true,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -155,7 +155,10 @@ export class MainScene extends Scene {
                 const adventurer = this.party.find(
                     (a) => a.username === receivedHeal.target
                 );
-                adventurer?.receiveHeal(receivedHeal.currentHp);
+                adventurer?.receiveHeal(
+                    receivedHeal.currentHp,
+                    receivedHeal.amount
+                );
             }
 
             if (adventurersWin) {
