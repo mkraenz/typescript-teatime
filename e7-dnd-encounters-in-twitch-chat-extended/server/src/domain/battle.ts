@@ -42,7 +42,9 @@ export class Battle {
   }
 
   public getAdventurer(username: string): Adventurer | undefined {
-    return this.party.find((a) => a.username === username);
+    return this.party.find(
+      (a) => a.username.toLowerCase() === username.toLowerCase(),
+    );
   }
 
   public heal(healer: string, healed: string) {
