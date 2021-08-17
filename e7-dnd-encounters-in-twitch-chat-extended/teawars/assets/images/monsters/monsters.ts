@@ -1119,7 +1119,7 @@ export const monsterMapping: Array<{
     // 180
     {
         name: "orc",
-        key: "ratmuscle",
+        key: "ratmanmuscle",
         scale: 1.2,
         tint: 0xafedaf,
     },
@@ -1137,7 +1137,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "orog",
-        key: "ratmuscle",
+        key: "ratmanmuscle",
         scale: 1.2,
         tint: 0xafb9ed,
     },
