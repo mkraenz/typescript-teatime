@@ -92,10 +92,6 @@ export class Adventurer extends GameObjects.Image {
         this.healthbar.update();
     }
 
-    public debugReceiveHeal() {
-        this.receiveHeal(20);
-    }
-
     public receiveHeal(currentHp: number) {
         this.healthbar.receiveHeal(currentHp);
 
@@ -135,5 +131,9 @@ export class Adventurer extends GameObjects.Image {
 
     public debugTakeDamage() {
         this.takeDamage(20);
+    }
+
+    public debugReceiveHeal() {
+        this.receiveHeal(130);
     }
 }
