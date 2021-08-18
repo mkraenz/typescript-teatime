@@ -23,7 +23,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: true,
-        adventurers: 1,
+        adventurers: 2,
     },
     fadeIn: 200,
     title: {
@@ -109,7 +109,7 @@ export class MainScene extends Scene {
             const receivedHeal = events.find(
                 (e) => e.type === "received heal"
             ) as Maybe<ReceivedHeal>;
-            const heal = events.find(
+            const healed = events.find(
                 (e) => e.type === "healed"
             ) as Maybe<Healed>;
 
@@ -121,10 +121,10 @@ export class MainScene extends Scene {
             }
 
             if (adventurerAttacked && this.monster) {
-                const adventurer = this.party.find(
-                    (a) => a.username === adventurerAttacked.attacker
-                )!;
-                adventurer.attack(this.monster, cfg.jumpAttackDuration);
+                const adventurer = this.getAdventurer(
+                    adventurerAttacked.attacker
+                );
+                adventurer?.attack(this.monster, cfg.jumpAttackDuration);
             }
 
             if (monsterReceivedDamage) {
@@ -134,9 +134,7 @@ export class MainScene extends Scene {
             }
 
             if (monsterAttacked && this.monster) {
-                const adventurer = this.party.find(
-                    (a) => a.username === monsterAttacked.target
-                )!;
+                const adventurer = this.getAdventurer(monsterAttacked.target);
                 if (adventurer) {
                     this.monster.attack(adventurer, cfg.jumpAttackDuration);
                 }
@@ -144,17 +142,20 @@ export class MainScene extends Scene {
 
             if (adventurerReceivedDamage) {
                 this.onAttackImpact(() => {
-                    const adventurer = this.party.find(
-                        (a) => a.username === adventurerReceivedDamage.target
+                    const adventurer = this.getAdventurer(
+                        adventurerReceivedDamage.target
                     );
                     adventurer?.takeDamage(adventurerReceivedDamage.damage);
                 });
             }
 
+            if (healed) {
+                const adventurer = this.getAdventurer(healed.actor);
+                adventurer?.heal();
+            }
+
             if (receivedHeal) {
-                const adventurer = this.party.find(
-                    (a) => a.username === receivedHeal.target
-                );
+                const adventurer = this.getAdventurer(receivedHeal.target);
                 adventurer?.receiveHeal(
                     receivedHeal.currentHp,
                     receivedHeal.amount
@@ -173,6 +174,10 @@ export class MainScene extends Scene {
                 });
             }
         });
+    }
+
+    private getAdventurer(username: string) {
+        return this.party.find((a) => a.username === username);
     }
 
     private addMonster(cfg: Ambushed["monster"]) {

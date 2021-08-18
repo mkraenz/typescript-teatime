@@ -43,6 +43,7 @@ export class Adventurer extends GameObjects.Image {
 
         const gui = new GUI();
         gui.add(this, "debugReceiveHeal");
+        gui.add(this, "heal");
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
@@ -91,6 +92,19 @@ export class Adventurer extends GameObjects.Image {
 
         this.nameLabel.update();
         this.healthbar.update();
+    }
+
+    public heal() {
+        // ignore: might look weird if somebody heals themselves.
+        // Reason: eventually disallow healing yourself
+        this.scene.tweens.add({
+            targets: this,
+            x: this.x + 80,
+            duration: 200,
+            ease: "Sine.easeInOut",
+            yoyo: true,
+            hold: 1000,
+        });
     }
 
     public receiveHeal(currentHp: number, amountHealed: number) {
