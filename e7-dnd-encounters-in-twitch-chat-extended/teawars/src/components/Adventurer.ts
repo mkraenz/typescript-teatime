@@ -19,7 +19,8 @@ export class Adventurer extends GameObjects.Image {
         scene: Scene,
         public readonly username: string,
         private hp: number,
-        maxHp: number
+        maxHp: number,
+        gui: GUI
     ) {
         super(scene, 0, 0, "adventurers");
         scene.add.existing(this);
@@ -43,9 +44,13 @@ export class Adventurer extends GameObjects.Image {
 
         this.join();
 
-        const gui = new GUI();
-        gui.add(this, "debugReceiveHeal");
-        gui.add(this, "heal");
+        this.setupDevMode(gui);
+    }
+
+    private setupDevMode(gui: GUI) {
+        const folder = gui.addFolder(this.username);
+        folder.add(this, "debugReceiveHeal");
+        folder.add(this, "heal");
     }
 
     private join() {

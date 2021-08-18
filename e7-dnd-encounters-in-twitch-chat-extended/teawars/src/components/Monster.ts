@@ -9,11 +9,11 @@ import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const devCfg = { dev: false, tint: 0x44ffff, clearTint: true, alpha: 1 };
+const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1 };
 
 const cfg = {
     initY: -300,
-    y: 620,
+    y: 600,
 };
 
 export class Monster extends GameObjects.Image {
@@ -21,7 +21,11 @@ export class Monster extends GameObjects.Image {
     private curve?: Curves.CubicBezier;
     private healthbar!: MonsterHealthbar;
 
-    constructor(scene: Scene, { hp, name }: { hp: number; name: string }) {
+    constructor(
+        scene: Scene,
+        { hp, name }: { hp: number; name: string },
+        gui: GUI
+    ) {
         super(scene, 1100, cfg.initY, getSpriteKey(name));
         scene.add.existing(this);
         this.name = name;
@@ -54,14 +58,16 @@ export class Monster extends GameObjects.Image {
 
         this.ambush();
 
-        if (devCfg.dev) {
-            const gui = new GUI();
-            gui.addColor(devCfg, "tint");
-            gui.add(devCfg, "clearTint");
-            gui.add(devCfg, "alpha", 0, 1);
-            gui.add(this, "debugTakeDamage");
-            gui.add(this, "debugAttack");
-        }
+        this.setupDevMode(gui, name);
+    }
+
+    private setupDevMode(gui: GUI, name: string) {
+        const folder = gui.addFolder(`Monster ${name}`);
+        folder.addColor(devCfg, "tint");
+        folder.add(devCfg, "clearTint");
+        folder.add(devCfg, "alpha", 0, 1);
+        folder.add(this, "debugTakeDamage");
+        folder.add(this, "debugAttack");
     }
 
     private ambush() {
@@ -126,14 +132,6 @@ export class Monster extends GameObjects.Image {
             const newPos = this.curve.getPoint(this.path.t, this.path.vec);
             this.x = newPos.x;
             this.y = newPos.y;
-        }
-
-        if (devCfg.dev) {
-            this.setTint(devCfg.tint);
-            this.setAlpha(devCfg.alpha);
-            if (devCfg.clearTint) {
-                this.clearTint();
-            }
         }
     }
 

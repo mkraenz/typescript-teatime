@@ -1,3 +1,4 @@
+import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
 import * as io from "socket.io-client";
@@ -23,7 +24,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: true,
-        adventurers: 2,
+        adventurers: 0,
     },
     fadeIn: 200,
     title: {
@@ -48,6 +49,7 @@ export class MainScene extends Scene {
     private battleLog!: IEvent[];
     private party!: Adventurer[];
     private monster?: Monster;
+    private gui!: GUI;
 
     public constructor() {
         super({
@@ -60,22 +62,9 @@ export class MainScene extends Scene {
         this.battleLog = [];
         this.party = [];
 
-        if (cfg.dev.enabled) {
-            range(cfg.dev.adventurers).forEach((i) =>
-                this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
-            );
-            this.addMonster({
-                area: "Forest",
-                hp: 21,
-                name: randomMonsterCfg().name,
-            });
-            // const gui = new GUI();
-            // gui.add(this.party[0], "username");
-            // gui.add(this.party[0], "x");
-            // gui.add(this.party[0], "y");
-            // gui.add(this.party[0], "debugTakeDamage");
-            // gui.add(this.party[0], "die");
-        }
+        this.gui = new GUI();
+        this.gui.hide();
+        this.maybeEnableDevMode();
 
         this.client = io("http://localhost:3000");
 
@@ -176,12 +165,28 @@ export class MainScene extends Scene {
         });
     }
 
+    private maybeEnableDevMode() {
+        if (cfg.dev.enabled) {
+            this.gui.show();
+            this.gui.add(this, "addDebugAdventurer");
+
+            range(cfg.dev.adventurers).forEach((i) =>
+                this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
+            );
+            this.addMonster({
+                area: "Forest",
+                hp: 21,
+                name: randomMonsterCfg().name,
+            });
+        }
+    }
+
     private getAdventurer(username: string) {
         return this.party.find((a) => a.username === username);
     }
 
     private addMonster(cfg: Ambushed["monster"]) {
-        this.monster = new Monster(this, cfg);
+        this.monster = new Monster(this, cfg, this.gui);
     }
 
     private onAttackImpact(cb: () => void) {
@@ -189,7 +194,7 @@ export class MainScene extends Scene {
     }
 
     private addAdventurer(username: string, hp: number, maxHp: number) {
-        this.party.push(new Adventurer(this, username, hp, maxHp));
+        this.party.push(new Adventurer(this, username, hp, maxHp, this.gui));
     }
 
     // automatically called every 1/60th of a second
@@ -217,5 +222,13 @@ export class MainScene extends Scene {
             this.scene.remove(this);
         });
         this.cameras.main.fadeOut(500);
+    }
+
+    private addDebugAdventurer() {
+        this.addAdventurer(
+            `Amazing Adventurer ${random(100000)}`,
+            random(500),
+            random(300)
+        );
     }
 }
