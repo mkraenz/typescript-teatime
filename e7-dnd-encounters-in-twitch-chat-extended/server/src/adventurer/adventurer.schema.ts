@@ -47,6 +47,9 @@ export class Adventurer {
   }
 
   public heal(receiver: string) {
+    if (this.isDead) return;
+    if (this.hasActedThisTurn) return;
+
     const amount = random(15) + this.level;
     this.log.push({
       type: 'healed',
@@ -59,6 +62,8 @@ export class Adventurer {
   }
 
   public receivesHeal(healedHp: number) {
+    if (this.isDead) return;
+
     this.log.push({
       type: 'received heal',
       target: this.username,
@@ -76,16 +81,17 @@ export class Adventurer {
   }
 
   public attack(monster: Monster) {
-    if (!this.hasActedThisTurn) {
-      const damage = random(19) + this.level;
-      this.log.push({
-        type: 'attack',
-        isMonster: false,
-        attacker: this.username,
-        target: monster.name,
-      });
-      this.hasActedThisTurn = true;
-      monster.takeDamage(damage);
-    }
+    if (this.isDead) return;
+    if (this.hasActedThisTurn) return;
+
+    const damage = random(19) + this.level;
+    this.log.push({
+      type: 'attack',
+      isMonster: false,
+      attacker: this.username,
+      target: monster.name,
+    });
+    this.hasActedThisTurn = true;
+    monster.takeDamage(damage);
   }
 }
