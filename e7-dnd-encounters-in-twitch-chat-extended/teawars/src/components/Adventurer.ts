@@ -51,6 +51,8 @@ export class Adventurer extends GameObjects.Image {
         const folder = gui.addFolder(this.username);
         folder.add(this, "debugReceiveHeal");
         folder.add(this, "heal");
+        folder.add(this, "die");
+        // folder.open();
     }
 
     private join() {
@@ -157,7 +159,11 @@ export class Adventurer extends GameObjects.Image {
     }
 
     public die() {
-        this.setRotation(-Phaser.Math.PI2 / 4);
+        this.scene.tweens.add({
+            targets: this,
+            rotation: -Phaser.Math.PI2 / 4,
+            duration: 150,
+        });
     }
 
     public debugAttack() {

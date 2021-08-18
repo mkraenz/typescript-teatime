@@ -7,6 +7,7 @@ import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
 import {
+    AdventurerKilled,
     Ambushed,
     Attacked,
     DamageReceived,
@@ -24,7 +25,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: true,
-        adventurers: 0,
+        adventurers: 1,
     },
     fadeIn: 200,
     title: {
@@ -101,6 +102,9 @@ export class MainScene extends Scene {
             const healed = events.find(
                 (e) => e.type === "healed"
             ) as Maybe<Healed>;
+            const adventurerKilled = events.find(
+                (e) => e.type === "adventurer killed"
+            ) as Maybe<AdventurerKilled>;
 
             if (ambush) {
                 this.addMonster(ambush.monster);
@@ -130,12 +134,17 @@ export class MainScene extends Scene {
             }
 
             if (adventurerReceivedDamage) {
+                const adventurer = this.getAdventurer(
+                    adventurerReceivedDamage.target
+                );
                 this.onAttackImpact(() => {
-                    const adventurer = this.getAdventurer(
-                        adventurerReceivedDamage.target
-                    );
                     adventurer?.takeDamage(adventurerReceivedDamage.damage);
                 });
+            }
+
+            if (adventurerKilled) {
+                const adventurer = this.getAdventurer(adventurerKilled.name);
+                this.onAttackImpact(() => adventurer?.die());
             }
 
             if (healed) {
