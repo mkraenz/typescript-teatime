@@ -502,7 +502,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "ice mephit",
-        key: "icelemental",
+        key: "iceelemental",
         scale: 0.7,
     },
     {
