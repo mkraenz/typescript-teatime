@@ -50,7 +50,8 @@ export class LoadingScene extends Scene {
                 "assets/particles/shapes.png",
                 "assets/particles/shapes.json"
             )
-            .text("heal-effect", "assets/particles/heal.json");
+            .text("heal-effect", "assets/particles/heal.json")
+            .audio("fanfare", sound("teawars-fanfare.mp3"));
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));
         });

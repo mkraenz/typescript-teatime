@@ -162,7 +162,15 @@ export class MainScene extends Scene {
             }
 
             if (adventurersWin) {
-                this.onAttackImpact(() => this.monster?.die());
+                this.onAttackImpact(() => {
+                    this.monster?.die();
+                    this.sound
+                        .add("fanfare", {
+                            loop: true,
+                            volume: 0.5,
+                        })
+                        .play();
+                });
             }
         });
     }
