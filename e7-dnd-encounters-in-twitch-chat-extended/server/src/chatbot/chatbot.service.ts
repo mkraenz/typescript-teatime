@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DocumentType } from '@typegoose/typegoose';
+import { isEmpty } from 'lodash';
 import { ChatUserstate, Client } from 'tmi.js';
 import { Adventurer } from '../adventurer/adventurer.schema';
 import { AdventurerService } from '../adventurer/adventurer.service';
@@ -79,7 +80,10 @@ export class ChatbotService {
   }
 
   private handleHeal(battle: Battle, msg: string, username: string) {
-    const healed = msg.split(' ')[1];
+    // msg should be like:
+    // !heal @maceisgrace
+    // filter for ignoring whitespace
+    const healed = msg.split(' ').filter((m) => !isEmpty(m))[1];
     if (!healed || healed[0] !== '@')
       return say(`Invalid command by @${username}: ${msg}`);
     const healedWithoutAt = healed.substring(1);
