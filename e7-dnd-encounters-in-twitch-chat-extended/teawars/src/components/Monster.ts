@@ -9,7 +9,12 @@ import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const cfg = { dev: true, tint: 0x44ffff, clearTint: true, alpha: 1 };
+const devCfg = { dev: false, tint: 0x44ffff, clearTint: true, alpha: 1 };
+
+const cfg = {
+    initY: -300,
+    y: 620,
+};
 
 export class Monster extends GameObjects.Image {
     private path?: { t: number; vec: PMath.Vector2 };
@@ -17,11 +22,11 @@ export class Monster extends GameObjects.Image {
     private healthbar!: MonsterHealthbar;
 
     constructor(scene: Scene, { hp, name }: { hp: number; name: string }) {
-        super(scene, 1100, 620, getSpriteKey(name));
+        super(scene, 1100, cfg.initY, getSpriteKey(name));
         scene.add.existing(this);
         this.name = name;
 
-        this.setDepth(this.y);
+        this.setDepth(cfg.y);
         const spriteCfg = monsterSprites.find(
             (s) => s.key === this.texture.key
         );
@@ -47,14 +52,26 @@ export class Monster extends GameObjects.Image {
             .setOrigin(0.5);
         setTextShadow(label);
 
-        if (cfg.dev) {
+        this.ambush();
+
+        if (devCfg.dev) {
             const gui = new GUI();
-            gui.addColor(cfg, "tint");
-            gui.add(cfg, "clearTint");
-            gui.add(cfg, "alpha", 0, 1);
+            gui.addColor(devCfg, "tint");
+            gui.add(devCfg, "clearTint");
+            gui.add(devCfg, "alpha", 0, 1);
             gui.add(this, "debugTakeDamage");
             gui.add(this, "debugAttack");
         }
+    }
+
+    private ambush() {
+        this.scene.tweens.add({
+            targets: this,
+            duration: 1000,
+            ease: "Elastic",
+            easeParams: [1, 0.8],
+            y: cfg.y,
+        });
     }
 
     /** normalizes sprite to fit the greater of height and width to 300px */
@@ -111,10 +128,10 @@ export class Monster extends GameObjects.Image {
             this.y = newPos.y;
         }
 
-        if (cfg.dev) {
-            this.setTint(cfg.tint);
-            this.setAlpha(cfg.alpha);
-            if (cfg.clearTint) {
+        if (devCfg.dev) {
+            this.setTint(devCfg.tint);
+            this.setAlpha(devCfg.alpha);
+            if (devCfg.clearTint) {
                 this.clearTint();
             }
         }
