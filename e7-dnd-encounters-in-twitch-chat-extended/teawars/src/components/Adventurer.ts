@@ -41,9 +41,22 @@ export class Adventurer extends GameObjects.Image {
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
 
+        this.join();
+
         const gui = new GUI();
         gui.add(this, "debugReceiveHeal");
         gui.add(this, "heal");
+    }
+
+    private join() {
+        const x = this.x;
+        this.x = -100;
+        this.scene.tweens.add({
+            targets: this,
+            x,
+            duration: 2100,
+            ease: "Expo.easeOut",
+        });
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
