@@ -1089,7 +1089,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "merfolk",
-        key: "nympf",
+        key: "nymph",
         tint: 0x5384f2,
     },
     {
