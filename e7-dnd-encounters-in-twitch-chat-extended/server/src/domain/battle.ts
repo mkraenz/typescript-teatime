@@ -53,6 +53,7 @@ export class Battle {
     if (!healingAdventurer || !healedAdventurer) return;
 
     const healedHp = healingAdventurer.heal(healedAdventurer.username);
+    if(!healedHp) return;
     healedAdventurer.receivesHeal(healedHp);
   }
 
