@@ -1536,5 +1536,17 @@ if (DEV.validateMonsterTextures) {
     validateMonsterKeysExistAsTextures();
 }
 
-export const randomMonsterCfg = () =>
-    monsterMapping[random(monsterMapping.length)];
+export const randomMonsterCfg = () => {
+    // written in complicated way to debug error:
+    // Uncaught TypeError: Cannot read property 'name' of undefined
+    // at MainScene.maybeEnableDevMode (webpack:///./src/scenes/MainScene.ts?:128)
+    // at MainScene.create (webpack:///./src/scenes/MainScene.ts?:48)
+    const index = random(monsterMapping.length);
+    const monster = monsterMapping[index];
+    if (monster) {
+        return monster;
+    }
+    throw new Error(
+        `No monster found. index: ${index}, monsterMapping.length: ${monsterMapping.length}`
+    );
+};

@@ -14,6 +14,7 @@ const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1 };
 const cfg = {
     initY: -300,
     y: 600,
+    dustLandingOffsetY: -20,
 };
 
 export class Monster extends GameObjects.Image {
@@ -71,12 +72,35 @@ export class Monster extends GameObjects.Image {
     }
 
     private ambush() {
+        let landingDustStarted = false;
+        const animateLandingDust: Phaser.Types.Tweens.TweenOnUpdateCallback = (
+            tween
+        ) => {
+            if (tween.progress > 0.5 && !landingDustStarted) {
+                landingDustStarted = true;
+                const emitter = this.scene.add.particles(
+                    "shapes",
+                    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+                    new Function(
+                        `return ${
+                            this.scene.cache.text.get(
+                                "dust-landing-effect"
+                            ) as string
+                        }`
+                    )()
+                );
+                const bottom = this.getBottomCenter();
+                emitter.setX(bottom.x);
+                emitter.setY(bottom.y + cfg.dustLandingOffsetY);
+            }
+        };
         this.scene.tweens.add({
             targets: this,
             duration: 1000,
             ease: "Elastic",
             easeParams: [1, 0.8],
             y: cfg.y,
+            onUpdate: animateLandingDust,
         });
     }
 
