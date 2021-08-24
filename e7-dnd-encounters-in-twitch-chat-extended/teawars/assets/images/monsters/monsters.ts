@@ -1,4 +1,5 @@
 import { random } from "lodash";
+import { DEV } from "../../../src/dev-config";
 
 export const monsterSprites: Array<{
     path: string; // relative to /assets/images/monsters/
@@ -1051,7 +1052,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "lizardfolk",
-        key: "sombiecritter",
+        key: "zombiecritter",
     },
     {
         name: "lizardfolk shaman",
@@ -1514,6 +1515,26 @@ export const monsterMapping: Array<{
         key: "",
     },
 ].map((m) => Object.freeze(m));
+
+const validateMonsterKeysExistAsTextures = () => {
+    const missingKeys = monsterMapping.filter((m) => {
+        if (!m.key) {
+            // no key, no problem. We fallback to default texture.
+            return false;
+        }
+        return !monsterSprites.find((s) => s.key === m.key);
+    });
+    if (missingKeys.length > 0) {
+        throw new Error(
+            `The following monsters are missing keys or textures: ${missingKeys
+                .map((m) => m.name)
+                .join(", ")}`
+        );
+    }
+};
+if (DEV.validateMonsterTextures) {
+    validateMonsterKeysExistAsTextures();
+}
 
 export const randomMonsterCfg = () =>
     monsterMapping[random(monsterMapping.length)];

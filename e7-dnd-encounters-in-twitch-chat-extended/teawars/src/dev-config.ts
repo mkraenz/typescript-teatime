@@ -7,4 +7,5 @@ export const DEV = isProd
           loseDisabled: false,
           instantKill: false,
           disableParticles: true,
+          validateMonsterTextures: false,
       };
