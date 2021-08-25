@@ -14,7 +14,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
+        enabled: true,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -78,7 +78,7 @@ export class MainScene extends Scene {
 
             if (event.type === "damage received" && event.isMonster) {
                 this.onAttackImpact(() => {
-                    this.monster?.takeDamage(event.damage);
+                    this.monster?.receiveDamage(event.damage);
                 });
             }
 
@@ -95,7 +95,7 @@ export class MainScene extends Scene {
                     adventurerReceivedDamage.target
                 );
                 this.onAttackImpact(() => {
-                    adventurer?.takeDamage(adventurerReceivedDamage.damage);
+                    adventurer?.receiveDamage(adventurerReceivedDamage.damage);
                 });
             }
 
@@ -106,7 +106,7 @@ export class MainScene extends Scene {
 
             if (event.type === "heal cast") {
                 const adventurer = this.getAdventurer(event.actor);
-                adventurer?.heal();
+                adventurer?.castHeal();
             }
 
             if (event.type === "received heal") {

@@ -1,6 +1,6 @@
 import { GUI } from "dat.gui";
 import { startCase } from "lodash";
-import { Curves, GameObjects, Math as PMath, Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
 import {
     monsterMapping,
     monsterSprites,
@@ -18,8 +18,6 @@ const cfg = {
 };
 
 export class Monster extends GameObjects.Image {
-    private path?: { t: number; vec: PMath.Vector2 };
-    private curve?: Curves.CubicBezier;
     private healthbar!: MonsterHealthbar;
 
     constructor(
@@ -67,8 +65,8 @@ export class Monster extends GameObjects.Image {
         folder.addColor(devCfg, "tint");
         folder.add(devCfg, "clearTint");
         folder.add(devCfg, "alpha", 0, 1);
-        folder.add(this, "debugTakeDamage");
-        folder.add(this, "debugAttack");
+        folder.add(this, "debugReceiveDamage").name("receive Damage");
+        folder.add(this, "debugAttack").name("attack");
     }
 
     private ambush() {
@@ -138,28 +136,23 @@ export class Monster extends GameObjects.Image {
 
     public attack(target: { x: number; y: number }, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
-        this.path = path;
-        this.curve = curve;
+        const setToCurvePosition = () => {
+            const newPos = curve.getPoint(path.t, path.vec);
+            this.x = newPos.x;
+            this.y = newPos.y;
+        };
 
         this.scene.tweens.add({
-            targets: this.path,
+            targets: path,
             t: 0.7,
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,
+            onUpdate: setToCurvePosition,
         });
     }
 
-    public update() {
-        // if is attacking
-        if (this.curve && this.path) {
-            const newPos = this.curve.getPoint(this.path.t, this.path.vec);
-            this.x = newPos.x;
-            this.y = newPos.y;
-        }
-    }
-
-    public takeDamage(amount: number) {
+    public receiveDamage(amount: number) {
         this.healthbar.takeDamage(amount);
 
         new DamageText(this.scene, this, amount);
@@ -177,8 +170,8 @@ export class Monster extends GameObjects.Image {
         this.attack({ x: 200, y: this.scene.scale.height / 2 + 50 }, 1000);
     }
 
-    public debugTakeDamage() {
-        this.takeDamage(20);
+    public debugReceiveDamage() {
+        this.receiveDamage(14);
     }
 }
 
