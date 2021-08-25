@@ -19,7 +19,7 @@ export class Monster {
   }
 
   public get isDead() {
-    return this.hp < 0;
+    return this.hp <= 0;
   }
 
   public attack(adventurer: Adventurer) {
