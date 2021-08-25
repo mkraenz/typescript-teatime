@@ -14,7 +14,7 @@ export class DamageText extends GameObjects.Text {
             scene,
             receiver.x,
             receiver.y - 200,
-            damage.toString(),
+            Math.abs(damage).toString(),
             Cfg.styles
         );
         scene.add.existing(this);
