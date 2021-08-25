@@ -128,6 +128,7 @@ export class ChatbotService {
 
     await this.saveAdventurerToDatabase();
     this.joinedAdventurers = [];
+    console.log('battle ended');
   }
 
   private renderBattleEvent(event: IEvent) {

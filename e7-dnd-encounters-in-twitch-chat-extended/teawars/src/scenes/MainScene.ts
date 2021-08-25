@@ -33,8 +33,6 @@ const cfg = {
     jumpAttackDuration: 1000,
 };
 
-type Maybe<T> = T | undefined;
-
 export class MainScene extends Scene {
     private client!: SocketIOClient.Socket;
     private battleLog!: IEvent[];
