@@ -7,10 +7,10 @@ export type IEvent =
   | MonsterKilled
   | PartyKilled
   | ReceivedHeal
-  | Healed;
+  | HealCast;
 
-interface Healed {
-  type: 'healed';
+interface HealCast {
+  type: 'heal cast';
   actor: string;
   amount: number;
   receiver: string;

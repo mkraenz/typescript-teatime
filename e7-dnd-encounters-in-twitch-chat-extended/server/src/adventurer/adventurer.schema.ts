@@ -52,7 +52,7 @@ export class Adventurer {
 
     const amount = random(15) + this.level;
     this.log.push({
-      type: 'healed',
+      type: 'heal cast',
       receiver,
       actor: this.username,
       amount,

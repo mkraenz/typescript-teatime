@@ -7,7 +7,7 @@ export type IEvent =
     | MonsterKilled
     | PartyKilled
     | ReceivedHeal
-    | Healed;
+    | HealCast;
 
 export interface DamageReceived {
     type: "damage received";
@@ -55,8 +55,8 @@ export interface PartyKilled {
     monster: string;
 }
 
-export interface Healed {
-    type: "healed";
+export interface HealCast {
+    type: "heal cast";
     actor: string;
     amount: number;
     receiver: string;

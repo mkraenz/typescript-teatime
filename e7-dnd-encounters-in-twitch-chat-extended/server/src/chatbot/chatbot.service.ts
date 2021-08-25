@@ -140,7 +140,7 @@ export class ChatbotService {
         return say(
           `${event.target} received ${event.damage} damage. ${event.hpLeft} ❤️ left.`,
         );
-      case 'healed':
+      case 'heal cast':
         return say(
           `${event.actor} tries to heal ${event.receiver} for ${event.amount}`,
         );

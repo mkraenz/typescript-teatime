@@ -11,7 +11,7 @@ import {
     Ambushed,
     Attacked,
     DamageReceived,
-    Healed,
+    HealCast,
     IEvent,
     Joined,
     MonsterKilled,
@@ -99,9 +99,9 @@ export class MainScene extends Scene {
             const receivedHeal = events.find(
                 (e) => e.type === "received heal"
             ) as Maybe<ReceivedHeal>;
-            const healed = events.find(
-                (e) => e.type === "healed"
-            ) as Maybe<Healed>;
+            const healCast = events.find(
+                (e) => e.type === "heal cast"
+            ) as Maybe<HealCast>;
             const adventurerKilled = events.find(
                 (e) => e.type === "adventurer killed"
             ) as Maybe<AdventurerKilled>;
@@ -147,8 +147,8 @@ export class MainScene extends Scene {
                 this.onAttackImpact(() => adventurer?.die());
             }
 
-            if (healed) {
-                const adventurer = this.getAdventurer(healed.actor);
+            if (healCast) {
+                const adventurer = this.getAdventurer(healCast.actor);
                 adventurer?.heal();
             }
 
