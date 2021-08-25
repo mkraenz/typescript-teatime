@@ -6,17 +6,7 @@ import { randomMonsterCfg } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
-import {
-    AdventurerKilled,
-    Ambushed,
-    Attacked,
-    DamageReceived,
-    HealCast,
-    IEvent,
-    Joined,
-    MonsterKilled,
-    ReceivedHeal,
-} from "../events/Event";
+import { Ambushed, IEvent } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
@@ -24,7 +14,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
+        enabled: false,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -72,68 +62,37 @@ export class MainScene extends Scene {
         this.client.on("init", (data: IEvent[]) => {
             this.battleLog.push(...data);
         });
-        this.client.on("append logs", (events: IEvent[]) => {
-            console.log(JSON.stringify(events));
-            this.battleLog.push(...events);
-            const ambush = events.find(
-                (e) => e.type === "monster appeared"
-            ) as Maybe<Ambushed>;
-            const joined = events.find(
-                (e) => e.type === "join"
-            ) as Maybe<Joined>;
-            const monsterReceivedDamage = events.find(
-                (e) => e.type === "damage received" && e.isMonster
-            ) as Maybe<DamageReceived>;
-            const adventurerReceivedDamage = events.find(
-                (e) => e.type === "damage received" && !e.isMonster
-            ) as Maybe<DamageReceived>;
-            const monsterAttacked = events.find(
-                (e) => e.type === "attack" && e.isMonster
-            ) as Maybe<Attacked>;
-            const adventurerAttacked = events.find(
-                (e) => e.type === "attack" && !e.isMonster
-            ) as Maybe<Attacked>;
-            const adventurersWin = events.find(
-                (e) => e.type === "monster killed"
-            ) as Maybe<MonsterKilled>;
-            const receivedHeal = events.find(
-                (e) => e.type === "received heal"
-            ) as Maybe<ReceivedHeal>;
-            const healCast = events.find(
-                (e) => e.type === "heal cast"
-            ) as Maybe<HealCast>;
-            const adventurerKilled = events.find(
-                (e) => e.type === "adventurer killed"
-            ) as Maybe<AdventurerKilled>;
+        this.client.on("append log", (event: IEvent) => {
+            console.log(JSON.stringify(event));
+            this.battleLog.push(event);
 
-            if (ambush) {
-                this.addMonster(ambush.monster);
+            if (event.type === "monster appeared") {
+                this.addMonster(event.monster);
             }
-            if (joined) {
-                this.addAdventurer(joined.member, joined.hp, joined.maxHp);
+            if (event.type === "join") {
+                this.addAdventurer(event.member, event.hp, event.maxHp);
             }
 
-            if (adventurerAttacked && this.monster) {
-                const adventurer = this.getAdventurer(
-                    adventurerAttacked.attacker
-                );
+            if (event.type === "attack" && !event.isMonster && this.monster) {
+                const adventurer = this.getAdventurer(event.attacker);
                 adventurer?.attack(this.monster, cfg.jumpAttackDuration);
             }
 
-            if (monsterReceivedDamage) {
+            if (event.type === "damage received" && event.isMonster) {
                 this.onAttackImpact(() => {
-                    this.monster?.takeDamage(monsterReceivedDamage.damage);
+                    this.monster?.takeDamage(event.damage);
                 });
             }
 
-            if (monsterAttacked && this.monster) {
-                const adventurer = this.getAdventurer(monsterAttacked.target);
+            if (event.type === "attack" && event.isMonster && this.monster) {
+                const adventurer = this.getAdventurer(event.target);
                 if (adventurer) {
                     this.monster.attack(adventurer, cfg.jumpAttackDuration);
                 }
             }
 
-            if (adventurerReceivedDamage) {
+            if (event.type === "damage received" && !event.isMonster) {
+                const adventurerReceivedDamage = event;
                 const adventurer = this.getAdventurer(
                     adventurerReceivedDamage.target
                 );
@@ -142,25 +101,22 @@ export class MainScene extends Scene {
                 });
             }
 
-            if (adventurerKilled) {
-                const adventurer = this.getAdventurer(adventurerKilled.name);
+            if (event.type === "adventurer killed") {
+                const adventurer = this.getAdventurer(event.name);
                 this.onAttackImpact(() => adventurer?.die());
             }
 
-            if (healCast) {
-                const adventurer = this.getAdventurer(healCast.actor);
+            if (event.type === "heal cast") {
+                const adventurer = this.getAdventurer(event.actor);
                 adventurer?.heal();
             }
 
-            if (receivedHeal) {
-                const adventurer = this.getAdventurer(receivedHeal.target);
-                adventurer?.receiveHeal(
-                    receivedHeal.currentHp,
-                    receivedHeal.amount
-                );
+            if (event.type === "received heal") {
+                const adventurer = this.getAdventurer(event.target);
+                adventurer?.receiveHeal(event.currentHp, event.amount);
             }
 
-            if (adventurersWin) {
+            if (event.type === "monster killed") {
                 this.onAttackImpact(() => {
                     this.monster?.die();
                     this.sound

@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
-import { ChatbotService } from '../chatbot/chatbot.service';
+import {
+  BattleLogSubscriber,
+  ChatbotService,
+} from '../chatbot/chatbot.service';
 import { IEvent } from '../domain/events';
 import { Battle } from './battle.schema';
 
 type Awaited<T> = T extends Promise<infer U> ? U : never;
 
+interface ISubscribable {
+  appendToLog: BattleLogSubscriber;
+}
+
 @Injectable()
-export class BattleService {
+export class BattleService implements ISubscribable {
   private battle: Awaited<ReturnType<BattleService['create']>> | null = null;
   // WORKAROUND: battle.log.get is shimmed by mongoose, thus returning only the result of the database. Hence battle.log.push({}) does effectively nothing
   private log: IEvent[] | null = null;
@@ -21,9 +28,7 @@ export class BattleService {
     chatbot: ChatbotService,
   ) {
     // TODO fix type
-    chatbot.subscribeToLog(
-      (this.appendLogs.bind(this) as unknown) as (logs: IEvent[]) => void,
-    );
+    chatbot.subscribeToLog(this.appendToLog.bind(this));
   }
 
   async create(log: IEvent[]) {
@@ -64,13 +69,13 @@ export class BattleService {
     );
   }
 
-  public async appendLogs(logs: IEvent[]) {
+  public async appendToLog(event: IEvent) {
     if (!this.battle) {
-      this.battle = await this.create(logs);
-      this.log = [...logs];
+      this.battle = await this.create([event]);
+      this.log = [event];
       this.startSaveDaemon();
     } else {
-      this.log?.push(...logs);
+      this.log?.push(event);
       this.battle.log = this.log || [];
 
       this.hasChanged = true;

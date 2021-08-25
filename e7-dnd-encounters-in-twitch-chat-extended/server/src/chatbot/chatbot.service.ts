@@ -20,6 +20,8 @@ const banned = ['streamelements'];
 const timeTillAttackInSeconds = 30;
 const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
+export type BattleLogSubscriber = (event: IEvent) => void;
+
 @Injectable()
 export class ChatbotService {
   private readonly tmiClient: Client;
@@ -28,7 +30,7 @@ export class ChatbotService {
   private lastLogCount = 0;
   private watchBattleLogs?: NodeJS.Timeout;
   private joinedAdventurers: DocumentType<Adventurer>[] = [];
-  private listenersToBattleLogChanges: ((log: IEvent[]) => void)[] = [];
+  private listenersToBattleLogChanges: BattleLogSubscriber[] = [];
 
   constructor(adventurers: AdventurerService) {
     this.adventurers = adventurers;
@@ -41,7 +43,7 @@ export class ChatbotService {
     return this.battle?.log;
   }
 
-  public subscribeToLog(callback: (log: IEvent[]) => void) {
+  public subscribeToLog(callback: BattleLogSubscriber) {
     this.listenersToBattleLogChanges.push(callback);
   }
 
@@ -97,7 +99,7 @@ export class ChatbotService {
         const newEvent = this.battle!.log[i];
         this.renderBattleEvent(newEvent);
         this.listenersToBattleLogChanges.forEach((callback) => {
-          callback([newEvent]);
+          callback(newEvent);
         });
       }
       this.lastLogCount = this.battle!.log.length;
