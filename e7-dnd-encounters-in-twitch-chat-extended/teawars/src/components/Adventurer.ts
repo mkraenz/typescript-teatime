@@ -27,9 +27,9 @@ export class Adventurer extends GameObjects.Image {
 
         this.setRandomPosition(
             150,
-            500,
-            scene.scale.width / 2 - 200,
-            scene.scale.height / 3
+            400,
+            scene.scale.width / 2 - 50,
+            scene.scale.height * (2 / 5)
         )
             .setScale(4.5)
             .setFrame(random(21));
@@ -139,9 +139,10 @@ export class Adventurer extends GameObjects.Image {
         );
         emitter.setX(this.x);
         emitter.setY(this.y);
-        emitter.setDepth(9999999);
+        emitter.setDepth(this.depth + 1);
 
         new DamageText(this.scene, this, -amountHealed);
+        this.scene.time.delayedCall(2000, () => emitter.destroy());
     }
 
     public takeDamage(amount: number) {
