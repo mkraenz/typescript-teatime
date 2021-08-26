@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "es5",
+        "noImplicitAny": true,
+        "strict": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "outDir": ".build",
+        "baseUrl": ".",
+        "experimentalDecorators": true
+    },
+    "include": ["src/**/*", "test/**/*"],
+    "exclude": ["node_modules"]
+}

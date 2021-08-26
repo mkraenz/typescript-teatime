@@ -1,0 +1,98 @@
+service: y3a
+# app and org for use with dashboard.serverless.com
+app: y3a
+org: typescriptteatime
+
+# https://www.serverless.com/plugins/
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline # must come after typescript
+  - serverless-iam-roles-per-function
+
+# only deploy with specific Serverless version
+frameworkVersion: ^2.48.0
+configValidationMode: error
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ${opt:region, "eu-central-1"}
+  stage: ${opt:stage, "prod"}
+  profile: sls-typescriptteatime
+  lambdaHashingVersion: 20201221
+  eventBridge:
+    useCloudFormation: true
+
+functions:
+  example:
+    handler: src/example.handler
+    events:
+      - http:
+          path: "/example/"
+          method: get
+      - eventBridge:
+          schedule: rate(1 minute)
+
+  subscribePushNotif:
+    handler: src/push-notifications/subscribe.handler
+    events:
+      - http:
+          path: subscribe
+          method: post
+    environment:
+      REGION: ${self:provider.region}
+      SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+
+  unsubPushNotif:
+    handler: src/push-notifications/unsubscribe.handler
+    events:
+      - http:
+          path: unsubscribe
+          method: post
+    environment:
+      REGION: ${self:provider.region}
+      SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource:
+          - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+
+resources:
+  Resources:
+    PushNotificationSubsTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Delete
+      Properties:
+        TableName: "PushNotificationSubs-${self:provider.stage}"
+        AttributeDefinitions:
+          - AttributeName: "expoPushToken"
+            AttributeType: "S"
+          - AttributeName: "time"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "expoPushToken"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+        GlobalSecondaryIndexes:
+          - IndexName: TimeIndex
+            KeySchema:
+              - AttributeName: "time"
+                KeyType: "HASH"
+              - AttributeName: "expoPushToken"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 3
+              WriteCapacityUnits: 3

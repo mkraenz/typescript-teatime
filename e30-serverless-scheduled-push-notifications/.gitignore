@@ -1,0 +1,58 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+
+pids
+logs
+results
+tmp
+
+# Build
+public/css/main.css
+
+# Coverage reports
+coverage
+
+# API keys and secrets
+.env
+token.json
+credentials.json
+
+# Dependency directory
+node_modules
+bower_components
+
+# Editors
+.idea
+*.iml
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Ignore built ts files
+dist/
+.build/
+
+# ignore yarn.lock
+yarn.lock
+
+# secret environment variables
+.env
+secret.http
+
+# local docker volumes
+docker

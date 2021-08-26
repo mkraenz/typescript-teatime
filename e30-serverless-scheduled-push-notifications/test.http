@@ -1,0 +1,17 @@
+### Lambda: Subscribe Push Notifications
+POST http://localhost:3000/prod/subscribe
+Content-Type: application/json
+
+{
+    "token": "ExponentPushToken[98492]",
+    "hour": 4,
+    "minute": 51
+}
+
+### Lambda: Unsubscribe Push Notifications
+POST http://localhost:3000/prod/unsubscribe
+Content-Type: application/json
+
+{
+    "token": "ExponentPushToken[98492]"
+}
