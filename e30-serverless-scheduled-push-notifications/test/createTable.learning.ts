@@ -35,13 +35,12 @@ export const createTable = async () => {
     console.log(table.TableDescription?.TableName);
 };
 
-const dropTable = async () => {
-    const res = await dynamodb
+export const dropTable = async (dynamoDb: AWS.DynamoDB, tableName: string) => {
+    await dynamoDb
         .deleteTable({
-            TableName,
+            TableName: tableName,
         })
         .promise();
-    console.log(res);
 };
 
 export const createActualTable = async () => {
@@ -65,10 +64,13 @@ export const createActualTable = async () => {
     console.log(table.TableDescription?.TableName);
 };
 
-export const createActualTable2 = async () => {
-    const table = await dynamodb
+export const createSubsTable = async (
+    dynamoDb: AWS.DynamoDB,
+    tableName: string
+) => {
+    await dynamoDb
         .createTable({
-            TableName,
+            TableName: tableName,
             KeySchema: [{ AttributeName: "expoPushToken", KeyType: "HASH" }],
             AttributeDefinitions: [
                 { AttributeName: "expoPushToken", AttributeType: "S" },
@@ -79,13 +81,45 @@ export const createActualTable2 = async () => {
             },
         })
         .promise();
-    console.log(table.TableDescription?.TableName);
 };
 
-export const createGlobalSecondaryIndex = async () => {
-    const res = await dynamodb
+export const createTicketsTable = async (
+    dynamoDb: AWS.DynamoDB,
+    tableName: string
+) => {
+    await dynamoDb
+        .createTable({
+            TableName: tableName,
+            KeySchema: [
+                { AttributeName: "type", KeyType: "HASH" },
+                {
+                    AttributeName: "uuid",
+                    KeyType: "RANGE",
+                },
+            ],
+            AttributeDefinitions: [
+                { AttributeName: "type", AttributeType: "S" },
+                {
+                    AttributeName: "uuid",
+                    AttributeType: "S",
+                },
+            ],
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 5,
+                WriteCapacityUnits: 5,
+            },
+        })
+        .promise();
+};
+
+export const createGsiSubsByTime = async (
+    dynamoDb: AWS.DynamoDB,
+    tableName: string,
+    IndexName: string
+) => {
+    await dynamoDb
         .updateTable({
-            TableName,
+            TableName: tableName,
             AttributeDefinitions: [
                 { AttributeName: "time", AttributeType: "S" },
                 { AttributeName: "expoPushToken", AttributeType: "S" },
@@ -93,7 +127,7 @@ export const createGlobalSecondaryIndex = async () => {
             GlobalSecondaryIndexUpdates: [
                 {
                     Create: {
-                        IndexName: "TimeIndex",
+                        IndexName,
                         KeySchema: [
                             { AttributeName: "time", KeyType: "HASH" },
                             {
@@ -113,7 +147,6 @@ export const createGlobalSecondaryIndex = async () => {
             ],
         })
         .promise();
-    console.log(res);
 };
 
 export const createItem = async () => {
@@ -188,9 +221,9 @@ const deleteItem = async () => {
 };
 
 const main = async () => {
-    await dropTable();
-    await createActualTable2();
-    await createGlobalSecondaryIndex();
+    await dropTable(dynamodb, TableName);
+    await createSubsTable(dynamodb, TableName);
+    await createGsiSubsByTime(dynamodb, TableName, "TimeIndex");
     // await createTable();
     // await createItem();
     // await getItem();

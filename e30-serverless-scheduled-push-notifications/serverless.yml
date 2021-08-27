@@ -25,15 +25,6 @@ provider:
     useCloudFormation: true
 
 functions:
-  example:
-    handler: src/example.handler
-    events:
-      - http:
-          path: "/example/"
-          method: get
-      - eventBridge:
-          schedule: rate(1 minute)
-
   subscribePushNotif:
     handler: src/push-notifications/subscribe.handler
     events:
@@ -63,6 +54,58 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem
+        Resource:
+          - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+
+  sendPushNotif:
+    handler: src/push-notifications/send.handler
+    # TODO enable
+    # events:
+    #   - eventBridge:
+    #       schedule: rate(1 minute)
+    environment:
+      REGION: ${self:provider.region}
+      SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
+      SUBSCRIPTIONS_BY_TIME_INDEX: "TimeIndex"
+      TICKET_TABLE: ${self:resources.Resources.PushNotificationTicketsTable.Properties.TableName, "Tickets-${self:provider.stage}"}
+      AWESOME_MESSAGES_URI: "https://youareawesomeapp-current-message.s3.eu-central-1.amazonaws.com/messages.json"
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:BatchWriteItem
+        Resource:
+          - Fn::GetAtt: [PushNotificationTicketsTable, Arn]
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource:
+          - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+          - Fn::Join:
+              - "/"
+              - - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+                - "index/TimeIndex"
+
+  handlePushNotifSuccessTickets:
+    handler: src/push-notifications/handleSuccessTickets.handler
+    # TODO enable
+    # events:
+    #   - eventBridge:
+    #       schedule: rate(6 hours)
+    environment:
+      REGION: ${self:provider.region}
+      SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
+      SUBSCRIPTIONS_BY_TIME_INDEX: "TimeIndex"
+      TICKET_TABLE: ${self:resources.Resources.PushNotificationTicketsTable.Properties.TableName, "Tickets-${self:provider.stage}"}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:BatchWriteItem
+        Resource:
+          - Fn::GetAtt: [PushNotificationTicketsTable, Arn]
+      - Effect: Allow
+        Action:
+          - dynamodb:BatchWriteItem
         Resource:
           - Fn::GetAtt: [PushNotificationSubsTable, Arn]
 
@@ -96,3 +139,22 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 3
               WriteCapacityUnits: 3
+
+    PushNotificationTicketsTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Delete
+      Properties:
+        TableName: "PushNotificationTickets-${self:provider.stage}"
+        AttributeDefinitions:
+          - AttributeName: "type"
+            AttributeType: "S"
+          - AttributeName: "uuid"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "type"
+            KeyType: "HASH"
+          - AttributeName: "uuid"
+            KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

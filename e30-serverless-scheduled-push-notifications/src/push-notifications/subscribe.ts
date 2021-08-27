@@ -42,7 +42,7 @@ export class Body implements IBody {
 
     @IsInt()
     @Min(0)
-    @Max(60)
+    @Max(59)
     minute: number;
 
     /** @returns in format HH:mm */

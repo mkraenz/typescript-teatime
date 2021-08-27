@@ -6,8 +6,6 @@
     "scripts": {
         "build": "tsc",
         "clean": "del-cli dist .build",
-        "predeploy:send-push-notif": "npm run predeploy",
-        "deploy:send-push-notif": "serverless deploy --config serverless.pre.yml",
         "predeploy": "npm run clean",
         "deploy": "serverless deploy",
         "deploy:fn": "npm run clean && serverless deploy function -f",
@@ -15,7 +13,10 @@
         "deploy:test:verbose": "serverless offline --printOutput",
         "deploy:test:send-push-notif": "serverless offline --config serverless.pre.yml",
         "dev": "npm run deploy:test",
-        "test": "docker-compose up -d && jest"
+        "test": "docker-compose up -d && jest",
+        "test:watch": "docker-compose up -d && jest --watch",
+        "invoke:send-push-notif": "aws lambda invoke --function-name y3a-prod-sendPushNotif --payload '{\"time\": \"2021-08-27T17:12:07.000Z\"}' --cli-binary-format raw-in-base64-out --region eu-central-1 --profile typescriptteatime response.json",
+        "invoke:handle-success-tickets": "aws lambda invoke --function-name y3a-prod-handlePushNotifSuccessTickets --region eu-central-1 --profile typescriptteatime response.json"
     },
     "dependencies": {
         "@googleapis/sheets": "^0.3.0",
@@ -27,7 +28,8 @@
         "csvtojson": "^2.0.10",
         "expo-server-sdk": "^3.6.0",
         "lodash": "^4.17.21",
-        "nodemailer": "^6.6.2"
+        "nodemailer": "^6.6.2",
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.77",
@@ -38,6 +40,7 @@
         "@types/lodash": "^4.14.170",
         "@types/node": "12.x",
         "@types/nodemailer": "^6.4.2",
+        "@types/uuid": "^8.3.1",
         "del-cli": "^3.0.1",
         "dotenv": "^10.0.0",
         "faker": "^5.5.3",
