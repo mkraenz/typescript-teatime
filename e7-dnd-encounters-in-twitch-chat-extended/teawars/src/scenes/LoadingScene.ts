@@ -52,7 +52,8 @@ export class LoadingScene extends Scene {
             )
             .text("heal-effect", "assets/particles/heal.json")
             .text("dust-landing-effect", "assets/particles/dust.json")
-            .audio("fanfare", sound("teawars-fanfare.mp3"));
+            .audio("fanfare", sound("teawars-fanfare.mp3"))
+            .audio("battleloop", sound("8BitBattleLoop.ogg"));
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));
         });

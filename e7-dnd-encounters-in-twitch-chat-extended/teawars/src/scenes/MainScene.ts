@@ -65,6 +65,7 @@ export class MainScene extends Scene {
             this.battleLog.push(event);
 
             if (event.type === "monster appeared") {
+                this.playBgm("battleloop");
                 this.addMonster(event.monster);
             }
             if (event.type === "join") {
@@ -117,15 +118,21 @@ export class MainScene extends Scene {
             if (event.type === "monster killed") {
                 this.onAttackImpact(() => {
                     this.monster?.die();
-                    this.sound
-                        .add("fanfare", {
-                            loop: true,
-                            volume: 0.5,
-                        })
-                        .play();
+                    this.playBgm("fanfare");
                 });
             }
         });
+    }
+
+    private playBgm(key: "fanfare" | "battleloop") {
+        const otherKey = key === "fanfare" ? "battleloop" : "fanfare";
+        this.sound.stopByKey(otherKey);
+        this.sound
+            .add(key, {
+                loop: true,
+                volume: key === "fanfare" ? 0.5 : 0.3,
+            })
+            .play();
     }
 
     private maybeEnableDevMode() {
