@@ -52,6 +52,7 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "die");
         folder.add(this, "castHeal").name("cast Heal");
         folder.add(this, "debugReceiveHeal").name("receive Heal");
+        folder.add(this, "animateSlice").name("slice");
         // folder.open();
     }
 
@@ -95,15 +96,62 @@ export class Adventurer extends GameObjects.Image {
             this.x = newPos.x;
             this.y = newPos.y;
         };
+        const maxT = 0.8;
         this.scene.tweens.add({
             targets: path,
-            t: 0.8,
+            t: maxT,
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,
-            onUpdate: setPlayerToCurvePosition,
-            onYoyo: () => this.scene.cameras.main.shake(300, 0.02, true),
+            hold: 600,
+            onUpdate: () => {
+                setPlayerToCurvePosition();
+                if (path.t === maxT) {
+                    this.animateSlice();
+                }
+            },
         });
+    }
+
+    private animateSlice() {
+        const screenHeight = this.scene.scale.height;
+        const currentX = this.x;
+        const currentY = this.y;
+        const slice = this.scene.add
+            .image(currentX + 150, currentY, "shapes", "slash_03")
+            .setScale(3)
+            .setRotation(Phaser.Math.TAU / 2)
+            .setDepth(9000);
+        const shape = this.scene.make.graphics({});
+        shape.fillRect(0, -screenHeight, screenHeight * 2, screenHeight);
+        const mask = shape.createGeometryMask();
+        slice.setMask(mask);
+
+        const timeline = this.scene.tweens.timeline();
+        timeline.add({
+            targets: shape,
+            y: 0,
+            duration: 250,
+            onComplete: () => this.scene.cameras.main.shake(300, 0.02, true),
+        });
+        timeline.add({
+            targets: shape,
+            y: screenHeight,
+            duration: 250,
+        });
+        timeline.add({
+            delay: 300,
+            targets: shape,
+            y: 2000,
+            duration: 500,
+            onComplete: () => {
+                slice.destroy();
+                mask.destroy();
+                shape.destroy();
+            },
+        });
+
+        timeline.play();
     }
 
     public update() {
