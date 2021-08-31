@@ -197,6 +197,7 @@ export class Adventurer extends GameObjects.Image {
 
         const red = 0xff0000;
         this.setTint(red);
+        this.scene.cameras.main.flash(100, 128, 0, 0);
         this.scene.time.delayedCall(300, () => this.clearTint());
 
         if (this.isDead) {
