@@ -102,6 +102,7 @@ export class Adventurer extends GameObjects.Image {
             duration: jumpDuration,
             yoyo: true,
             onUpdate: setPlayerToCurvePosition,
+            onYoyo: () => this.scene.cameras.main.shake(300, 0.02, true),
         });
     }
 

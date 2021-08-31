@@ -76,6 +76,8 @@ export class Monster extends GameObjects.Image {
         ) => {
             if (tween.progress > 0.5 && !landingDustStarted) {
                 landingDustStarted = true;
+                this.scene.cameras.main.shake(500, 0.02, true);
+
                 const emitter = this.scene.add.particles(
                     "shapes",
                     // eslint-disable-next-line @typescript-eslint/no-implied-eval
@@ -149,6 +151,7 @@ export class Monster extends GameObjects.Image {
             duration: jumpDuration,
             yoyo: true,
             onUpdate: setToCurvePosition,
+            onYoyo: () => this.scene.cameras.main.shake(500, 0.02, true),
         });
     }
 
