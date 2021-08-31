@@ -6,6 +6,7 @@ org: typescriptteatime
 # https://www.serverless.com/plugins/
 plugins:
   - serverless-plugin-typescript
+  - serverless-dotenv-plugin
   - serverless-offline # must come after typescript
   - serverless-iam-roles-per-function
 
@@ -25,6 +26,13 @@ provider:
     useCloudFormation: true
 
 functions:
+  example:
+    handler: src/example.handler
+    events:
+      - http:
+          path: test
+          method: get
+
   subscribePushNotif:
     handler: src/push-notifications/subscribe.handler
     events:
@@ -96,6 +104,8 @@ functions:
       SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
       SUBSCRIPTIONS_BY_TIME_INDEX: "TimeIndex"
       TICKET_TABLE: ${self:resources.Resources.PushNotificationTicketsTable.Properties.TableName, "Tickets-${self:provider.stage}"}
+      TICKET_DELETION_QUEUE_URL:
+        Ref: TicketsForDeletionQueue
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -108,6 +118,30 @@ functions:
           - dynamodb:BatchWriteItem
         Resource:
           - Fn::GetAtt: [PushNotificationSubsTable, Arn]
+      - Effect: Allow
+        Action:
+          - sqs:SendMessage
+        Resource:
+          - Fn::GetAtt: [TicketsForDeletionQueue, Arn]
+
+  testSend:
+    handler: src/sqs/testSend.handler
+    environment:
+      TICKET_DELETION_QUEUE_URL:
+        Ref: TicketsForDeletionQueue
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - sqs:SendMessage
+        Resource:
+          - Fn::GetAtt: [TicketsForDeletionQueue, Arn]
+
+  testReceive:
+    handler: src/sqs/testReceive.handler
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [TicketsForDeletionQueue, Arn]
 
 resources:
   Resources:
@@ -158,3 +192,48 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+
+    TicketsForDeletionQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: TicketsForDeletionQueue
+        KmsMasterKeyId: alias/aws/sqs
+        KmsDataKeyReusePeriodSeconds: 86400 # 24h in seconds
+        RedrivePolicy:
+          maxReceiveCount: 3
+          deadLetterTargetArn:
+            Fn::GetAtt: [TicketsForDeletionDLQ, Arn]
+    TicketsForDeletionDLQ:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: TicketsForDeletionDLQ
+        MessageRetentionPeriod: 1209600 # 14 days in seconds
+
+    TicketsForDeletionDLQAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: TicketsForDeletionFailedMessage
+        AlarmDescription: "Notifies via Email when messages sent to TicketsForDeletion SQS queue fail and get sent to the DLQ"
+        MetricName: ApproximateNumberOfMessagesVisible
+        Namespace: AWS/SQS
+        Dimensions:
+          - Name: QueueName
+            Value:
+              Fn::GetAtt: [TicketsForDeletionDLQ, QueueName]
+        Statistic: Maximum
+        EvaluationPeriods: 1
+        Period: 300 # 5 mins in seconds
+        TreatMissingData: ignore
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        Threshold: 1
+        DatapointsToAlarm: 1
+        ActionsEnabled: true
+        AlarmActions:
+          - Ref: AlarmTopic
+
+    AlarmTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        Subscription:
+          - Endpoint: ${env:ALARM_EMAIL}
+            Protocol: email

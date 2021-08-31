@@ -39,6 +39,23 @@ const expoReceipts = new ExpoReceiptAdapter(expo);
 const tickets = new TicketRepository(docClient, ticketTable);
 console.log("handler-independent setup completed");
 
+const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
+const ticketDeletionQueueUrl = process.env.TICKET_DELETION_QUEUE_URL;
+assertEnvVar(ticketDeletionQueueUrl, "TICKET_DELETION_QUEUE_URL");
+const ticketsForDeletion = {
+    push: async (ticketUuids: string[]) => {
+        await sqs
+            .sendMessageBatch({
+                QueueUrl: ticketDeletionQueueUrl,
+                Entries: ticketUuids.map(id => ({
+                    Id: id,
+                    MessageBody: JSON.stringify({ ticketUuid: id }),
+                })),
+            })
+            .promise();
+    },
+};
+
 export const handler: Handler = async () => {
     try {
         // ✔  get all success tickets from the database
@@ -81,7 +98,7 @@ export const handler: Handler = async () => {
                     successReceipts.length
                 }, errorReceipts: ${errorReceipts.length}`
             );
-            await tickets.deleteManySuccessTickets(
+            await ticketsForDeletion.push(
                 successReceipts.map(r => r.ticketUuid)
             );
             console.log(`deleted ${successTickets.length} success receipts`);
