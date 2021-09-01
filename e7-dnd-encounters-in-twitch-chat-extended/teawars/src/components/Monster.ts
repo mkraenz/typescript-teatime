@@ -84,10 +84,10 @@ export class Monster extends GameObjects.Image {
                 landingDustStarted = true;
                 this.scene.cameras.main.shake(500, 0.02, true);
                 const groundshake = this.scene.sound.add("groundshake", {
-                    volume: 0.1,
+                    volume: 0.3,
                 });
                 const scream = this.scene.sound.add("monster-scream", {
-                    volume: 0.05,
+                    volume: 0.1,
                 });
                 groundshake.play();
                 groundshake.once("complete", () => {
@@ -130,7 +130,7 @@ export class Monster extends GameObjects.Image {
         this.scene.sound
             .add(key, {
                 loop: true,
-                volume: key === "fanfare" ? 0.5 : 0.2,
+                volume: key === "fanfare" ? 0.2 : 0.1,
             })
             .play();
     }

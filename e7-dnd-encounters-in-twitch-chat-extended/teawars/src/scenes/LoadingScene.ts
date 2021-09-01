@@ -58,6 +58,7 @@ export class LoadingScene extends Scene {
             .audio("footsteps", sound("Footstep_Dirt_00-repeat.mp3"))
             .audio("groundshake", sound("deathflash.mp3"))
             .audio("fleshy-punch", sound("gun-1a.mp3"))
+            .audio("heal", sound("magical_5.ogg"))
             .audio("monster-scream", sound("scream_horror1.mp3"))
             .audio("battleloop", sound("8BitBattleLoop.ogg"));
         monsterSprites.forEach((sprite) => {

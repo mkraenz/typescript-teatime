@@ -10,3 +10,4 @@
 - [deathflash.mp3 by Blender Foundation and Submitted by Lamoot under CC-BY 3.0](https://opengameart.org/content/big-explosion)
   - Changes: none
 - [scream_horror1.mp3 by Vinrax under CC0](https://opengameart.org/content/horror-scream1)
+- [magical_5.ogg by JaggedStone under CC0](https://opengameart.org/content/magic-spell-sfx)

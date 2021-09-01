@@ -60,7 +60,7 @@ export class Adventurer extends GameObjects.Image {
         const x = this.x;
         this.x = -100;
         this.scene.sound.play("footsteps", {
-            volume: 0.2,
+            volume: 1,
         });
         this.scene.tweens.add({
             targets: this,
@@ -185,6 +185,7 @@ export class Adventurer extends GameObjects.Image {
     }
 
     public receiveHeal(currentHp: number, amountHealed: number) {
+        this.scene.sound.play("heal", { volume: 0.5 });
         this.healthbar.receiveHeal(currentHp);
 
         const emitter = this.scene.add.particles(
