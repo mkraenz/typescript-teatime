@@ -5,6 +5,7 @@ import {
     monsterMapping,
     monsterSprites,
 } from "../../assets/images/monsters/monsters";
+import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
 import { MonsterHealthbar } from "./MonsterHealthbar";
@@ -16,6 +17,11 @@ const cfg = {
     y: 600,
     dustLandingOffsetY: -20,
 };
+
+interface IPoint {
+    x: number;
+    y: number;
+}
 
 export class Monster extends GameObjects.Image {
     private healthbar!: MonsterHealthbar;
@@ -77,6 +83,20 @@ export class Monster extends GameObjects.Image {
             if (tween.progress > 0.5 && !landingDustStarted) {
                 landingDustStarted = true;
                 this.scene.cameras.main.shake(500, 0.02, true);
+                const groundshake = this.scene.sound.add("groundshake", {
+                    volume: 0.1,
+                });
+                const scream = this.scene.sound.add("monster-scream", {
+                    volume: 0.05,
+                });
+                groundshake.play();
+                groundshake.once("complete", () => {
+                    this.scene.cameras.main.shake(2500, 0.02, true);
+                    scream.play();
+                });
+                scream.once("complete", () => {
+                    this.playBgm("battleloop");
+                });
 
                 const emitter = this.scene.add.particles(
                     "shapes",
@@ -102,6 +122,17 @@ export class Monster extends GameObjects.Image {
             y: cfg.y,
             onUpdate: animateLandingDust,
         });
+    }
+
+    private playBgm(key: "fanfare" | "battleloop") {
+        const otherKey = key === "fanfare" ? "battleloop" : "fanfare";
+        this.scene.sound.stopByKey(otherKey);
+        this.scene.sound
+            .add(key, {
+                loop: true,
+                volume: key === "fanfare" ? 0.5 : 0.2,
+            })
+            .play();
     }
 
     /** normalizes sprite to fit the greater of height and width to 300px */
@@ -136,7 +167,7 @@ export class Monster extends GameObjects.Image {
         };
     }
 
-    public attack(target: { x: number; y: number }, jumpDuration: number) {
+    public attack(target: IPoint, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
         const setToCurvePosition = () => {
             const newPos = curve.getPoint(path.t, path.vec);
@@ -144,15 +175,66 @@ export class Monster extends GameObjects.Image {
             this.y = newPos.y;
         };
 
+        const maxT = 0.7;
+
         this.scene.tweens.add({
             targets: path,
-            t: 0.7,
+            t: maxT,
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,
-            onUpdate: setToCurvePosition,
-            onYoyo: () => this.scene.cameras.main.shake(500, 0.02, true),
+            hold: 900,
+            onUpdate: () => {
+                setToCurvePosition();
+                if (path.t === maxT) {
+                    this.animateSlice(target);
+                }
+            },
         });
+    }
+
+    private animateSlice(target: IPoint) {
+        const screenHeight = this.scene.scale.height;
+        const slice = this.scene.add
+            .image(target.x, target.y, "shapes", "scratch_01")
+            .setScale(4)
+            .setDepth(9000)
+            .setTint(toHex(Color.LightRed));
+        const shape = this.scene.make.graphics({});
+        shape.fillRect(0, -screenHeight, screenHeight * 2, screenHeight);
+        const mask = shape.createGeometryMask();
+        slice.setMask(mask);
+
+        const timeline = this.scene.tweens.timeline();
+        timeline.add({
+            targets: shape,
+            y: 0,
+            duration: 250,
+            onComplete: () => {
+                this.scene.sound.play("fleshy-punch", {
+                    volume: 0.3,
+                });
+                this.scene.cameras.main.shake(300, 0.03, true);
+            },
+        });
+        timeline.add({
+            targets: shape,
+            y: screenHeight,
+            duration: 250,
+        });
+        timeline.add({
+            delay: 300,
+            targets: shape,
+            y: 2000,
+            duration: 500,
+            onComplete: () => {
+                slice.destroy();
+                mask.destroy();
+                shape.destroy();
+            },
+        });
+
+        timeline.play();
     }
 
     public receiveDamage(amount: number) {

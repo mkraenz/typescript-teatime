@@ -15,7 +15,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: true,
-        adventurers: 1,
+        adventurers: 0,
     },
     fadeIn: 200,
     title: {
@@ -65,7 +65,6 @@ export class MainScene extends Scene {
             this.battleLog.push(event);
 
             if (event.type === "monster appeared") {
-                this.playBgm("battleloop");
                 this.addMonster(event.monster);
             }
             if (event.type === "join") {
@@ -86,7 +85,10 @@ export class MainScene extends Scene {
             if (event.type === "attack" && event.isMonster && this.monster) {
                 const adventurer = this.getAdventurer(event.target);
                 if (adventurer) {
-                    this.monster.attack(adventurer, cfg.jumpAttackDuration);
+                    this.monster.attack(
+                        adventurer.getCenter(),
+                        cfg.jumpAttackDuration
+                    );
                 }
             }
 
@@ -130,7 +132,7 @@ export class MainScene extends Scene {
         this.sound
             .add(key, {
                 loop: true,
-                volume: key === "fanfare" ? 0.5 : 0.3,
+                volume: key === "fanfare" ? 0.5 : 0.2,
             })
             .play();
     }
@@ -139,6 +141,7 @@ export class MainScene extends Scene {
         if (cfg.dev.enabled) {
             this.gui.show();
             this.gui.add(this, "addDebugAdventurer");
+            this.gui.add(this, "debugAudioTrack").name("play battle song");
 
             range(cfg.dev.adventurers).forEach((i) =>
                 this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
@@ -200,5 +203,9 @@ export class MainScene extends Scene {
             random(500),
             random(300)
         );
+    }
+
+    private debugAudioTrack() {
+        this.playBgm("battleloop");
     }
 }

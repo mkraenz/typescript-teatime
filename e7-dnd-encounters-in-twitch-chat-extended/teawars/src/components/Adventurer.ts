@@ -59,6 +59,9 @@ export class Adventurer extends GameObjects.Image {
     private join() {
         const x = this.x;
         this.x = -100;
+        this.scene.sound.play("footsteps", {
+            volume: 0.2,
+        });
         this.scene.tweens.add({
             targets: this,
             x,
@@ -114,6 +117,8 @@ export class Adventurer extends GameObjects.Image {
     }
 
     private animateSlice() {
+        this.playAttackSound();
+
         const screenHeight = this.scene.scale.height;
         const currentX = this.x;
         const currentY = this.y;
@@ -152,6 +157,13 @@ export class Adventurer extends GameObjects.Image {
         });
 
         timeline.play();
+    }
+
+    private playAttackSound() {
+        const zeroOrOne = random(1);
+        this.scene.sound.play(`sword${zeroOrOne}`, {
+            volume: 0.5,
+        });
     }
 
     public update() {
