@@ -33,7 +33,7 @@ functions:
           path: test
           method: get
 
-  subscribePushNotif:
+  subPushNotif:
     handler: src/push-notifications/subscribe.handler
     events:
       - http:
@@ -49,6 +49,7 @@ functions:
         Resource:
           - Fn::GetAtt: [PushNotificationSubsTable, Arn]
 
+  # TODO #535 validation on API GW
   unsubPushNotif:
     handler: src/push-notifications/unsubscribe.handler
     events:
@@ -104,8 +105,6 @@ functions:
       SUBSCRIPTION_TABLE: "PushNotificationSubs-${self:provider.stage}"
       SUBSCRIPTIONS_BY_TIME_INDEX: "TimeIndex"
       TICKET_TABLE: ${self:resources.Resources.PushNotificationTicketsTable.Properties.TableName, "Tickets-${self:provider.stage}"}
-      TICKET_DELETION_QUEUE_URL:
-        Ref: TicketsForDeletionQueue
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -118,11 +117,6 @@ functions:
           - dynamodb:BatchWriteItem
         Resource:
           - Fn::GetAtt: [PushNotificationSubsTable, Arn]
-      - Effect: Allow
-        Action:
-          - sqs:SendMessage
-        Resource:
-          - Fn::GetAtt: [TicketsForDeletionQueue, Arn]
 
   testSend:
     handler: src/sqs/testSend.handler
