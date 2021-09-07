@@ -1,4 +1,4 @@
-import { random } from "lodash";
+import { sample } from "lodash";
 import { DEV } from "../../../src/dev-config";
 
 export const monsterSprites: Array<{
@@ -1536,5 +1536,4 @@ if (DEV.validateMonsterTextures) {
     validateMonsterKeysExistAsTextures();
 }
 
-export const randomMonsterCfg = () =>
-    monsterMapping[random(monsterMapping.length - 1)];
+export const randomMonsterCfg = () => sample(monsterMapping)!;
