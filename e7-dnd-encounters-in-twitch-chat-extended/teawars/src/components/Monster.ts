@@ -5,14 +5,14 @@ import {
     monsterMapping,
     monsterSprites,
 } from "../../assets/images/monsters/monsters";
+import { MonsterAura } from "../anims/MonsterAura";
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-// TODO set skipIntro to false
-const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1, skipIntro: true };
+const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1, skipIntro: false };
 
 const cfg = {
     initY: -300,
@@ -103,22 +103,8 @@ export class Monster extends GameObjects.Image {
                     volume: 0.1,
                 });
 
-                const aura = this.scene.add.particles(
-                    "shapes",
-                    // eslint-disable-next-line @typescript-eslint/no-implied-eval
-                    new Function(
-                        `return ${
-                            this.scene.cache.text.get(
-                                "dark-aura-effect"
-                            ) as string
-                        }`
-                    )()
-                );
                 const { x, y } = this.getCenter();
-                aura.setDepth(cfg.y - 1)
-                    .setX(x)
-                    .setY(y);
-                aura.pause();
+                const aura = new MonsterAura(this.scene, x, y, cfg.y - 1);
 
                 groundshake.play();
                 groundshake.once("complete", () => {
@@ -126,7 +112,7 @@ export class Monster extends GameObjects.Image {
                     scream.play();
                     aura.resume();
                     this.scene.time.delayedCall(1800, () => {
-                        aura.emitters.getAll().forEach((e) => e.stop());
+                        aura.stopEmittingNewParticles();
                     });
                 });
                 scream.once("complete", () => {
@@ -283,32 +269,8 @@ export class Monster extends GameObjects.Image {
     }
 
     public die() {
-        const aura = this.scene.add.particles(
-            "shapes",
-            // eslint-disable-next-line @typescript-eslint/no-implied-eval
-            new Function(
-                `return ${
-                    this.scene.cache.text.get("dark-aura-effect") as string
-                }`
-            )()
-        );
         const { x, y } = this.getCenter();
-        aura.setDepth(cfg.y - 1)
-            .setX(x)
-            .setY(y);
-        aura.pause();
-        const stopEmittingNewParticles = () => {
-            aura.emitters.getAll().forEach((e) => e.stop());
-        };
-        const finalExplodeAuraAnim = () => {
-            aura.emitters.getAll().forEach((e) => {
-                e.setSpeed(1000);
-                e.setLifespan(600);
-                e.setQuantity(50);
-                e.start();
-            });
-            this.scene.time.delayedCall(300, stopEmittingNewParticles);
-        };
+        const aura = new MonsterAura(this.scene, x, y, cfg.y - 1);
 
         const timeline = this.scene.tweens.timeline();
 
@@ -324,9 +286,7 @@ export class Monster extends GameObjects.Image {
                     volume: 0.1,
                 });
             },
-            onComplete: () => {
-                stopEmittingNewParticles();
-            },
+            onComplete: () => aura.stopEmittingNewParticles(),
         });
         const explosionAnimDuration = 1200;
         timeline.add({
@@ -336,7 +296,7 @@ export class Monster extends GameObjects.Image {
             alpha: 0,
             duration: explosionAnimDuration,
             onStart: () => {
-                finalExplodeAuraAnim();
+                aura.finalExplodeAuraAnim();
                 this.scene.sound.play("groundshake", {
                     volume: 0.3,
                 });
