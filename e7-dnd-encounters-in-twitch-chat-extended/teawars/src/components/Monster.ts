@@ -269,6 +269,7 @@ export class Monster extends GameObjects.Image {
     }
 
     public die() {
+        this.scene.sound.stopByKey("battleloop");
         const { x, y } = this.getCenter();
         const aura = new MonsterAura(this.scene, x, y, cfg.y - 1);
 
