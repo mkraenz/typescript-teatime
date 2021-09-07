@@ -11,7 +11,8 @@ import { DamageText } from "./DamageText";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1 };
+// TODO set skipIntro to false
+const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1, skipIntro: true };
 
 const cfg = {
     initY: -300,
@@ -76,18 +77,22 @@ export class Monster extends GameObjects.Image {
 
     private setupDevMode(gui: GUI, name: string) {
         const folder = gui.addFolder(`Monster ${name}`);
+        folder.open();
         folder.addColor(devCfg, "tint");
         folder.add(devCfg, "clearTint");
         folder.add(devCfg, "alpha", 0, 1);
         folder.add(this, "debugReceiveDamage").name("receive Damage");
         folder.add(this, "debugAttack").name("attack");
+        folder.add(this, "die");
     }
 
     private ambush() {
+        if (devCfg.skipIntro) {
+            this.setY(cfg.y);
+            return;
+        }
         let landingDustStarted = false;
-        const animateLandingDust: Phaser.Types.Tweens.TweenOnUpdateCallback = (
-            tween
-        ) => {
+        const onUpdate: Phaser.Types.Tweens.TweenOnUpdateCallback = (tween) => {
             if (tween.progress > 0.5 && !landingDustStarted) {
                 landingDustStarted = true;
                 this.scene.cameras.main.shake(500, 0.02, true);
@@ -150,7 +155,7 @@ export class Monster extends GameObjects.Image {
             ease: "Elastic",
             easeParams: [1, 0.8],
             y: cfg.y,
-            onUpdate: animateLandingDust,
+            onUpdate,
         });
     }
 
@@ -278,7 +283,82 @@ export class Monster extends GameObjects.Image {
     }
 
     public die() {
-        this.setVisible(false);
+        const aura = this.scene.add.particles(
+            "shapes",
+            // eslint-disable-next-line @typescript-eslint/no-implied-eval
+            new Function(
+                `return ${
+                    this.scene.cache.text.get("dark-aura-effect") as string
+                }`
+            )()
+        );
+        const { x, y } = this.getCenter();
+        aura.setDepth(cfg.y - 1)
+            .setX(x)
+            .setY(y);
+        aura.pause();
+        const stopEmittingNewParticles = () => {
+            aura.emitters.getAll().forEach((e) => e.stop());
+        };
+        const finalExplodeAuraAnim = () => {
+            aura.emitters.getAll().forEach((e) => {
+                e.setSpeed(1000);
+                e.setLifespan(600);
+                e.setQuantity(50);
+                e.start();
+            });
+            this.scene.time.delayedCall(300, stopEmittingNewParticles);
+        };
+
+        const timeline = this.scene.tweens.timeline();
+
+        const leakAnimDuration = 2000;
+        timeline.add({
+            targets: {},
+            x: 0,
+            duration: leakAnimDuration,
+            onStart: () => {
+                aura.resume();
+                this.scene.cameras.main.shake(leakAnimDuration, 0.02, true);
+                this.scene.sound.play("monster-scream", {
+                    volume: 0.1,
+                });
+            },
+            onComplete: () => {
+                stopEmittingNewParticles();
+            },
+        });
+        const explosionAnimDuration = 1200;
+        timeline.add({
+            delay: 2500, // short break
+
+            targets: this,
+            alpha: 0,
+            duration: explosionAnimDuration,
+            onStart: () => {
+                finalExplodeAuraAnim();
+                this.scene.sound.play("groundshake", {
+                    volume: 0.3,
+                });
+                this.scene.cameras.main.shake(
+                    explosionAnimDuration,
+                    0.05,
+                    true
+                );
+            },
+            onComplete: () => {
+                this.setVisible(false);
+                this.alpha = 1;
+                this.activityBar.stop();
+            },
+        });
+        timeline.add({
+            targets: {},
+            x: 0,
+            delay: 2000,
+            onStart: () => this.playBgm("fanfare"),
+        });
+        timeline.play();
     }
 
     public debugAttack() {

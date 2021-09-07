@@ -120,7 +120,6 @@ export class MainScene extends Scene {
             if (event.type === "monster killed") {
                 this.onAttackImpact(() => {
                     this.monster?.die();
-                    this.playBgm("fanfare");
                 });
             }
         });
