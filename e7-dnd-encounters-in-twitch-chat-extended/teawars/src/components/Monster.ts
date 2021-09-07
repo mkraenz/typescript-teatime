@@ -8,6 +8,7 @@ import {
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
+import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
 const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1 };
@@ -24,11 +25,13 @@ interface IPoint {
 }
 
 export class Monster extends GameObjects.Image {
-    private healthbar!: MonsterHealthbar;
+    private healthbar: MonsterHealthbar;
+    private activityBar: MonsterActivityBar;
 
     constructor(
         scene: Scene,
         { hp, name }: { hp: number; name: string },
+        turnInterval: number,
         gui: GUI
     ) {
         super(scene, 1100, cfg.initY, getSpriteKey(name));
@@ -52,6 +55,7 @@ export class Monster extends GameObjects.Image {
         this.setAlpha(renderProps.alpha);
 
         this.healthbar = new MonsterHealthbar(scene, hp);
+        this.activityBar = new MonsterActivityBar(scene, turnInterval);
         const label = this.scene.add
             .text(scene.scale.width / 2, 84, startCase(name), {
                 fontSize: "bold 60px",
@@ -64,6 +68,10 @@ export class Monster extends GameObjects.Image {
         this.ambush();
 
         this.setupDevMode(gui, name);
+    }
+
+    public update(time: number, delta: number) {
+        this.activityBar.update(time, delta);
     }
 
     private setupDevMode(gui: GUI, name: string) {

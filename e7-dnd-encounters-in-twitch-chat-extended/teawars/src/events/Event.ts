@@ -38,6 +38,7 @@ export interface Ambushed {
         hp: number;
         area: string;
     };
+    turnInterval: number;
 }
 
 export interface AdventurerKilled {

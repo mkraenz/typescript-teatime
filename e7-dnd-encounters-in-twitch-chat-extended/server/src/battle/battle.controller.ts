@@ -22,6 +22,7 @@ export class BattleController {
           area: 'the void',
           hp: 263,
         },
+        turnInterval: 30000,
       },
       { type: 'join', member: 'maceisgrace', hp: 99999, maxHp: 100000 },
       { type: 'join', member: 'typescriptteatime', hp: 99999, maxHp: 100000 },
@@ -51,6 +52,7 @@ export class BattleController {
         area: 'the void',
         hp: 263,
       },
+      turnInterval: 30000,
     });
     await this.battles.appendToLog({
       type: 'join',

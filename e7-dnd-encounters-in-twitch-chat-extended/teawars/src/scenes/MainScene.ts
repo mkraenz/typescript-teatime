@@ -65,7 +65,7 @@ export class MainScene extends Scene {
             this.battleLog.push(event);
 
             if (event.type === "monster appeared") {
-                this.addMonster(event.monster);
+                this.addMonster(event);
             }
             if (event.type === "join") {
                 this.addAdventurer(event.member, event.hp, event.maxHp);
@@ -147,9 +147,13 @@ export class MainScene extends Scene {
                 this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
             );
             this.addMonster({
-                area: "Forest",
-                hp: 21,
-                name: randomMonsterCfg().name,
+                type: "monster appeared",
+                monster: {
+                    area: "Forest",
+                    hp: 21,
+                    name: randomMonsterCfg().name,
+                },
+                turnInterval: 30000,
             });
         }
     }
@@ -158,8 +162,13 @@ export class MainScene extends Scene {
         return this.party.find((a) => a.username === username);
     }
 
-    private addMonster(cfg: Ambushed["monster"]) {
-        this.monster = new Monster(this, cfg, this.gui);
+    private addMonster(cfg: Ambushed) {
+        this.monster = new Monster(
+            this,
+            cfg.monster,
+            cfg.turnInterval,
+            this.gui
+        );
     }
 
     private onAttackImpact(cb: () => void) {
@@ -171,9 +180,9 @@ export class MainScene extends Scene {
     }
 
     // automatically called every 1/60th of a second
-    public update() {
+    public update(time: number, delta: number) {
         this.party.forEach((adventurer) => adventurer.update());
-        this.monster?.update();
+        this.monster?.update(time, delta);
     }
 
     private addTitle() {

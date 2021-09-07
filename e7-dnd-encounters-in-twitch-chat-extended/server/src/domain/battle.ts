@@ -16,6 +16,7 @@ export class Battle {
     this.log.push({
       type: 'monster appeared',
       monster: pick(this.monster, ['area', 'hp', 'name']),
+      turnInterval: timeTillAttackInSeconds * 1000,
     });
     // start game loop
     this.gameloop = global.setInterval(
@@ -53,7 +54,7 @@ export class Battle {
     if (!healingAdventurer || !healedAdventurer) return;
 
     const healedHp = healingAdventurer.heal(healedAdventurer.username);
-    if(!healedHp) return;
+    if (!healedHp) return;
     healedAdventurer.receivesHeal(healedHp);
   }
 
