@@ -89,10 +89,32 @@ export class Monster extends GameObjects.Image {
                 const scream = this.scene.sound.add("monster-scream", {
                     volume: 0.1,
                 });
+
+                const aura = this.scene.add.particles(
+                    "shapes",
+                    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+                    new Function(
+                        `return ${
+                            this.scene.cache.text.get(
+                                "dark-aura-effect"
+                            ) as string
+                        }`
+                    )()
+                );
+                const { x, y } = this.getCenter();
+                aura.setDepth(cfg.y - 1)
+                    .setX(x)
+                    .setY(y);
+                aura.pause();
+
                 groundshake.play();
                 groundshake.once("complete", () => {
                     this.scene.cameras.main.shake(2500, 0.02, true);
                     scream.play();
+                    aura.resume();
+                    this.scene.time.delayedCall(1800, () => {
+                        aura.emitters.getAll().forEach((e) => e.stop());
+                    });
                 });
                 scream.once("complete", () => {
                     this.playBgm("battleloop");
