@@ -14,8 +14,8 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
-        adventurers: 0,
+        enabled: false,
+        adventurers: 1,
     },
     fadeIn: 200,
     title: {
@@ -89,6 +89,13 @@ export class MainScene extends Scene {
                         adventurer.getCenter(),
                         cfg.jumpAttackDuration
                     );
+                }
+            }
+
+            if (event.type === "fire cast" && this.monster) {
+                const adventurer = this.getAdventurer(event.actor);
+                if (adventurer) {
+                    adventurer.castFire(this.monster.getBottomCenter());
                 }
             }
 

@@ -54,6 +54,7 @@ export class LoadingScene extends Scene {
             .text("heal-effect", "assets/particles/heal.json")
             .text("dark-aura-effect", "assets/particles/darkaura.json")
             .text("dust-landing-effect", "assets/particles/dust.json")
+            .text("fire-magic-effect", "assets/particles/fire-magic.json")
             .audio("fanfare", sound("teawars-fanfare.mp3"))
             .audio("sword0", sound("sword-1b.mp3"))
             .audio("sword1", sound("sword-1a.mp3"))

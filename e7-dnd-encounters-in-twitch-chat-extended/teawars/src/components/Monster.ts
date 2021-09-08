@@ -9,6 +9,7 @@ import { MonsterAura } from "../anims/MonsterAura";
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { DamageText } from "./DamageText";
+import { IPoint } from "./IPoint";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
@@ -19,11 +20,6 @@ const cfg = {
     y: 600,
     dustLandingOffsetY: -20,
 };
-
-interface IPoint {
-    x: number;
-    y: number;
-}
 
 export class Monster extends GameObjects.Image {
     private healthbar: MonsterHealthbar;
@@ -77,7 +73,7 @@ export class Monster extends GameObjects.Image {
 
     private setupDevMode(gui: GUI, name: string) {
         const folder = gui.addFolder(`Monster ${name}`);
-        folder.open();
+        // folder.open();
         folder.addColor(devCfg, "tint");
         folder.add(devCfg, "clearTint");
         folder.add(devCfg, "alpha", 0, 1);

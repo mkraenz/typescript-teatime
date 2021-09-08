@@ -4,6 +4,7 @@ import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
+import { IPoint } from "./IPoint";
 
 export class Adventurer extends GameObjects.Image {
     private healthbar: AdventurerHealthbar;
@@ -53,7 +54,8 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "castHeal").name("cast Heal");
         folder.add(this, "debugReceiveHeal").name("receive Heal");
         folder.add(this, "animateSlice").name("slice");
-        // folder.open();
+        folder.add(this, "debugCastFire").name("cast Fire");
+        folder.open();
     }
 
     private join() {
@@ -203,6 +205,40 @@ export class Adventurer extends GameObjects.Image {
         this.scene.time.delayedCall(2000, () => emitter.destroy());
     }
 
+    public castFire({ x, y }: IPoint) {
+        const emitFire = () => {
+            // this.scene.sound.play("heal", { volume: 0.5 });
+            const emitter = this.scene.add.particles(
+                "shapes",
+                // eslint-disable-next-line @typescript-eslint/no-implied-eval
+                new Function(
+                    `return ${
+                        this.scene.cache.text.get("fire-magic-effect") as string
+                    }`
+                )()
+            );
+            emitter.setX(x);
+            emitter.setY(y);
+            emitter.setDepth(99999);
+
+            // new DamageText(this.scene, this, -amountHealed);
+            this.scene.time.delayedCall(200, () =>
+                emitter.emitters.getAll().forEach((e) => e.stop())
+            );
+        };
+
+        const stepAnimDuration = 200;
+        this.scene.tweens.add({
+            targets: this,
+            x: this.x + 80,
+            duration: stepAnimDuration,
+            ease: "Sine.easeInOut",
+            yoyo: true,
+            hold: 1000,
+        });
+        this.scene.time.delayedCall(stepAnimDuration + 300, emitFire);
+    }
+
     public receiveDamage(amount: number) {
         this.healthbar.takeDamage(amount);
 
@@ -236,5 +272,9 @@ export class Adventurer extends GameObjects.Image {
 
     public debugReceiveHeal() {
         this.receiveHeal(130, 14);
+    }
+
+    public debugCastFire() {
+        this.castFire({ x: 1100, y: 750 });
     }
 }

@@ -94,4 +94,18 @@ export class Adventurer {
     this.hasActedThisTurn = true;
     monster.takeDamage(damage);
   }
+
+  public castFire(monster: Monster) {
+    if (this.isDead) return;
+    if (this.hasActedThisTurn) return;
+
+    const damage = random(19) + this.level;
+    this.log.push({
+      type: 'fire cast',
+      actor: this.username,
+      target: monster.name,
+    });
+    this.hasActedThisTurn = true;
+    monster.takeDamage(damage);
+  }
 }
