@@ -25,12 +25,14 @@ const monsterData = [
     area: 'city',
     type: 'fiend',
     hp: 70,
+    maxDamage: 20,
   },
   {
     name: 'revenant',
     area: 'city',
     type: 'undead',
     hp: 70,
+    maxDamage: 25,
   },
   {
     name: 'vampire',
