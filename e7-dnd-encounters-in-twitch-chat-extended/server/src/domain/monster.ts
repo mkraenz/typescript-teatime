@@ -16,7 +16,7 @@ export class Monster {
       area,
       hp,
       maxDamage = 15,
-    }: { name: string; area: string; hp: number; maxDamage: number },
+    }: { name: string; area: string; hp: number; maxDamage?: number },
   ) {
     this.log = log;
     this.area = area;
