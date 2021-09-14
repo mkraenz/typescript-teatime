@@ -17,7 +17,7 @@ const tmiConfig = {
 };
 
 const banned = ['streamelements'];
-const timeTillAttackInSeconds = 30;
+const timeTillAttackInSeconds = 15;
 const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
 export type BattleLogSubscriber = (event: IEvent) => void;
