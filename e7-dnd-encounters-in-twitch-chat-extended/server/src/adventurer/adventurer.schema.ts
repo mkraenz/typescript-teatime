@@ -46,6 +46,26 @@ export class Adventurer {
     }
   }
 
+  public addExperience(exp: number, forceUpdateLevel = false) {
+    this.experience += exp;
+    // 1 -> 2  200xp
+    // 2 -> 3  600xp
+    // 3 -> 4  1100xp
+    // 4 -> 5  1600xp
+    const level = 1 + Math.floor(Math.pow(this.experience / 200, 2 / 3));
+    const leveledUp = level > this.level;
+    if (forceUpdateLevel) {
+      this.level = level;
+    } else if (leveledUp) {
+      this.level = level;
+      this.log.push({
+        type: 'leveled up',
+        level: level,
+        target: this.username,
+      });
+    }
+  }
+
   public heal(receiver: string) {
     if (this.isDead) return;
     if (this.hasActedThisTurn) return;

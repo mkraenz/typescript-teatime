@@ -116,8 +116,7 @@ export class ChatbotService {
   }
   private async saveAdventurerToDatabase() {
     for (const adventurer of this.joinedAdventurers) {
-      adventurer.experience += 100;
-      adventurer.level = 1 + Math.floor(adventurer.experience / 300);
+      adventurer.addExperience(100);
       await adventurer.save();
     }
   }

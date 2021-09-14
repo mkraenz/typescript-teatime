@@ -59,6 +59,7 @@ export class AdventurerService {
       throw new Error('Entity not found');
     }
     adventurer.experience = update.experience ?? adventurer.experience;
+    if (update.experience) adventurer.addExperience(0, true);
     adventurer.hp = update.hp ?? adventurer.hp;
     return adventurer.save();
   }
