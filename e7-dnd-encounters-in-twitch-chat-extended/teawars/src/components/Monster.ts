@@ -24,6 +24,7 @@ const cfg = {
 export class Monster extends GameObjects.Image {
     private healthbar: MonsterHealthbar;
     private activityBar: MonsterActivityBar;
+    private renderCfg: typeof monsterMapping[0];
 
     constructor(
         scene: Scene,
@@ -47,9 +48,10 @@ export class Monster extends GameObjects.Image {
         if (!renderProps) {
             throw new Error("Monster mapping not found");
         }
-        this.setTint(renderProps.tint);
-        this.setNormalizedSize(renderProps.scale);
-        this.setAlpha(renderProps.alpha);
+        this.renderCfg = renderProps;
+        this.setTint(this.renderCfg.tint);
+        this.setNormalizedSize(this.renderCfg.scale);
+        this.setAlpha(this.renderCfg.alpha);
 
         this.healthbar = new MonsterHealthbar(scene, hp);
         this.activityBar = new MonsterActivityBar(scene, turnInterval);
@@ -261,7 +263,10 @@ export class Monster extends GameObjects.Image {
 
         const red = 0xff0000;
         this.setTint(red);
-        this.scene.time.delayedCall(300, () => this.clearTint());
+        this.scene.time.delayedCall(300, () => {
+            this.clearTint();
+            this.setTint(this.renderCfg.tint);
+        });
     }
 
     public die() {
