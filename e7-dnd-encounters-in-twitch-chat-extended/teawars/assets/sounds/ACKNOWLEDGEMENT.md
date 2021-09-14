@@ -7,7 +7,9 @@
   - Changes: Transformed from `.wav` files into `.mp3` files
 - [Footstep_Dirt_00-repeat.mp3 by Little Robot Sound Factory under CC-BY 3.0](https://opengameart.org/content/fantasy-sound-effects-library). Website [www.littlerobotsoundfactory.com](https://www.littlerobotsoundfactory.com) (Warning: Website seems to have changed)
   - Changes from original file `Footstep_Dirt_00-repeat.mp3`: Repeat track twice in a row
-- [deathflash.mp3 by Blender Foundation and Submitted by Lamoot under CC-BY 3.0](https://opengameart.org/content/big-explosion)
+- [deathflash.mp3 by Blender Foundation and submitted by Lamoot under CC-BY 3.0](https://opengameart.org/content/big-explosion)
   - Changes: none
 - [scream_horror1.mp3 by Vinrax under CC0](https://opengameart.org/content/horror-scream1)
 - [magical_5.ogg by JaggedStone under CC0](https://opengameart.org/content/magic-spell-sfx)
+- [Fire.mp3 by artisticdude and submitted by qubodup under CC-BY 3.0](https://opengameart.org/content/fire-evil-spell)
+  - Changes: converted to `.mp3`

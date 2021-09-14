@@ -207,7 +207,7 @@ export class Adventurer extends GameObjects.Image {
 
     public castFire({ x, y }: IPoint) {
         const emitFire = () => {
-            // this.scene.sound.play("heal", { volume: 0.5 });
+            this.scene.sound.play("fire", { volume: 0.3, rate: 1.2 });
             const emitter = this.scene.add.particles(
                 "shapes",
                 // eslint-disable-next-line @typescript-eslint/no-implied-eval
