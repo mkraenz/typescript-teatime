@@ -38,7 +38,8 @@
   - Changes: none
 - [2D JRPG Dot Characters by clam (submitted by OpenGameSeeker) under CC0](https://opengameart.org/content/2d-jrpg-dot-character)
 - [RPG Battle backgrounds by Nidhoggn under CC0](https://opengameart.org/content/backgrounds-3)
-
+- [animation_1-8.png by Name By Another Rose under CC0](https://opengameart.org/content/two-colored-arrows)
+  - Changes: Colors changed
 - General note: Sprites may appear tinted in-game.
 
 ### Generating favicon.ico

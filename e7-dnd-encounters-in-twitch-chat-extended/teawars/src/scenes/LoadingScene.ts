@@ -38,6 +38,7 @@ export class LoadingScene extends Scene {
             .image("empty-health-bar", img("empty-health-bar.png"))
             .image("red-health-bar", img("red-health-bar.png"))
             .image("green-bar", img("green-bar.png"))
+            .image("arrow-up", img("animation_1-8.png"))
             .spritesheet(
                 "adventurers",
                 img("adventurers/adventurers.sprite.32x32.png"),

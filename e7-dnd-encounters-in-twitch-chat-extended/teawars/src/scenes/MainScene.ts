@@ -14,7 +14,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
+        enabled: true,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -128,6 +128,11 @@ export class MainScene extends Scene {
                 this.onAttackImpact(() => {
                     this.monster?.die();
                 });
+            }
+
+            if (event.type === "leveled up") {
+                const adventurer = this.getAdventurer(event.target);
+                adventurer?.levelUp();
             }
         });
     }

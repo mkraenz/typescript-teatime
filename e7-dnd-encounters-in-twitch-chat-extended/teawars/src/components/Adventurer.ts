@@ -2,6 +2,7 @@ import { GUI } from "dat.gui";
 import { random } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
+import { animateLevelUp } from "../anims/LevelUp";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
@@ -55,6 +56,7 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "debugReceiveHeal").name("receive Heal");
         folder.add(this, "animateSlice").name("slice");
         folder.add(this, "debugCastFire").name("cast Fire");
+        folder.add(this, "levelUp");
         folder.open();
     }
 
@@ -260,6 +262,11 @@ export class Adventurer extends GameObjects.Image {
             rotation: -Phaser.Math.PI2 / 4,
             duration: 150,
         });
+    }
+
+    public levelUp() {
+        const { x, y } = this.getBottomCenter();
+        animateLevelUp(this.scene, x, y);
     }
 
     public debugAttack() {
