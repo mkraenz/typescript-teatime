@@ -1,44 +1,32 @@
-# Typescript Teatime - The Teawars
+# The Teawars
 
-Rendering the Twitch Chat-based Turn-based Battle game of [TypeScript Teatime](https://www.twitch.tv/typescriptteatime). Join us on [Twitch](https://www.twitch.tv/typescriptteatime) for weekly coding action!
+A Twitch Chat-controlled Turn-based Battle game from the [TypeScript Teatime](https://www.twitch.tv/typescriptteatime). Join us on [Twitch](https://www.twitch.tv/typescriptteatime) for live coding action!
 
 ## Getting started
 
-### Installing
+### Prerequisites
 
-Assumes you have globally installed
+- git and NodeJS installed
 
-- git
-- node.js
+### Installation
 
-Clone the git repository
-
-```bash
-git clone TODO
-```
-
-Install, test and start:
+Install, test, start, open browser:
 
 ```bash
 npm run sanity-check
+# in a separate terminal start the server
+# the server connects to Twitch chat and handles all the game logic. This frontend only renders.
+cd ../server
+# then follow the instructions in the readme
 ```
 
 ### Building and Running
 
-Perform a quick build (bundle.js) and start server:
+Perform a quick build (bundle.js) and start server. It will open a browser window:
 
 ```bash
 npm run dev
 ```
-
-### Running with Docker
-
-```bash
-# Assumes local installation of Docker.
-npm run build && docker-compose up
-```
-
-In your browser, navigate to [localhost:8080](http://localhost:8080).
 
 ## Debugging
 
