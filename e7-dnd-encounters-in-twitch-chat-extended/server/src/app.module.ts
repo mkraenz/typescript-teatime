@@ -8,6 +8,7 @@ import { BattleModule } from './battle/battle.module';
 import { ChatbotModule } from './chatbot/chatbot.module';
 import { toConfig } from './env';
 import { MongoUriModule } from './mongo-uri/mongo-uri.module';
+import { TestWebsocketsModule } from './test-websockets/test-websockets.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { MongoUriModule } from './mongo-uri/mongo-uri.module';
     AdventurerModule,
     ChatbotModule,
     BattleModule,
+    TestWebsocketsModule,
   ],
   controllers: [AppController],
   providers: [

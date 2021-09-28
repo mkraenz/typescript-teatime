@@ -12,6 +12,7 @@
     "start": "nest start",
     "dev": "docker start mongo && nest start --watch",
     "start:dev": "nest start --watch",
+    "start:dev:test-websockets": "INSECURELY_EXPOSE_TEST_WEBSOCKETS_ENDPOINT=true nest start --watch",
     "start:db": "docker run -d -p 27017:27017 --name mongo mongo",
     "start:debug": "nest start --debug --watch",
     "start:prod": "PORT=3140 DATABASE_NAME=teawars-prod node dist/main",

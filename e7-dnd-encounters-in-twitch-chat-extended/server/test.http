@@ -57,3 +57,23 @@ GET http://localhost:3000/battles
 GET http://localhost:3000/battles/test
 ### 
 GET http://localhost:3000/battles/test2
+
+### Emit Leveled Up test events
+POST http://localhost:3000/test-websockets
+Content-Type: application/json
+
+{
+  "level": 12,
+  "target": "Amazing Adventurer 1",
+  "type": "leveled up"
+}
+
+### 
+POST http://localhost:3000/test-websockets
+Content-Type: application/json
+
+{
+  "type": "fire cast",
+  "actor": "Amazing Adventurer 1",
+  "target": "chain devil"
+}
