@@ -40,6 +40,7 @@
 - [RPG Battle backgrounds by Nidhoggn under CC0](https://opengameart.org/content/backgrounds-3)
 - [animation_1-8.png by Name By Another Rose under CC0](https://opengameart.org/content/two-colored-arrows)
   - Changes: Colors changed
+- [ice-crystal.png by MNDV.ecb under CC0](https://opengameart.org/content/elemental-badges-from-the-savage-swordsman)
 - General note: Sprites may appear tinted in-game.
 
 ### Generating favicon.ico

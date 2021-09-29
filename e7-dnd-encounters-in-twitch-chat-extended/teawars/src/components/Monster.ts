@@ -3,7 +3,7 @@ import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import {
     monsterMapping,
-    monsterSprites,
+    monsterSprites
 } from "../../assets/images/monsters/monsters";
 import { MonsterAura } from "../anims/MonsterAura";
 import { Color, toHex } from "../styles/Color";

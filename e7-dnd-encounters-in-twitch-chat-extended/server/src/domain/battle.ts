@@ -51,6 +51,15 @@ export class Battle {
     }
   }
 
+  public castIce(username: string) {
+    const adventurer = this.getAdventurer(username);
+    if (!adventurer) return;
+    adventurer.castIce(this.monster);
+    if (this.monster.isDead) {
+      this.endBattle();
+    }
+  }
+
   public getAdventurer(username: string): Adventurer | undefined {
     return this.party.find(
       (a) => a.username.toLowerCase() === username.toLowerCase(),

@@ -75,6 +75,9 @@ export class ChatbotService {
     if (msg.includes('!fire')) {
       return this.battle.castFire(username);
     }
+    if (msg.includes('!ice')) {
+      return this.battle.castIce(username);
+    }
     if (msg.includes('!heal')) {
       // using message to handle uppercase characters in username receiving heal
       return this.handleHeal(this.battle, message, username);

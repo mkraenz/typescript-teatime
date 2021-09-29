@@ -9,6 +9,7 @@ export type IEvent =
   | ReceivedHeal
   | HealCast
   | FireCast
+  | IceCast
   | LeveledUp;
 
 interface HealCast {
@@ -26,6 +27,12 @@ interface LeveledUp {
 
 export interface FireCast {
   type: 'fire cast';
+  target: string;
+  actor: string;
+}
+
+export interface IceCast {
+  type: 'ice cast';
   target: string;
   actor: string;
 }

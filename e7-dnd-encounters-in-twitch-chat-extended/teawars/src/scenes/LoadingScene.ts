@@ -39,6 +39,7 @@ export class LoadingScene extends Scene {
             .image("red-health-bar", img("red-health-bar.png"))
             .image("green-bar", img("green-bar.png"))
             .image("arrow-up", img("animation_1-8.png"))
+            .image("ice-crystal", img("ice-crystal.png"))
             .spritesheet(
                 "adventurers",
                 img("adventurers/adventurers.sprite.32x32.png"),
@@ -66,6 +67,7 @@ export class LoadingScene extends Scene {
             .audio("fire", sound("Fire.mp3"))
             .audio("monster-scream", sound("scream_horror1.mp3"))
             .audio("battleloop", sound("8BitBattleLoop.ogg"))
+            .audio("ice", sound("freeze.mp3"))
             .audio("level-up", sound("level-up.mp3"));
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));
