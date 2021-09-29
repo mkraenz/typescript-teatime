@@ -267,6 +267,11 @@ export class Adventurer extends GameObjects.Image {
     public levelUp() {
         const { x, y } = this.getBottomCenter();
         animateLevelUp(this.scene, x, y);
+        this.scene.time.delayedCall(500, () =>
+            this.scene.sound.play("level-up", {
+                volume: 0.4,
+            })
+        );
     }
 
     public debugAttack() {

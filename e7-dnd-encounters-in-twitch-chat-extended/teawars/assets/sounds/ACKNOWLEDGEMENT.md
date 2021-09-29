@@ -13,3 +13,5 @@
 - [magical_5.ogg by JaggedStone under CC0](https://opengameart.org/content/magic-spell-sfx)
 - [Fire.mp3 by artisticdude and submitted by qubodup under CC-BY 3.0](https://opengameart.org/content/fire-evil-spell)
   - Changes: converted to `.mp3`
+- [freeze.mp3 by artisticdude under CC0](https://opengameart.org/content/freeze-spell-0)
+- [level-up.mp3 by phoenix1291 under CC0](https://opengameart.org/content/sound-effects-mini-pack15)
