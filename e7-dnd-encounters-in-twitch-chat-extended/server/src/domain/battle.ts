@@ -76,6 +76,15 @@ export class Battle {
     healedAdventurer.receivesHeal(healedHp);
   }
 
+  // TODO extract parameter decorator
+  public healParty(healer: string) {
+    const healingAdventurer = this.getAdventurer(healer);
+    if (!healingAdventurer) return;
+    const healedHp = healingAdventurer.healParty(this.party.length);
+    if (!healedHp) return;
+    this.party.forEach((adventurer) => adventurer.receivesHeal(healedHp));
+  }
+
   private onTick() {
     if (this.monster.isDead) {
       this.endBattle();

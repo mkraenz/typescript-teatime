@@ -8,6 +8,7 @@ export type IEvent =
   | PartyKilled
   | ReceivedHeal
   | HealCast
+  | HealPartyCast
   | FireCast
   | IceCast
   | LeveledUp;
@@ -17,6 +18,12 @@ interface HealCast {
   actor: string;
   amount: number;
   receiver: string;
+}
+
+interface HealPartyCast {
+  type: 'heal party cast';
+  actor: string;
+  amount: number;
 }
 
 interface LeveledUp {

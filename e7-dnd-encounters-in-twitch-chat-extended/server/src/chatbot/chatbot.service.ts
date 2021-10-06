@@ -92,10 +92,12 @@ export class ChatbotService {
     // !heal @maceisgrace
     // filter for ignoring whitespace
     const healed = msg.split(' ').filter((m) => !isEmpty(m))[1];
-    if (!healed || healed[0] !== '@')
-      return say(`Invalid command by @${username}: ${msg}`);
-    const healedWithoutAt = healed.substring(1);
-    return battle.heal(username, healedWithoutAt);
+    const singleTargetCast = healed && healed[0] === '@';
+    if (singleTargetCast) {
+      const healedTargetUser = healed.substring(1);
+      return battle.heal(username, healedTargetUser);
+    }
+    return battle.healParty(username);
   }
 
   private async pollBattleLogs() {

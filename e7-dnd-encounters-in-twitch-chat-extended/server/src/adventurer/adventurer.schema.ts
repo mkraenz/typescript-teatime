@@ -1,5 +1,5 @@
 import { prop } from '@typegoose/typegoose';
-import { random } from 'lodash';
+import { ceil, random } from 'lodash';
 import { IEvent } from '../domain/events';
 import type { Monster } from '../domain/monster';
 
@@ -67,6 +67,7 @@ export class Adventurer {
   }
 
   public heal(receiver: string) {
+    // TODO extract this.canAct
     if (this.isDead) return;
     if (this.hasActedThisTurn) return;
 
@@ -77,6 +78,22 @@ export class Adventurer {
       actor: this.username,
       amount,
     });
+    this.hasActedThisTurn = true;
+    return amount;
+  }
+
+  healParty(partySize: number) {
+    if (this.isDead) return;
+    if (this.hasActedThisTurn) return;
+
+    const amount = ceil(random(12) / partySize);
+    // TODO handle event on frontend
+    this.log.push({
+      type: 'heal party cast',
+      actor: this.username,
+      amount,
+    });
+    // TODO decorator to exhaust hasActedThisTurn
     this.hasActedThisTurn = true;
     return amount;
   }
