@@ -118,9 +118,9 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [ ] ~~choose background according to enemy area~~
 - [x] backend Bug: when party dies
 - [x] backend: disallow joining twice
-- [ ] backend exposes battles with event log as GET /battles
-- [ ] backend persists battles
+- [x] backend exposes battles with event log as GET /battles
+- [x] backend persists battles
 - [ ] backend autobackup database after stream
 - [ ] !move left 3
-- [ ] !heal @username
+- [x] !heal @username
 - [ ] ? on end, clear party after x seconds ?

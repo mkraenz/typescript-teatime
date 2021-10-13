@@ -87,7 +87,6 @@ export class Adventurer {
     if (this.hasActedThisTurn) return;
 
     const amount = ceil(random(12) / partySize);
-    // TODO handle event on frontend
     this.log.push({
       type: 'heal party cast',
       actor: this.username,

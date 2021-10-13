@@ -14,7 +14,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
+        enabled: true,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -121,7 +121,10 @@ export class MainScene extends Scene {
                 this.onAttackImpact(() => adventurer?.die());
             }
 
-            if (event.type === "heal cast") {
+            if (
+                event.type === "heal cast" ||
+                event.type === "heal party cast"
+            ) {
                 const adventurer = this.getAdventurer(event.actor);
                 adventurer?.castHeal();
             }
