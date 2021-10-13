@@ -6,7 +6,7 @@ const Cfg = {
 
 export class MonsterActivityBar extends GameObjects.Image {
     private timePassed = 0;
-    private enabled = true;
+    private enabled = false;
 
     constructor(scene: Scene, private readonly cooldown: number) {
         super(scene, scene.scale.width / 2, 156, "green-bar");
@@ -25,6 +25,10 @@ export class MonsterActivityBar extends GameObjects.Image {
         this.timePassed += delta;
         const factor = (this.timePassed % this.cooldown) / this.cooldown;
         this.setCrop(0, 0, this.width * factor, this.height);
+    }
+
+    public start() {
+        this.enabled = true;
     }
 
     public stop() {

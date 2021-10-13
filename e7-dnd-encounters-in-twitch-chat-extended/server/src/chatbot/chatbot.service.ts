@@ -22,6 +22,14 @@ const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
 export type BattleLogSubscriber = (event: IEvent) => void;
 
+enum Command {
+  Attack = '!attack',
+  Join = '!join',
+  Fire = '!fire',
+  Ice = '!ice',
+  Heal = '!heal',
+}
+
 @Injectable()
 export class ChatbotService {
   private readonly tmiClient: Client;
@@ -66,19 +74,26 @@ export class ChatbotService {
     }
     if (!this.battle) return;
 
-    if (msg.includes('!join')) {
+    if (includesACommand(msg)) {
+      const hasJoined = this.battle.hasJoined(username);
+      if (!hasJoined) {
+        return await this.joinParty(username, this.battle);
+      }
+    }
+
+    if (msg.includes(Command.Join)) {
       return await this.joinParty(username, this.battle);
     }
-    if (msg.includes('!attack')) {
+    if (msg.includes(Command.Attack)) {
       return this.battle.attack(username);
     }
-    if (msg.includes('!fire')) {
+    if (msg.includes(Command.Fire)) {
       return this.battle.castFire(username);
     }
-    if (msg.includes('!ice')) {
+    if (msg.includes(Command.Ice)) {
       return this.battle.castIce(username);
     }
-    if (msg.includes('!heal')) {
+    if (msg.includes(Command.Heal)) {
       // using message to handle uppercase characters in username receiving heal
       return this.handleHeal(this.battle, message, username);
     }
@@ -205,3 +220,6 @@ export class ChatbotService {
 const say = (text: string) => {
   console.log(text);
 };
+
+const includesACommand = (msg: string) =>
+  Object.values(Command).some((cmd) => msg.includes(cmd));

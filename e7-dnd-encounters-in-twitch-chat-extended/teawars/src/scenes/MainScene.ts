@@ -69,6 +69,7 @@ export class MainScene extends Scene {
             }
             if (event.type === "join") {
                 this.addAdventurer(event.member, event.hp, event.maxHp);
+                this.monster?.startActivityBar();
             }
 
             if (event.type === "attack" && !event.isMonster && this.monster) {

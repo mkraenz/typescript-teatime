@@ -37,7 +37,7 @@ PATCH http://localhost:3000/adventurers
 Content-Type: application/json
 
 {
-    "username": "maceisgrace",
+    "username": "typescriptteatime",
     "hp": 75
 }
 
@@ -76,4 +76,14 @@ Content-Type: application/json
   "type": "fire cast",
   "actor": "Amazing Adventurer 1",
   "target": "chain devil"
+}
+
+### 
+POST http://localhost:3000/test-websockets
+Content-Type: application/json
+
+{
+  "type": "heal party cast",
+  "actor": "Amazing Adventurer 1",
+  "amount": 12
 }

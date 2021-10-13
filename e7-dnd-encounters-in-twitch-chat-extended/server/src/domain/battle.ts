@@ -8,21 +8,16 @@ import { monsters } from './monsters.json';
 export class Battle {
   private monster: Monster;
   private party: Adventurer[] = [];
-  private gameloop: NodeJS.Timeout | null;
+  private gameloop: NodeJS.Timeout | null = null;
   public log: IEvent[] = [];
 
-  constructor(timeTillAttackInSeconds: number) {
+  constructor(private timeTillAttackInSeconds: number) {
     this.monster = this.getMonster();
     this.log.push({
       type: 'monster appeared',
       monster: pick(this.monster, ['area', 'hp', 'name']),
       turnInterval: timeTillAttackInSeconds * 1000,
     });
-    // start game loop
-    this.gameloop = global.setInterval(
-      () => this.onTick(),
-      timeTillAttackInSeconds * 1000,
-    );
   }
 
   public get adventurerNames() {
@@ -64,6 +59,10 @@ export class Battle {
     return this.party.find(
       (a) => a.username.toLowerCase() === username.toLowerCase(),
     );
+  }
+
+  public hasJoined(username: string) {
+    return !!this.getAdventurer(username);
   }
 
   public heal(healer: string, healed: string) {
@@ -128,5 +127,13 @@ export class Battle {
       hp: adventurer.hp,
       maxHp: adventurer.maxHp,
     });
+
+    // possibly start game loop
+    if (this.party.length > 0 && !this.gameloop) {
+      this.gameloop = global.setInterval(
+        () => this.onTick(),
+        this.timeTillAttackInSeconds * 1000,
+      );
+    }
   }
 }

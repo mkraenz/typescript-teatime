@@ -3,7 +3,7 @@ import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import {
     monsterMapping,
-    monsterSprites
+    monsterSprites,
 } from "../../assets/images/monsters/monsters";
 import { MonsterAura } from "../anims/MonsterAura";
 import { Color, toHex } from "../styles/Color";
@@ -267,6 +267,10 @@ export class Monster extends GameObjects.Image {
             this.clearTint();
             this.setTint(this.renderCfg.tint);
         });
+    }
+
+    public startActivityBar() {
+        this.activityBar.start();
     }
 
     public die() {
