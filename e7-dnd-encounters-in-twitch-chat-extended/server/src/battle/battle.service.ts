@@ -42,6 +42,10 @@ export class BattleService implements ISubscribable {
     return this.battleModel.find().exec();
   }
 
+  async findOne(id: string) {
+    return this.battleModel.findById(id).exec();
+  }
+
   private startSaveDaemon() {
     // avoid PromiseRejection: MongooseError [ParallelSaveError]: Can't save() the same doc multiple times in parallel by only saving every x seconds if the document has been changed
     this.saveDaemon = setInterval(() => {
