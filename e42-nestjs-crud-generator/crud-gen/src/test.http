@@ -1,0 +1,24 @@
+GET http://localhost:3000/teas
+
+###
+
+GET http://localhost:3000/teas/991ce853
+
+
+###
+
+POST http://localhost:3000/teas
+Content-Type: application/json
+
+{
+    "name": "Valerian Root",
+    "description": "mickhaos favorite tea. Check it out. It's real' gud",
+    "tags": ["green", "herbal", "spicy", "sleep", "calm"],
+    "price": 7.05,
+    "stock": 400,
+    "imageUrl": "http://placekitten.com/200/300"
+}
+
+###
+# ADD validation
+# ADD a database
