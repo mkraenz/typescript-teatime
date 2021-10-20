@@ -19,7 +19,7 @@ export class Adventurer {
   @prop({ default: 0 })
   public experience = 0;
 
-  private log: IEvent[] = [];
+  private log!: IEvent[];
 
   public setLog(log: IEvent[]) {
     this.log = log;

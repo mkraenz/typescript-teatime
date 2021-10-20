@@ -4,5 +4,6 @@ export enum Scenes {
     Loading = "LoadingScene",
     Score = "ScoreHud",
     GameOver = "GameOverScene",
+    Websocket = "WebsocketScene",
     Logic = "LogicScene",
 }

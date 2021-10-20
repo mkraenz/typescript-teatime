@@ -47,17 +47,6 @@ export class MainScene extends Scene {
 
     public create(): void {
         this.scene.add(Scenes.Logic, LogicScene, true);
-        // http://localhost:8080/?channel=typescriptteatime&moderators=maceisgrace,hcustovic
-        const urlParams = new URLSearchParams(window.location.search);
-        const channel = urlParams.get("channel") || "";
-        const moderatorString = urlParams.get("moderators") ?? "";
-        const moderators = moderatorString
-            .split(",")
-            .map((s) => s.trim())
-            .filter(Boolean);
-        moderators.push(channel); // streamer is always a moderator
-
-        console.log({ channel, moderators });
 
         new BackgroundImage(this, `bg${random(1, 10)}`);
         this.battleLog = [];
@@ -68,7 +57,7 @@ export class MainScene extends Scene {
         this.maybeEnableDevMode();
 
         this.events.addListener("append log", (event: IEvent) => {
-            console.log(JSON.stringify(event));
+            console.log(event);
             this.battleLog.push(event);
 
             if (event.type === "monster appeared") {
