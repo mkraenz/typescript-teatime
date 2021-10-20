@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "CommonJs",
+        "strict": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": ["node_modules", "build", "scripts", "webpack"],
+    "typeRoots": ["./node_modules/@types", "./node_modules/phaser/types"],
+    "types": ["phaser"]
+}

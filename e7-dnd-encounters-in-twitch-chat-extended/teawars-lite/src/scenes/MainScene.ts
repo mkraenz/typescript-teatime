@@ -1,7 +1,6 @@
 import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
-import * as io from "socket.io-client";
 import { randomMonsterCfg } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
@@ -10,11 +9,12 @@ import { Ambushed, IEvent } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
+import { LogicScene } from "./LogicScene";
 import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
+        enabled: false,
         adventurers: 1,
     },
     fadeIn: 200,
@@ -34,7 +34,6 @@ const cfg = {
 };
 
 export class MainScene extends Scene {
-    private client!: SocketIOClient.Socket;
     private battleLog!: IEvent[];
     private party!: Adventurer[];
     private monster?: Monster;
@@ -47,11 +46,15 @@ export class MainScene extends Scene {
     }
 
     public create(): void {
+        this.scene.add(Scenes.Logic, LogicScene, true);
         // http://localhost:8080/?channel=typescriptteatime&moderators=maceisgrace,hcustovic
         const urlParams = new URLSearchParams(window.location.search);
         const channel = urlParams.get("channel") || "";
         const moderatorString = urlParams.get("moderators") ?? "";
-        const moderators = moderatorString.split(",").map((s) => s.trim());
+        const moderators = moderatorString
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
         moderators.push(channel); // streamer is always a moderator
 
         console.log({ channel, moderators });
@@ -64,12 +67,7 @@ export class MainScene extends Scene {
         this.gui.hide();
         this.maybeEnableDevMode();
 
-        this.client = io("http://localhost:3000");
-
-        this.client.on("init", (data: IEvent[]) => {
-            this.battleLog.push(...data);
-        });
-        this.client.on("append log", (event: IEvent) => {
+        this.events.addListener("append log", (event: IEvent) => {
             console.log(JSON.stringify(event));
             this.battleLog.push(event);
 
