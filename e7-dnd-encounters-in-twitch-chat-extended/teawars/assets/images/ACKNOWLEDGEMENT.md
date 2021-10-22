@@ -23,6 +23,9 @@
 - [9 more RPG Enemies by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/more-rpg-enemies)
   - Changes: Split into one file per monster, removed background, flipped sprite horizontally
   - Files are under `./Redshrike/more`
+- [leocephas.png by Stephen Challener (Redshrike) under CC-BY 3.0](https://opengameart.org/content/leocephas-ff6-ish-style-rpg-miniboss)
+  - Changes: Split one monster into separate file, removed background
+  - File are under `./Redshrike`
 - [RPG Enemies: 11 Dragons by Stephen "Redshrike" Challener, MrBeast, Surt, Blarumyrran, Sharm, Zabin under CC-BY 3.0](https://opengameart.org/content/rpg-enemies-11-dragons)
   - Changes: Split into one file per monster, flipped sprite horizontally, removed duplicate sprites from other packages
   - Files are under `./dragons`
@@ -41,6 +44,8 @@
 - [animation_1-8.png by Name By Another Rose under CC0](https://opengameart.org/content/two-colored-arrows)
   - Changes: Colors changed
 - [ice-crystal.png by MNDV.ecb under CC0](https://opengameart.org/content/elemental-badges-from-the-savage-swordsman)
+- [unicorn.png, pegasus.png, and horse.png by AntumDeluge under CC-BY 3.0](https://opengameart.org/content/lpc-horses-rework)
+  - Changes: Cut out horse from spritesheet, mirrored sprite horizontally
 - General note: Sprites may appear tinted in-game.
 
 ### Generating favicon.ico

@@ -1,8 +1,7 @@
 import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
-import * as io from "socket.io-client";
-import { randomMonsterCfg } from "../../assets/images/monsters/monsters";
+import { monsterMapping } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
@@ -15,7 +14,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: true,
-        adventurers: 1,
+        adventurers: 0,
     },
     fadeIn: 200,
     title: {
@@ -39,6 +38,7 @@ export class MainScene extends Scene {
     private party!: Adventurer[];
     private monster?: Monster;
     private gui!: GUI;
+    private currentMonsterIndex = -1;
 
     public constructor() {
         super({
@@ -47,15 +47,6 @@ export class MainScene extends Scene {
     }
 
     public create(): void {
-        // http://localhost:8080/?channel=typescriptteatime&moderators=maceisgrace,hcustovic
-        const urlParams = new URLSearchParams(window.location.search);
-        const channel = urlParams.get("channel") || "";
-        const moderatorString = urlParams.get("moderators") ?? "";
-        const moderators = moderatorString.split(",").map((s) => s.trim());
-        moderators.push(channel); // streamer is always a moderator
-
-        console.log({ channel, moderators });
-
         new BackgroundImage(this, `bg${random(1, 10)}`);
         this.battleLog = [];
         this.party = [];
@@ -171,18 +162,23 @@ export class MainScene extends Scene {
     private maybeEnableDevMode() {
         if (cfg.dev.enabled) {
             this.gui.show();
-            this.gui.add(this, "addDebugAdventurer");
+            this.gui.add(this, "debugAddAdventurer").name("add adventurer");
             this.gui.add(this, "debugAudioTrack").name("play battle song");
+            this.gui.add(this, "debugNextMonster").name("next monster");
 
             range(cfg.dev.adventurers).forEach((i) =>
                 this.addAdventurer(`Amazing Adventurer ${i + 1}`, 100, 300)
             );
+            const monsterData = monsterMapping.find(
+                (m) => m.name === "red slaad"
+            )!;
+            this.currentMonsterIndex = monsterMapping.indexOf(monsterData);
             this.addMonster({
                 type: "monster appeared",
                 monster: {
                     area: "Forest",
                     hp: 21,
-                    name: randomMonsterCfg().name,
+                    name: monsterData.name,
                 },
                 turnInterval: 30000,
             });
@@ -237,7 +233,7 @@ export class MainScene extends Scene {
         this.cameras.main.fadeOut(500);
     }
 
-    private addDebugAdventurer() {
+    private debugAddAdventurer() {
         this.addAdventurer(
             `Amazing Adventurer ${random(100000)}`,
             random(500),
@@ -247,5 +243,24 @@ export class MainScene extends Scene {
 
     private debugAudioTrack() {
         this.playBgm("battleloop");
+    }
+
+    private debugNextMonster() {
+        if (this.monster) {
+            this.monster.setActive(false);
+            this.monster.setVisible(false);
+            this.monster = undefined;
+        }
+        this.currentMonsterIndex++;
+        const monsterData = monsterMapping[this.currentMonsterIndex];
+        this.addMonster({
+            type: "monster appeared",
+            monster: {
+                area: "Forest",
+                hp: 21,
+                name: monsterData.name,
+            },
+            turnInterval: 30000,
+        });
     }
 }

@@ -258,6 +258,11 @@ export const monsterSprites: Array<{
         flip: true,
     },
     {
+        path: "Redshrike/leocephas.png",
+        key: "lionwarrior",
+        flip: true,
+    },
+    {
         path: "Redshrike/moscito.38x34.png",
         key: "moscito",
         flip: true,
@@ -293,6 +298,18 @@ export const monsterSprites: Array<{
         flip: true,
     },
     {
+        path: "var/horse.png",
+        key: "horse",
+    },
+    {
+        path: "var/pegasus.png",
+        key: "pegasus",
+    },
+    {
+        path: "var/unicorn.png",
+        key: "unicorn",
+    },
+    {
         path: "var/wizard.50x90.png",
         key: "wizardwithstaff",
     },
@@ -304,6 +321,7 @@ export const monsterMapping: Array<{
     alpha?: number;
     scale?: number;
     tint?: number;
+    effect?: "fire" | "wind" | "water" | "thunder";
 }> = [
     {
         name: "doppelganger",
@@ -1150,7 +1168,7 @@ export const monsterMapping: Array<{
     },
     {
         name: "pegasus",
-        key: "angel",
+        key: "pegasus",
     },
     {
         name: "peryton",
@@ -1185,71 +1203,95 @@ export const monsterMapping: Array<{
     },
     {
         name: "sahuagin",
-        key: "",
+        key: "zombiecritter",
+        tint: 0xa4ffa4,
     },
     {
         name: "sahuagin priestess",
-        key: "",
+        key: "zombiecritter",
+        tint: 0xf77d00,
+        scale: 1.2,
     },
     {
         name: "sahuagin baron",
-        key: "",
+        key: "zombiecritter",
+        tint: 0xc843fe,
+        scale: 1.3,
     },
     {
         name: "satyr",
-        key: "",
+        key: "horse",
     },
     {
         name: "scarecrow",
-        key: "",
+        key: "wizardwithstaff",
+        tint: 0xf28e04,
+        scale: 1.3,
     },
     {
         name: "shambling mound",
-        key: "",
+        key: "earthelemental",
+        scale: 1.5,
+        tint: 0x86ae75,
     },
     {
         name: "androsphinx",
-        key: "",
+        key: "lionwarrior",
+        scale: 1.2,
     },
     {
         name: "gynosphinx",
-        key: "",
+        key: "lionwarrior",
+        scale: 1.4,
+        tint: 0xfffebb,
     },
     {
         name: "sprite",
-        key: "",
+        key: "mothmanbeige",
+        alpha: 0.8,
+        scale: 0.7,
     },
     {
         name: "stirge",
-        key: "",
+        key: "moscito",
+        tint: 0xef78e1,
     },
     {
         name: "tarrasque",
-        key: "",
+        key: "earthdragon",
     },
     {
         name: "thri-kreen",
-        key: "",
+        key: "spider",
+        tint: 0xff5353,
     },
     {
         name: "treant",
-        key: "",
+        key: "treewoman",
+        scale: 1.8,
+        tint: 0xc2e2b0,
     },
     {
         name: "troll",
-        key: "",
+        key: "dirg",
+        scale: 1.3,
+        tint: 0x928d80,
     },
     {
         name: "unicorn",
-        key: "",
+        key: "unicorn",
     },
     {
         name: "water weird",
-        key: "",
+        key: "windwoman",
+        tint: 0x40ede1,
+        alpha: 0.9,
     },
     {
         name: "will-o-wisp",
-        key: "",
+        key: "slime",
+        tint: 0xf91f1f,
+        alpha: 0.7,
     },
     {
         name: "wyvern",
@@ -1257,23 +1299,31 @@ export const monsterMapping: Array<{
     },
     {
         name: "yeti",
-        key: "",
+        key: "minotaur",
+        tint: 0x7ef9e2,
     },
     {
         name: "abominable yeti",
-        key: "",
+        key: "minotaur",
+        tint: 0x7ef9e2,
+        scale: 1.4,
     },
     {
         name: "yuan-ti abomination",
-        key: "",
+        key: "naga",
+        tint: 0xff4fbd,
+        scale: 0.8,
     },
     {
         name: "yuan-ti malison",
-        key: "",
+        key: "naga",
+        tint: 0xff4fbd,
     },
     {
         name: "yuan-ti pureblood",
-        key: "",
+        key: "naga",
+        tint: 0xff4fbd,
+        scale: 1.4,
     },
     {
         name: "bandit",
@@ -1291,7 +1341,9 @@ export const monsterMapping: Array<{
     },
     {
         name: "magmin",
-        key: "",
+        key: "zombiecritter",
+        tint: 0xff3900,
+        effect: "fire" as const,
     },
     {
         name: "fire snake",
@@ -1303,27 +1355,33 @@ export const monsterMapping: Array<{
     },
     {
         name: "red slaad",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0xde2d2d,
     },
     {
         name: "slaad tadpole",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0x46e5da,
     },
     {
         name: "blue slaad",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0x5486ea,
     },
     {
         name: "green slaad",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0x4bff27,
     },
     {
         name: "grey slaad",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0x7f7f7f,
     },
     {
         name: "death slaad",
-        key: "",
+        key: "ratmanmuscle",
+        tint: 0xc239ed,
     },
     {
         name: "succubus",
@@ -1331,23 +1389,26 @@ export const monsterMapping: Array<{
     },
     {
         name: "xorn",
-        key: "",
+        key: "dragoran",
     },
     {
         name: "arcanaloth",
-        key: "",
+        key: "ratking",
     },
     {
         name: "mezzoloth",
-        key: "",
+        key: "zombiecritter",
+        tint: 0x1462b8,
     },
     {
         name: "nycaloth",
-        key: "",
+        key: "helldragon",
+        tint: 0x41e833,
     },
     {
         name: "ultroloth",
-        key: "",
+        key: "mindflayer",
+        scale: 1.5,
     },
     {
         name: "ankheg",
@@ -1512,7 +1573,8 @@ export const monsterMapping: Array<{
     },
     {
         name: "sea hag",
-        key: "",
+        key: "witch",
+        tint: 0xbe3de8,
     },
 ].map((m) => Object.freeze(m));
 

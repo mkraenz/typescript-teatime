@@ -17,7 +17,7 @@ const tmiConfig = {
 };
 
 const banned = ['streamelements'];
-const timeTillAttackInSeconds = 15;
+const timeBetweenAttacksInSeconds = 15;
 const DMs = ['maceisgrace', 'hcustovic1', 'typescriptteatime'];
 
 export type BattleLogSubscriber = (event: IEvent) => void;
@@ -69,7 +69,7 @@ export class ChatbotService {
 
     if (DMs.includes(username) && msg.includes('!ambush')) {
       if (this.battle) return;
-      this.battle = new Battle(timeTillAttackInSeconds);
+      this.battle = new Battle(timeBetweenAttacksInSeconds);
       this.watchBattleLogs = setInterval(() => this.pollBattleLogs(), 10);
     }
     if (!this.battle) return;
@@ -134,6 +134,7 @@ export class ChatbotService {
       await this.endBattle();
     }
   }
+
   private async saveAdventurerToDatabase() {
     for (const adventurer of this.joinedAdventurers) {
       adventurer.addExperience(100);
@@ -182,7 +183,7 @@ export class ChatbotService {
         );
       case 'monster appeared':
         return say(
-          `⚔️ An ambush! You're party is in a ${event.monster.area}. A wild 😈 ${event.monster.name} appeared. Be prepared! The attack starts in ${timeTillAttackInSeconds} seconds. ❤️: ${event.monster.hp}`,
+          `⚔️ An ambush! You're party is in a ${event.monster.area}. A wild 😈 ${event.monster.name} appeared. Be prepared! The attack starts in ${timeBetweenAttacksInSeconds} seconds. ❤️: ${event.monster.hp}`,
         );
       case 'monster killed':
         return say(

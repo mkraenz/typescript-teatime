@@ -13,7 +13,7 @@ import { IPoint } from "./IPoint";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const devCfg = { tint: 0x44ffff, clearTint: true, alpha: 1, skipIntro: false };
+const devCfg = { tint: 0x000000, skipIntro: true };
 
 const cfg = {
     initY: -300,
@@ -76,9 +76,10 @@ export class Monster extends GameObjects.Image {
     private setupDevMode(gui: GUI, name: string) {
         const folder = gui.addFolder(`Monster ${name}`);
         // folder.open();
-        folder.addColor(devCfg, "tint");
-        folder.add(devCfg, "clearTint");
-        folder.add(devCfg, "alpha", 0, 1);
+        folder.addColor(devCfg, "tint").onChange((v) => this.setTint(v));
+        folder.add(this, "clearTint");
+        folder.add(this, "alpha", 0, 1).onChange((v) => this.setAlpha(v));
+        folder.add(this, "scale", 0, 5).onChange((v) => this.setScale(v));
         folder.add(this, "debugReceiveDamage").name("receive Damage");
         folder.add(this, "debugAttack").name("attack");
         folder.add(this, "die");
