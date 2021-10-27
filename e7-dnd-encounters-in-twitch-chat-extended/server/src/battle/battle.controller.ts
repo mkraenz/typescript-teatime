@@ -16,7 +16,7 @@ export class BattleController {
   @Get()
   async findAll() {
     const battles = await this.battles.findAll();
-    return battles.map(GetBattleDto.of);
+    return battles.map(GetBattleDto.of).reverse();
   }
 
   @Get(':id')
