@@ -44,9 +44,14 @@ export class LogicScene extends Scene {
     private lastLogCount = 0;
     private watchBattleLogs?: number;
     private joinedAdventurers: Adventurer[] = [];
+    private randomData!: { monsterIndex: number };
 
     constructor(key = Scenes.Logic) {
         super(key);
+    }
+
+    public init(data: { monsterIndex: number }) {
+        this.randomData = data;
     }
 
     public create() {
@@ -76,7 +81,10 @@ export class LogicScene extends Scene {
             if (this.battle) {
                 return;
             }
-            this.battle = new Battle(timeBetweenAttacksInSeconds);
+            this.battle = new Battle(
+                timeBetweenAttacksInSeconds,
+                this.randomData.monsterIndex
+            );
             this.watchBattleLogs = window.setInterval(
                 () => this.pollBattleLogs(),
                 10

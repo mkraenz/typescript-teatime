@@ -1,7 +1,10 @@
 import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
-import { randomMonsterCfg } from "../../assets/images/monsters/monsters";
+import {
+    monsterSprites,
+    randomMonsterCfg,
+} from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
@@ -9,7 +12,6 @@ import { Ambushed, IEvent } from "../events/Event";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
-import { LogicScene } from "./LogicScene";
 import { Scenes } from "./Scenes";
 
 const cfg = {
@@ -38,6 +40,10 @@ export class MainScene extends Scene {
     private party!: Adventurer[];
     private monster?: Monster;
     private gui!: GUI;
+    private randomData!: {
+        backgroundTextureIndex: number;
+        monsterSprite: typeof monsterSprites[0];
+    };
 
     public constructor() {
         super({
@@ -45,10 +51,34 @@ export class MainScene extends Scene {
         });
     }
 
-    public create(): void {
-        this.scene.add(Scenes.Logic, LogicScene, true);
+    public init(data: {
+        monsterSprite: typeof monsterSprites[0];
+        backgroundTextureIndex: number;
+    }) {
+        this.randomData = data;
+    }
 
-        new BackgroundImage(this, `bg${random(1, 10)}`);
+    public preload() {
+        const img = (filename: string) => `./assets/images/${filename}`;
+        const monsterImg = (filename: string) => img(`monsters/${filename}`);
+        this.load
+            .image(
+                `bg${this.randomData.backgroundTextureIndex}`,
+                img(
+                    `bg/battleback${this.randomData.backgroundTextureIndex}.png`
+                )
+            )
+            .image(
+                this.randomData.monsterSprite.key,
+                monsterImg(this.randomData.monsterSprite.path)
+            );
+    }
+
+    public create(): void {
+        new BackgroundImage(
+            this,
+            `bg${this.randomData.backgroundTextureIndex}`
+        );
         this.battleLog = [];
         this.party = [];
 

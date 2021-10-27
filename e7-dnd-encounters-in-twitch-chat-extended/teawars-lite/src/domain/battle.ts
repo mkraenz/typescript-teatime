@@ -11,8 +11,8 @@ export class Battle {
     private gameloop: number | null = null;
     public log: IEvent[] = [];
 
-    constructor(private timeTillAttackInSeconds: number) {
-        this.monster = this.getMonster();
+    constructor(private timeTillAttackInSeconds: number, monsterIndex: number) {
+        this.monster = this.getMonster(monsterIndex);
         this.log.push({
             type: "monster appeared",
             monster: pick(this.monster, ["area", "hp", "name"]),
@@ -125,8 +125,8 @@ export class Battle {
         }
     }
 
-    private getMonster() {
-        const data = { ...monsters[random(monsters.length - 1)] };
+    private getMonster(index: number) {
+        const data = { ...monsters[index] };
         return new Monster(this.log, data);
     }
 

@@ -1,12 +1,16 @@
-import { range } from "lodash";
+import { random } from "lodash";
 import { GameObjects, Scene } from "phaser";
-import { monsterSprites } from "../../assets/images/monsters/monsters";
+import {
+    monsterMapping,
+    monsterSprites,
+} from "../../assets/images/monsters/monsters";
 import { DEV } from "../dev-config";
-import { GRegistry } from "../gRegistry";
+import { monsters } from "../domain/monsters";
 import { translations } from "../localizations";
 import { Color, toHex } from "../styles/Color";
 import { setDefaultTextStyle, TextConfig } from "../styles/Text";
 import { GameOverScene } from "./GameOverScene";
+import { LogicScene } from "./LogicScene";
 import { MainScene } from "./MainScene";
 import { Scenes } from "./Scenes";
 
@@ -31,9 +35,6 @@ export class LoadingScene extends Scene {
         const img = (filename: string) => `./assets/images/${filename}`;
         const monsterImg = (filename: string) => img(`monsters/${filename}`);
         const sound = (filename: string) => `./assets/sounds/${filename}`;
-        range(1, 11).forEach((i) =>
-            this.load.image(`bg${i}`, img(`bg/battleback${i}.png`))
-        );
         this.load
             .image("empty-health-bar", img("empty-health-bar.png"))
             .image("red-health-bar", img("red-health-bar.png"))
@@ -69,9 +70,6 @@ export class LoadingScene extends Scene {
             .audio("battleloop", sound("8BitBattleLoop.ogg"))
             .audio("ice", sound("freeze.mp3"))
             .audio("level-up", sound("level-up.mp3"));
-        monsterSprites.forEach((sprite) => {
-            this.load.image(sprite.key, monsterImg(sprite.path));
-        });
     }
 
     private makeLoadingBar() {
@@ -109,12 +107,29 @@ export class LoadingScene extends Scene {
         this.load.on("fileprogress", this.getAssetTextWriter(assetText));
         this.load.on("complete", () => {
             if (DEV.startInGameOverScene) {
-                GRegistry.setScore(this, 13650);
                 this.scene.add(Scenes.GameOver, GameOverScene, true);
             } else {
-                this.scene.add(Scenes.Main, MainScene, true);
+                const seed = {
+                    monsterIndex: random(monsters.length - 1),
+                    backgroundTextureIndex: random(1, 10),
+                };
+
+                const monster = monsters[seed.monsterIndex];
+                const mappedMonster = monsterMapping.find(
+                    (map) => map.name === monster.name
+                );
+                const monsterSprite = monsterSprites.find(
+                    (sprite) => sprite.key === mappedMonster?.key
+                );
+
+                this.scene.add(Scenes.Logic, LogicScene, true, {
+                    monsterIndex: seed.monsterIndex,
+                });
+                this.scene.add(Scenes.Main, MainScene, true, {
+                    backgroundTextureIndex: seed.backgroundTextureIndex,
+                    monsterSprite,
+                });
             }
-            // this.scene.remove(this);
         });
     }
 
