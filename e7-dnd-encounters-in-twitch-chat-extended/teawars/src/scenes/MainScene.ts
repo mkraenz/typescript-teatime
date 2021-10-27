@@ -1,6 +1,7 @@
 import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
+import * as io from "socket.io-client";
 import { monsterMapping } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
@@ -13,7 +14,7 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
+        enabled: false,
         adventurers: 0,
     },
     fadeIn: 200,
