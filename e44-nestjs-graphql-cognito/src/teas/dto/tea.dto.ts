@@ -1,6 +1,7 @@
+import { FilterableField } from '@nestjs-query/query-graphql';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType('tea')
 export class TeaDto {
   @Field(() => ID)
   id: string;
@@ -8,12 +9,14 @@ export class TeaDto {
   @Field({ description: 'English name of the tea' })
   name: string;
 
-  @Field({ description: 'Price in USD' })
+  @FilterableField({ description: 'Price in USD' })
   price: number;
 
   @Field(() => Int, { description: 'Ideal brewing temperature' })
   bestAtTemperature: number;
 
-  @Field(() => String, { description: 'freetext tags for searchability' })
+  @FilterableField(() => String, {
+    description: 'freetext tags for searchability',
+  })
   tags: string;
 }

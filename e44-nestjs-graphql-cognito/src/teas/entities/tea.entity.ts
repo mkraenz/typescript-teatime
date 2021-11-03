@@ -14,6 +14,6 @@ export class Tea {
   @Column('integer')
   bestAtTemperature: number;
 
-  @Column()
-  tags: string;
+  @Column('text')
+  tags = '';
 }

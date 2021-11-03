@@ -1,11 +1,17 @@
+import { NestjsQueryGraphQLModule } from '@nestjs-query/query-graphql';
+import { NestjsQueryTypeOrmModule } from '@nestjs-query/query-typeorm';
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TeaDto } from './dto/tea.dto';
 import { Tea } from './entities/tea.entity';
-import { TeasResolver } from './teas.resolver';
 import { TeasService } from './teas.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tea])],
-  providers: [TeasResolver, TeasService],
+  imports: [
+    NestjsQueryGraphQLModule.forFeature({
+      imports: [NestjsQueryTypeOrmModule.forFeature([Tea])],
+      resolvers: [{ DTOClass: TeaDto, EntityClass: Tea }],
+    }),
+  ],
+  providers: [TeasService],
 })
 export class TeasModule {}
