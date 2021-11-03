@@ -124,3 +124,16 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [ ] !move left 3
 - [x] !heal @username
 - [ ] ? on end, clear party after x seconds ?
+
+## Usage
+
+Replace `YOUR_CHANNEL` with your own channel name (case-sensitive) as displayed in Twitch's URL.
+
+<https://typescriptteatime.s3.amazonaws.com/teawarslite/index.html?channel=YOUR_CHANNEL>
+
+Example:
+<https://typescriptteatime.s3.amazonaws.com/teawarslite/index.html?channel=typescriptteatime>
+
+Optionally, add moderators as CSV (i.e. people who can start an `!ambush`). The channel owner can always start an `!ambush`
+
+<https://typescriptteatime.s3.amazonaws.com/teawarslite/index.html?channel=YOUR_CHANNEL&moderators=YOUR_CHAT_MEMBER_1,YOUR_CHAT_MEMBER_2>
