@@ -1,0 +1,27 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-e45cognitoamplify-dev-184507-authRole",
+      "UnauthRoleArn": "arn:aws:iam::772741288869:role/amplify-e45cognitoamplify-dev-184507-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::772741288869:role/amplify-e45cognitoamplify-dev-184507-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-e45cognitoamplify-dev-184507-deployment",
+      "UnauthRoleName": "amplify-e45cognitoamplify-dev-184507-unauthRole",
+      "StackName": "amplify-e45cognitoamplify-dev-184507",
+      "StackId": "arn:aws:cloudformation:eu-central-1:772741288869:stack/amplify-e45cognitoamplify-dev-184507/f5deb110-424d-11ec-882c-02ff3360d2ec",
+      "AmplifyAppId": "d3oxoy4ygafjjz"
+    },
+    "categories": {
+      "function": {
+        "e45cognitoamplifyea7129a5PostConfirmation": {
+          "GROUP": "basic",
+          "deploymentBucketName": "amplify-e45cognitoamplify-dev-184507-deployment",
+          "s3Key": "amplify-builds/e45cognitoamplifyea7129a5PostConfirmation-34314d766958785a5639-build.zip"
+        }
+      },
+      "auth": {
+        "e45cognitoamplifyea7129a5": {}
+      }
+    }
+  }
+}
