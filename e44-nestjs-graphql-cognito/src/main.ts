@@ -3,9 +3,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  app.enableCors();
+  const PORT = 3141;
+  await app.listen(PORT);
   console.log(
-    'Server running on http://localhost:3000 \n Graphql on http://localhost:3000/graphql',
+    `Server running on http://localhost:${PORT} \n Graphql on http://localhost:${PORT}/graphql`,
   );
 }
 bootstrap();
