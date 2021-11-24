@@ -1,5 +1,7 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'lodash';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { AdventurerModule } from './adventurer/adventurer.module';
 import { AppController } from './app.controller';
@@ -47,6 +49,9 @@ import { TestWebsocketsModule } from './test-websockets/test-websockets.module';
     ChatbotModule,
     BattleModule,
     TestWebsocketsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join([__dirname, '..', '..', 'teawars'], '/'),
+    }),
   ],
   controllers: [AppController],
   providers: [

@@ -56,7 +56,7 @@ export class MainScene extends Scene {
         this.gui.hide();
         this.maybeEnableDevMode();
 
-        this.client = io("http://localhost:3000");
+        this.client = io(process.env.WEBSOCKET_SERVER_URL!);
 
         this.client.on("init", (data: IEvent[]) => {
             this.battleLog.push(...data);

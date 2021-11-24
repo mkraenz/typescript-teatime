@@ -2,8 +2,9 @@
 const path = require("path");
 const pathToPhaser = path.join(__dirname, "/node_modules/phaser/");
 const phaser = path.join(pathToPhaser, "dist/phaser.js");
+const webpack = require("webpack");
 
-module.exports = {
+module.exports = (env, argv) => ({
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "build"),
@@ -28,4 +29,12 @@ module.exports = {
             phaser,
         },
     },
-};
+    plugins: [
+        new webpack.EnvironmentPlugin({
+            WEBSOCKET_SERVER_URL:
+                argv.mode === "production"
+                    ? "http://localhost:63140"
+                    : "http://localhost:3000",
+        }),
+    ],
+});
