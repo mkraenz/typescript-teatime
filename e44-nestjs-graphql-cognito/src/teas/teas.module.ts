@@ -8,7 +8,9 @@ import { Tea } from './entities/tea.entity';
   imports: [
     NestjsQueryGraphQLModule.forFeature({
       imports: [NestjsQueryTypeOrmModule.forFeature([Tea])],
-      resolvers: [{ DTOClass: TeaDto, EntityClass: Tea }],
+      resolvers: [
+        { DTOClass: TeaDto, EntityClass: Tea, enableTotalCount: true },
+      ],
     }),
   ],
   providers: [],

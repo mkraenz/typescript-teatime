@@ -14,6 +14,7 @@ export class CognitoJwtStrategy extends PassportStrategy(
   constructor(@Inject('JWKS') jwks: Awaited<ReturnType<typeof getJwksAsPem>>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      // TODO on production, this should be false!
       ignoreExpiration: true,
       secretOrKeyProvider: (
         _request: any,
@@ -41,7 +42,7 @@ export class CognitoJwtStrategy extends PassportStrategy(
       throw new UnauthorizedException('Invalid token');
     }
     // TODO change to 'access'
-    if (payload.token_use !== 'access') {
+    if (payload.token_use !== 'id') {
       throw new UnauthorizedException('Invalid token_use');
     }
     return payload;

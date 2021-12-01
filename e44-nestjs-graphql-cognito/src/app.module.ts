@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { GqlAuthGuard } from './auth/gql.auth.guard';
+import { OrdersModule } from './orders/orders.module';
 import { TeasModule } from './teas/teas.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { TeasModule } from './teas/teas.module';
     }),
     AuthModule,
     TeasModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [
