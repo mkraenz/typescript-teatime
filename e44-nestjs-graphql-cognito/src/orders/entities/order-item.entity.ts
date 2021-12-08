@@ -16,7 +16,7 @@ export class OrderItem {
   @Column('int')
   quantity: number;
 
-  @ManyToOne((_) => Order, (order) => order.items)
+  @ManyToOne(() => Order, (order) => order.items)
   order: Order;
 
   /** In Euro */

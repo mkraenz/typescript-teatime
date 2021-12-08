@@ -12,7 +12,10 @@ import { OrderItemDto } from './order-item.dto';
     return { userId: { eq: ctx.req.user.sub } };
   },
 })
-@Relation('orderItem', () => OrderItemDto)
+@Relation('items', () => OrderItemDto, {
+  disableRemove: true,
+  disableUpdate: true,
+})
 @ObjectType('Order')
 export class OrderDto {
   @Field(() => ID)
@@ -23,7 +26,4 @@ export class OrderDto {
 
   @FilterableField(() => OrderStatus)
   status: OrderStatus;
-
-  //   @FilterableField(() => [String], { filterOnly: true })
-  //   orderItemIds!: string;
 }
