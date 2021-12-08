@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { JwtPayload } from 'jsonwebtoken';
+import { CurrentUser, User } from '../auth/current-user.decorator';
 import { CreateOrderInput } from './dto/create-order.input';
 import { OrderDto } from './dto/order.dto';
 import { OrdersService } from './orders.service';
@@ -12,12 +12,11 @@ export class OrderResolver {
   @Mutation(() => OrderDto, { name: 'createOrder' })
   async create(
     @Args('input') input: CreateOrderInput,
-    // @CurrentUser() user: JwtPayload = {},
-    user: JwtPayload = {},
+    @CurrentUser() user: User,
   ) {
     this.assertUniqueProductIds(input);
 
-    const created = await this.orders.create(input);
+    const created = await this.orders.create(input, user.sub);
     return created;
   }
 

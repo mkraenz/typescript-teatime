@@ -13,8 +13,9 @@ export class OrdersService {
     private connection: Connection,
   ) {}
 
-  async create(dto: CreateOrderInput) {
+  async create(dto: CreateOrderInput, userId: string) {
     const order = this.ordersRepo.create(dto);
+    order.userId = userId;
     await this.setItemPrices(order);
     return this.save(order);
   }
