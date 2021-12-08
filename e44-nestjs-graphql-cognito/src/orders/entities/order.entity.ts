@@ -20,9 +20,7 @@ export class Order extends BaseEntity {
   @Column({ enum: OrderStatus, default: OrderStatus.Created })
   status: OrderStatus;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
-    cascade: true,
-  })
+  @OneToMany(() => OrderItem, (item) => item.order)
   items: OrderItem[];
 
   /** in Euro */

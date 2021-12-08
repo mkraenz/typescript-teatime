@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { TeasService } from '../teas/teas.service';
 import { CreateOrderInput } from './dto/create-order.input';
 import { Order } from './entities/order.entity';
@@ -10,12 +10,13 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order) private readonly ordersRepo: Repository<Order>,
     private readonly teasSvc: TeasService,
+    private connection: Connection,
   ) {}
 
   async create(dto: CreateOrderInput) {
     const order = this.ordersRepo.create(dto);
     await this.setItemPrices(order);
-    return this.ordersRepo.save(order);
+    return this.save(order);
   }
 
   private async setItemPrices(order: Order) {
@@ -29,5 +30,25 @@ export class OrdersService {
       }
       item.unitPrice = tea.price;
     });
+  }
+
+  private async save(order: Order) {
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      for (const item of order.items) {
+        await queryRunner.manager.save(item);
+      }
+      const savedOrder = await queryRunner.manager.save(order);
+
+      await queryRunner.commitTransaction();
+      return savedOrder;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

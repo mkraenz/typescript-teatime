@@ -1,8 +1,9 @@
+import { FilterableField } from '@nestjs-query/query-graphql';
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('OrderItem')
 export class OrderItemDto {
-  @Field(() => ID)
+  @FilterableField(() => ID)
   id: string;
 
   @Field(() => ID)

@@ -1,7 +1,7 @@
 import {
   Authorize,
   FilterableField,
-  Relation,
+  UnPagedRelation,
 } from '@nestjs-query/query-graphql';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { OrderStatus } from '../entities/order-status.enum';
@@ -12,9 +12,10 @@ import { OrderItemDto } from './order-item.dto';
     return { userId: { eq: ctx.req.user.sub } };
   },
 })
-@Relation('items', () => OrderItemDto, {
+@UnPagedRelation('items', () => OrderItemDto, {
   disableRemove: true,
   disableUpdate: true,
+  allowFiltering: false,
 })
 @ObjectType('Order')
 export class OrderDto {
