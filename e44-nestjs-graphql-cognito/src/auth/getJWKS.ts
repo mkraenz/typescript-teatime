@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as jwkToPem from 'jwk-to-pem';
 import { isRs256JWK, JWKS } from './jwks';
 
-// TODO move into config service and env
+// TODO FOR cognito nestjs passport jwt library - move into config service and env
 export const cognitoUserPoolUrl =
   'https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_rUHhN3QUc';
 
