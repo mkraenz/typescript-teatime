@@ -15,7 +15,9 @@ import { TeasService } from './teas.service';
           DTOClass: TeaDto,
           EntityClass: Tea,
           enableTotalCount: true,
-          decorators: [Public()],
+          read: {
+            decorators: [Public()],
+          },
         },
       ],
     }),

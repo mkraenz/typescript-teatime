@@ -47,7 +47,7 @@ const TeaList = () => {
         {data?.teas.edges.map(({ node }) => (
           <li key={node.id}>
             <h2>{node.name}</h2>
-            <p>{node.price}</p>
+            <p>{node.price} €</p>
           </li>
         ))}
       </ul>
