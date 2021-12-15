@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Amplify from "aws-amplify";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -7,10 +8,18 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 Amplify.configure(awsExports);
+const client = new ApolloClient({
+  uri: "http://localhost:3141/graphql",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* TODO move to a better place */}
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+    ,
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -2,7 +2,7 @@ import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { Auth } from "aws-amplify";
 import axios from "axios";
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
+import TeaList from "./TeaList";
 
 function AuthenticatedApp() {
   useEffect(() => {
@@ -37,7 +37,7 @@ function AuthenticatedApp() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <TeaList />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
