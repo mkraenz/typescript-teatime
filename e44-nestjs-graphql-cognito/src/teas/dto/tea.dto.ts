@@ -5,8 +5,6 @@ import { JwtPayload } from 'jsonwebtoken';
 @ObjectType('Tea')
 @Authorize({
   authorize: (context: { req: { user: JwtPayload } }) => {
-    // TODO here the actual authorization fun happens in the future
-    console.log(context.req.user?.sub);
     return {};
   },
 })
