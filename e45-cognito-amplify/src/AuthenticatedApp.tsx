@@ -38,9 +38,7 @@ function AuthenticatedApp() {
     <div className="App">
       <header className="App-header">
         <TeaList />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        {/* <OrdersList /> */}
         <button onClick={handleClick}>Send Request</button>
         <a
           className="App-link"
