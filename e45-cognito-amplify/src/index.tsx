@@ -1,9 +1,10 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Amplify from "aws-amplify";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import awsExports from "./aws-exports";
+import { ExamplePriceGrid } from "./example/ExamplePriceGrid";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
@@ -13,11 +14,23 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const colors = {
+  brand: {
+    900: "#1a365d",
+    800: "#153e75",
+    700: "#2a69ac",
+  },
+};
+
+const theme = extendTheme({ colors });
+
 ReactDOM.render(
   <React.StrictMode>
     {/* TODO move to a better place */}
     <ApolloProvider client={client}>
-      <App />
+      <ChakraProvider theme={theme}>
+        <ExamplePriceGrid />
+      </ChakraProvider>
     </ApolloProvider>
     ,
   </React.StrictMode>,

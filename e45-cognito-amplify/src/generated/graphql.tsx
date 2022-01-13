@@ -39,11 +39,16 @@ export type CreateOrderItemInput = {
 export type CreateTea = {
   /** Ideal brewing temperature */
   bestAtTemperature?: InputMaybe<Scalars['Int']>;
+  currency?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
   /** English name of the tea */
   name?: InputMaybe<Scalars['String']>;
   /** Price in USD */
   price?: InputMaybe<Scalars['Float']>;
+  rating?: InputMaybe<Scalars['Int']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
   /** freetext tags for searchability */
   tags?: InputMaybe<Scalars['String']>;
 };
@@ -291,11 +296,16 @@ export type UpdateOrder = {
 export type UpdateTea = {
   /** Ideal brewing temperature */
   bestAtTemperature?: InputMaybe<Scalars['Int']>;
+  currency?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
   /** English name of the tea */
   name?: InputMaybe<Scalars['String']>;
   /** Price in USD */
   price?: InputMaybe<Scalars['Float']>;
+  rating?: InputMaybe<Scalars['Int']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
   /** freetext tags for searchability */
   tags?: InputMaybe<Scalars['String']>;
 };
@@ -303,7 +313,7 @@ export type UpdateTea = {
 export type GetTeasQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTeasQuery = { __typename?: 'Query', teas: { __typename?: 'TeaConnection', totalCount: number, edges: Array<{ __typename?: 'TeaEdge', node: { __typename?: 'Tea', id: string, name: string, bestAtTemperature: number, tags: string, price: number } }> } };
+export type GetTeasQuery = { __typename?: 'Query', teas: { __typename?: 'TeaConnection', totalCount: number, edges: Array<{ __typename?: 'TeaEdge', node: { __typename?: 'Tea', id: string, name: string, bestAtTemperature: number, tags: string, price: number, currency: string, imageUrl: string, rating: number, ratingCount: number, description: string } }> } };
 
 
 export const GetTeasDocument = gql`
@@ -317,6 +327,11 @@ export const GetTeasDocument = gql`
         bestAtTemperature
         tags
         price
+        currency
+        imageUrl
+        rating
+        ratingCount
+        description
       }
     }
   }

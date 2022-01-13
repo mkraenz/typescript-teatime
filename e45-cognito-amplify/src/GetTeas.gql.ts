@@ -11,6 +11,11 @@ export const TEAS = gql`
           bestAtTemperature
           tags
           price
+          currency
+          imageUrl
+          rating
+          ratingCount
+          description
         }
       }
     }
