@@ -1,18 +1,18 @@
-import { HStack, Icon, StackProps, useColorModeValue } from '@chakra-ui/react'
-import * as React from 'react'
-import { FaStar } from 'react-icons/fa'
+import { HStack, Icon, StackProps, useColorModeValue } from "@chakra-ui/react";
+import * as React from "react";
+import { FaStar } from "react-icons/fa";
 
 interface Props {
-  defaultValue?: number
-  max?: number
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  rootProps?: StackProps
+  defaultValue?: number;
+  max?: number;
+  size?: "sm" | "md" | "lg" | "xl";
+  rootProps?: StackProps;
 }
 
 export const Rating = (props: Props) => {
-  const { defaultValue = 0, max = 5, size = 'md', rootProps } = props
-  const color = useColorModeValue('gray.300', 'gray.600')
-  const activeColor = useColorModeValue('blue.500', 'blue.200')
+  const { defaultValue = 0, max = 5, size = "md", rootProps } = props;
+  const color = useColorModeValue("gray.300", "gray.600");
+  const activeColor = useColorModeValue("brand.500", "brand.200");
   return (
     <HStack spacing="0.5" {...rootProps}>
       {Array.from({ length: max })
@@ -26,5 +26,5 @@ export const Rating = (props: Props) => {
           />
         ))}
     </HStack>
-  )
-}
+  );
+};
