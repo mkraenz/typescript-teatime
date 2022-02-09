@@ -1,0 +1,11 @@
+overwrite: true
+schema: "../e44-nestjs-graphql-cognito/schema.gql"
+documents: "src/**/*.gql.ts"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      onlyOperationTypes: true
