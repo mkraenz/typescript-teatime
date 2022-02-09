@@ -7,19 +7,20 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
-  Link,
+  Link as ChakraLink,
   Stack,
   useColorModeValue,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { FC } from "react";
 import { FiMenu, FiSearch, FiShoppingBag, FiX } from "react-icons/fi";
 
 interface Props {}
 
 const NavLink: FC = ({ children }) => (
-  <Link
+  <ChakraLink
     px={2}
     py={1}
     rounded={"md"}
@@ -30,7 +31,7 @@ const NavLink: FC = ({ children }) => (
     href={"#"}
   >
     {children}
-  </Link>
+  </ChakraLink>
 );
 
 const Links = ["Dashboard", "Projects", "Team"];
@@ -55,9 +56,6 @@ const Searchbar: FC = () => {
 
 const Navbar: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const gotoSignIn = () => {
-    window.location.href = "/signin";
-  };
 
   return (
     <Box px={4}>
@@ -79,9 +77,9 @@ const Navbar: FC<Props> = (props) => {
             <Box>Logo</Box>
           </HStack>
           <HStack>
-            <Button bg={"brand.300"} onClick={gotoSignIn}>
-              Sign In
-            </Button>
+            <Link href="/signin" passHref>
+              <Button bg={"brand.300"}>Sign In</Button>
+            </Link>
             <IconButton
               bg={"brand.300"}
               aria-label={"Go to Shopping cart"}
@@ -119,9 +117,9 @@ const Navbar: FC<Props> = (props) => {
         <HStack w="100%">
           <Searchbar />
         </HStack>
-        <Button bg={"brand.300"} onClick={gotoSignIn}>
-          Sign In
-        </Button>
+        <Link href="/signin" passHref>
+          <Button bg={"brand.300"}>Sign In</Button>
+        </Link>
         <Button bg={"brand.300"}>Orders</Button>
         <IconButton
           bg={"brand.300"}

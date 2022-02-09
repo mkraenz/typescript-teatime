@@ -1,8 +1,11 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import Amplify from "aws-amplify";
 import type { AppProps } from "next/app";
+import awsExports from "../src/aws-exports";
 import "../styles/globals.css";
 
+Amplify.configure({ ...awsExports, ssr: true });
 const client = new ApolloClient({
   uri: "http://localhost:3141/graphql",
   cache: new InMemoryCache(),
