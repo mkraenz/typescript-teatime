@@ -14,10 +14,16 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { FC } from "react";
+import { useRouter } from "next/router";
+import { FC, useEffect, useState } from "react";
 import { FiMenu, FiSearch, FiShoppingBag, FiX } from "react-icons/fi";
 
-interface Props {}
+interface Props {
+  keyword?: string;
+}
+
+type Amount = number;
+type Cart = { [productId: string]: Amount };
 
 const NavLink: FC = ({ children }) => (
   <ChakraLink
@@ -36,25 +42,89 @@ const NavLink: FC = ({ children }) => (
 
 const Links = ["Dashboard", "Projects", "Team"];
 
-const Searchbar: FC = () => {
+const Searchbar: FC<{ keyword?: string }> = ({ keyword }) => {
+  const [value, setValued] = useState(keyword || "");
+  const router = useRouter();
+  const search = () => {
+    router.push(`/search?keyword=${value}`);
+  };
   return (
     <InputGroup>
       <Input
         bg={useColorModeValue("white.100", "white.500")}
         borderWidth="medium"
+        value={value}
+        onChange={(e) => setValued(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") search();
+        }}
       />
       <InputRightAddon px={0}>
         <IconButton
           icon={<Icon as={FiSearch} />}
           aria-label="Search"
           bg={"brand.300"}
+          onClick={search}
         />
       </InputRightAddon>
     </InputGroup>
   );
 };
 
-const Navbar: FC<Props> = (props) => {
+const ShoppingBag = () => {
+  const [count, setCount] = useState(0);
+  const router = useRouter();
+
+  useEffect(() => {
+    const localStorageCart: Cart = JSON.parse(
+      window.localStorage.getItem("cart") || "{}"
+    );
+    const newCount = Object.keys(localStorageCart).length || count;
+    setCount(newCount);
+  }, [count, setCount]);
+
+  const gotoCart = () => router.push("/cart");
+
+  return (
+    <IconButton
+      onClick={gotoCart}
+      bg={"brand.300"}
+      aria-label={"Go to Shopping cart"}
+      icon={
+        <>
+          <Icon
+            boxSize="1.5em"
+            as={FiShoppingBag}
+            aria-label={"Shopping cart"}
+          />
+          {Boolean(count) && (
+            <Box
+              as={"span"}
+              position={"absolute"}
+              left={"6px"}
+              top={"4px"}
+              fontSize={"0.8rem"}
+              bgColor={"red.400"}
+              borderRadius={"1000"}
+              zIndex={9999}
+              px={"4px"}
+            >
+              {count}
+            </Box>
+          )}
+        </>
+      }
+    />
+  );
+};
+
+const Logo = () => {
+  const router = useRouter();
+  const gotoHome = () => router.push("/");
+  return <Box onClick={gotoHome}>Logo</Box>;
+};
+
+const Navbar: FC<Props> = ({ keyword }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -74,26 +144,16 @@ const Navbar: FC<Props> = (props) => {
               onClick={isOpen ? onClose : onOpen}
               bg={"brand.300"}
             />
-            <Box>Logo</Box>
+            <Logo />
           </HStack>
           <HStack>
             <Link href="/signin" passHref>
               <Button bg={"brand.300"}>Sign In</Button>
             </Link>
-            <IconButton
-              bg={"brand.300"}
-              aria-label={"Go to Shopping cart"}
-              icon={
-                <Icon
-                  boxSize="1.5em"
-                  as={FiShoppingBag}
-                  aria-label={"Shopping cart"}
-                />
-              }
-            ></IconButton>
+            <ShoppingBag />
           </HStack>
         </HStack>
-        <Searchbar />
+        <Searchbar keyword={keyword} />
       </VStack>
 
       {isOpen ? (
@@ -113,25 +173,15 @@ const Navbar: FC<Props> = (props) => {
         justifyContent={"space-between"}
         display={{ base: "none", md: "flex" }}
       >
-        <Box px={1}>Logo</Box>
+        <Logo />
         <HStack w="100%">
-          <Searchbar />
+          <Searchbar keyword={keyword} />
         </HStack>
         <Link href="/signin" passHref>
           <Button bg={"brand.300"}>Sign In</Button>
         </Link>
         <Button bg={"brand.300"}>Orders</Button>
-        <IconButton
-          bg={"brand.300"}
-          aria-label={"Go to Shopping cart"}
-          icon={
-            <Icon
-              boxSize="1.5em"
-              as={FiShoppingBag}
-              aria-label={"Shopping cart"}
-            />
-          }
-        ></IconButton>
+        <ShoppingBag />
       </HStack>
     </Box>
   );

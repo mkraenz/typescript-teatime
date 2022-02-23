@@ -310,15 +310,17 @@ export type UpdateTea = {
   tags?: InputMaybe<Scalars['String']>;
 };
 
-export type GetTeasQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetTeasQueryVariables = Exact<{
+  filter?: InputMaybe<TeaFilter>;
+}>;
 
 
 export type GetTeasQuery = { __typename?: 'Query', teas: { __typename?: 'TeaConnection', totalCount: number, edges: Array<{ __typename?: 'TeaEdge', node: { __typename?: 'Tea', id: string, name: string, bestAtTemperature: number, tags: string, price: number, currency: string, imageUrl: string, rating: number, ratingCount: number, description: string } }> } };
 
 
 export const GetTeasDocument = gql`
-    query GetTeas {
-  teas {
+    query GetTeas($filter: TeaFilter) {
+  teas(filter: $filter) {
     totalCount
     edges {
       node {
@@ -350,6 +352,7 @@ export const GetTeasDocument = gql`
  * @example
  * const { data, loading, error } = useGetTeasQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */

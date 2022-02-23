@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const TEAS = gql`
-  query GetTeas {
-    teas {
+  query GetTeas ($filter: TeaFilter) {
+    teas(filter: $filter) {
       totalCount
       edges {
         node {

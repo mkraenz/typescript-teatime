@@ -1,8 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import * as React from "react";
 // todo reconsider /src path
 import { useGetTeasQuery } from "../../src/generated/graphql";
-import Navbar from "./Navbar";
+import Navbar from "../common/Navbar";
 import { ProductCard } from "./ProductCard";
 import { ProductGrid } from "./ProductGrid";
 
