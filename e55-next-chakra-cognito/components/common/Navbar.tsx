@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   IconButton,
+  Image,
   Input,
   InputGroup,
   InputRightAddon,
@@ -63,7 +64,6 @@ const Searchbar: FC<{ keyword?: string }> = ({ keyword }) => {
         <IconButton
           icon={<Icon as={FiSearch} />}
           aria-label="Search"
-          bg={"brand.300"}
           onClick={search}
         />
       </InputRightAddon>
@@ -88,7 +88,6 @@ const ShoppingBag = () => {
   return (
     <IconButton
       onClick={gotoCart}
-      bg={"brand.300"}
       aria-label={"Go to Shopping cart"}
       icon={
         <>
@@ -121,7 +120,11 @@ const ShoppingBag = () => {
 const Logo = () => {
   const router = useRouter();
   const gotoHome = () => router.push("/");
-  return <Box onClick={gotoHome}>Logo</Box>;
+  return (
+    <Box onClick={gotoHome}>
+      <Image src="/tstea-shop-logo.png" alt="TS-Tea Logo" maxH={"50px"} />
+    </Box>
+  );
 };
 
 const Navbar: FC<Props> = ({ keyword }) => {
@@ -142,13 +145,12 @@ const Navbar: FC<Props> = ({ keyword }) => {
               }
               aria-label={"Open Menu"}
               onClick={isOpen ? onClose : onOpen}
-              bg={"brand.300"}
             />
             <Logo />
           </HStack>
           <HStack>
             <Link href="/signin" passHref>
-              <Button bg={"brand.300"}>Sign In</Button>
+              <Button>Sign In</Button>
             </Link>
             <ShoppingBag />
           </HStack>
@@ -178,9 +180,9 @@ const Navbar: FC<Props> = ({ keyword }) => {
           <Searchbar keyword={keyword} />
         </HStack>
         <Link href="/signin" passHref>
-          <Button bg={"brand.300"}>Sign In</Button>
+          <Button>Sign In</Button>
         </Link>
-        <Button bg={"brand.300"}>Orders</Button>
+        <Button>Orders</Button>
         <ShoppingBag />
       </HStack>
     </Box>

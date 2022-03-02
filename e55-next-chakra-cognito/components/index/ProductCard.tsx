@@ -78,7 +78,7 @@ export const ProductCard = (props: Props) => {
         </HStack>
       </Stack>
       <Stack align="center">
-        <Button isFullWidth colorScheme="brand" onClick={addToCart}>
+        <Button isFullWidth onClick={addToCart}>
           Add to cart
         </Button>
         <Link
