@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types -- code-first graphql schema generation needs the explicit type annotation even for inferred types */
-import { Authorize, FilterableField } from '@nestjs-query/query-graphql';
+import { FilterableField } from '@nestjs-query/query-graphql';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { JwtPayload } from 'jsonwebtoken';
 
 @ObjectType('Tea')
-@Authorize({
-  authorize: (context: { req: { user: JwtPayload } }) => {
-    return {};
-  },
-})
 export class TeaDto {
   @Field(() => ID)
   id: string;

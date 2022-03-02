@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { AuthModule } from './auth/auth.module';
 import { CustomAuthGuard } from './auth/custom-auth.guard';
+import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { TeasModule } from './teas/teas.module';
 
@@ -28,6 +29,7 @@ const typeOrmConfig: PostgresConnectionOptions = {
     AuthModule,
     TeasModule,
     OrdersModule,
+    CartModule,
   ],
   controllers: [],
   providers: [
