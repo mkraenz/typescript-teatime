@@ -12,7 +12,7 @@ export function toConfig(env: Env) {
 
   return {
     database: {
-      url: `${env.DATABASE_URL}`,
+      url: env.DATABASE_URL,
       replicaSet: 'rs0',
       dbName: 'teawars',
     },
