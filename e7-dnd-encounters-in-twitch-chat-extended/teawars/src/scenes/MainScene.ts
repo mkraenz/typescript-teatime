@@ -14,8 +14,8 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: true,
-        adventurers: 1,
+        enabled: false,
+        adventurers: 0,
     },
     fadeIn: 200,
     title: {
