@@ -14,8 +14,8 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
-        adventurers: 0,
+        enabled: true,
+        adventurers: 1,
     },
     fadeIn: 200,
     title: {
@@ -149,8 +149,9 @@ export class MainScene extends Scene {
             }
 
             if (event.type === "leveled up") {
+                // TODO put this in a queue and play one after another
                 const adventurer = this.getAdventurer(event.target);
-                adventurer?.levelUp();
+                adventurer?.levelUp(event.level, 8000);
             }
         });
     }

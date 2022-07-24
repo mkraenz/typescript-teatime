@@ -4,6 +4,8 @@ import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
 import { IceEffect } from "../anims/IceEffect";
 import { animateLevelUp } from "../anims/LevelUp";
+import { setTextShadow } from "../styles/setTextShadow";
+import { TextConfig } from "../styles/Text";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
@@ -59,7 +61,7 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "animateSlice").name("slice");
         folder.add(this, "debugCastFire").name("cast Fire");
         folder.add(this, "debugCastIce").name("cast Ice");
-        folder.add(this, "levelUp");
+        folder.add(this, "debugLevelUp").name("level up");
         folder.open();
     }
 
@@ -289,14 +291,30 @@ export class Adventurer extends GameObjects.Image {
         });
     }
 
-    public levelUp() {
+    public levelUp(newLevel: number, duration: number) {
         const { x, y } = this.getBottomCenter();
-        animateLevelUp(this.scene, x, y);
+        animateLevelUp(this.scene, x, y, duration);
+        this.showLevelUpText(newLevel, duration);
         this.scene.time.delayedCall(500, () =>
             this.scene.sound.play("level-up", {
-                volume: 0.4,
+                volume: 0.5,
             })
         );
+    }
+
+    private showLevelUpText(level: number, duration: number) {
+        const label = `${this.username}\nreached level ${level}!`;
+        const text = this.scene.add
+            .text(
+                this.scene.scale.width / 2,
+                this.scene.scale.height / 3,
+                label,
+                { ...TextConfig.xl, align: "center" }
+            )
+            .setOrigin(0.5)
+            .setDepth(99999);
+        setTextShadow(text);
+        this.scene.time.delayedCall(duration, () => text.destroy());
     }
 
     public debugAttack() {
@@ -317,5 +335,9 @@ export class Adventurer extends GameObjects.Image {
 
     public debugCastIce() {
         this.castIce({ x: 1100, y: 600 });
+    }
+
+    public debugLevelUp() {
+        this.levelUp(99, 5000);
     }
 }

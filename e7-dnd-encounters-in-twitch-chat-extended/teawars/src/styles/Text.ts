@@ -3,7 +3,7 @@ import { Color } from "./Color";
 
 type Style = Partial<GameObjects.TextStyle>;
 
-export const TextConfig: { [key: string]: Style } = {
+export const TextConfig: Record<string, Style> = {
     title: {
         fontFamily: "Baloo",
         fontSize: "10rem",
