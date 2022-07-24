@@ -6,10 +6,9 @@ const provider = {
   useFactory: () => {
     const env = process.env;
     const cfg = toConfig(env);
-    if (cfg.DATABASE_USE_TLS) {
-      return `mongodb://${cfg.database.host}:${cfg.database.port}/${cfg.database.dbName}?retryWrites=false`;
-    }
-    return `mongodb://localhost:27017/${cfg.database.dbName}`;
+    return (
+      cfg.database.url ?? `mongodb://localhost:27017/${cfg.database.dbName}`
+    );
   },
 };
 

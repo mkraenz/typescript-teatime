@@ -52,3 +52,13 @@ npm run test:e2e:debug
 # in VS Code, Ctrl+Shift+P -> `Debug: Attach to Node Process` -> select `...yarn.js test:e2e:debug`
 # hit F5 / F10
 ```
+
+## Inclusion in OBS streaming tool
+
+- build the frontend package with `npm run build` (todo double-check)
+- start server with `npm start`
+- add a Browser Source to your scene
+  - URL: `http://localhost:63140/?channel=YOUR_TWITCH_CHANNEL_NAME`
+    - example URL `http://localhost:63140/?channel=typescriptteatime`
+  - width: 1440
+  - height: 1080
