@@ -6,9 +6,9 @@ export class CreateCardInput extends PickType(CartDto, ['userId'], InputType) {}
 
 // TODO E58 continue here
 // userId can be inferred from the context (req.user)
-// addItem(userId, item)
-// deleteItem(userId, item)
-// updateItemAmount(userId, item)
+// addItem(userId, item): Cart!
+// deleteItem(userId, item): Cart!
+// updateItemAmount(userId, item): Cart!
 
 // user perspective
 /**

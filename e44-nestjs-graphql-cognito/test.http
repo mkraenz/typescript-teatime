@@ -1,0 +1,14 @@
+
+POST http://localhost:3141/graphql
+Authorization: Bearer eyJra
+Content-Type: application/json
+
+{"operationName":"createOrder","variables":{},"query":"mutation createOrder {\n  createOrder(\n    input: {\n      items: [\n        { productId: \"99dcb1aa-37de-4096-81a0-d409a7389a6d\", quantity: 3 }\n        { productId: \"76bc7e7c-a603-4cb6-b649-df577624315d\", quantity: 2 }\n        { productId: \"d601e954-dd00-43c3-b78d-20340010764e\", quantity: 1 }\n      ]\n    }\n  ) {\n    userId\n    status\n    id\n    items {\n      id\n      productId\n      unitPrice\n      quantity\n    }\n  }\n}"}
+
+
+###
+
+
+GET http://localhost:3141/
+Authorization: Bearer eyJraW
+Content-Type: application/json

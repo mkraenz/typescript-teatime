@@ -8,6 +8,7 @@ import { CustomAuthGuard } from './auth/custom-auth.guard';
 import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { TeasModule } from './teas/teas.module';
+import { UsersModule } from './users/users.module';
 
 const typeOrmConfig: PostgresConnectionOptions = {
   type: 'postgres' as const,
@@ -30,6 +31,7 @@ const typeOrmConfig: PostgresConnectionOptions = {
     TeasModule,
     OrdersModule,
     CartModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [
