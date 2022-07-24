@@ -70,10 +70,12 @@ export class Adventurer {
     }
   }
 
+  private get canAct() {
+    return !this.hasActedThisTurn && !this.isDead;
+  }
+
   public heal(receiver: string) {
-    // TODO extract this.canAct
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     const amount = random(15) + this.level;
     this.log.push({
@@ -87,8 +89,7 @@ export class Adventurer {
   }
 
   public healParty(partySize: number) {
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     const amount = ceil(random(12) / partySize);
     this.log.push({
@@ -132,8 +133,7 @@ export class Adventurer {
   }
 
   public attack(monster: Monster) {
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     const damage = random(19) + this.level;
     this.log.push({
@@ -147,8 +147,7 @@ export class Adventurer {
   }
 
   public castFire(monster: Monster) {
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     const damage = random(19) + this.level;
     this.log.push({
@@ -161,8 +160,7 @@ export class Adventurer {
   }
 
   public castIce(monster: Monster) {
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     const damage = random(19) + this.level;
     this.log.push({
@@ -175,8 +173,7 @@ export class Adventurer {
   }
 
   castProtect(target: string) {
-    if (this.isDead) return;
-    if (this.hasActedThisTurn) return;
+    if (!this.canAct) return;
 
     this.log.push({
       type: 'protect cast',
