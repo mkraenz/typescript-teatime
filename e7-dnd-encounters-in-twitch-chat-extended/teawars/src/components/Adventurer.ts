@@ -211,6 +211,23 @@ export class Adventurer extends GameObjects.Image {
         this.scene.time.delayedCall(2000, () => emitter.destroy());
     }
 
+    public receiveProtectCast() {
+        this.scene.sound.play("heal", { volume: 0.5 });
+
+        const emitter = this.scene.add.particles(
+            "shapes",
+            // eslint-disable-next-line @typescript-eslint/no-implied-eval
+            new Function(
+                `return ${this.scene.cache.text.get("heal-effect") as string}`
+            )()
+        );
+        emitter.setX(this.x);
+        emitter.setY(this.y);
+        emitter.setDepth(this.depth + 1);
+
+        this.scene.time.delayedCall(2000, () => emitter.destroy());
+    }
+
     public castFire({ x, y }: IPoint) {
         const emitFire = () => {
             this.scene.sound.play("fire", { volume: 0.3, rate: 1.2 });

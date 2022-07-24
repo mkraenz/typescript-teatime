@@ -125,7 +125,9 @@ export class MainScene extends Scene {
 
             if (
                 event.type === "heal cast" ||
-                event.type === "heal party cast"
+                event.type === "heal party cast" ||
+                // TODO own animation for protect cast
+                event.type === "protect cast"
             ) {
                 const adventurer = this.getAdventurer(event.actor);
                 adventurer?.castHeal();
@@ -134,6 +136,10 @@ export class MainScene extends Scene {
             if (event.type === "received heal") {
                 const adventurer = this.getAdventurer(event.target);
                 adventurer?.receiveHeal(event.currentHp, event.amount);
+            }
+            if (event.type === "protect cast") {
+                const adventurer = this.getAdventurer(event.target);
+                adventurer?.receiveProtectCast();
             }
 
             if (event.type === "monster killed") {

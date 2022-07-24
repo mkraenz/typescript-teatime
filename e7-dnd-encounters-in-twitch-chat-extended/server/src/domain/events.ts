@@ -15,6 +15,11 @@ export type IEvent =
   | ReceivedProtectCasted
   | ProtectCast;
 
+interface ReceivedProtectCasted {
+  type: 'received protect cast';
+  target: string;
+}
+
 interface ProtectCast {
   type: 'protect cast';
   actor: string;
@@ -104,9 +109,4 @@ interface MonsterKilled {
 interface PartyKilled {
   type: 'party killed';
   monster: string;
-}
-
-interface ReceivedProtectCasted {
-  type: 'received protect cast';
-  target: string;
 }
