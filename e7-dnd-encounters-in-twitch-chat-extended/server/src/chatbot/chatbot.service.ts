@@ -113,7 +113,7 @@ export class ChatbotService {
       return this.handleProtect(this.battle, message, username);
     }
     if (DMs.includes(username) && msg.includes('!flee')) {
-      return this.endBattle();
+      return this.endBattle(true);
     }
   }
 
@@ -166,7 +166,6 @@ export class ChatbotService {
     if (hasNewEvents) {
       for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
         const newEvent = this.battle!.log[i];
-        this.renderBattleEvent(newEvent);
         this.listenersToBattleLogChanges.forEach((callback) => {
           callback(newEvent);
         });
@@ -187,8 +186,8 @@ export class ChatbotService {
     );
   }
 
-  private async endBattle() {
-    this.rewardAdventurers();
+  private async endBattle(partyRanAway = false) {
+    if (!partyRanAway) this.rewardAdventurers();
     this.notifyBattleLogSubscribers(); // final notification before clearing variables
 
     global.clearInterval(this.watchBattleLogs!);
@@ -202,59 +201,6 @@ export class ChatbotService {
     console.log('chatbot: battle ended');
   }
 
-  private renderBattleEvent(event: IEvent) {
-    switch (event.type) {
-      case 'adventurer killed':
-        return say(`⚰️⚰️⚰️ Oh no! @${event.name} has been killed.`);
-      case 'attack':
-        if (event.isMonster)
-          return say(`🔥 😈 ${event.attacker} attacks @${event.target}.`);
-        return say(`🗡️ @${event.attacker} attacks 😈 ${event.target}.`);
-      case 'damage received':
-        return say(
-          `${event.target} received ${event.damage} damage. ${event.hpLeft} ❤️ left.`,
-        );
-      case 'heal cast':
-        return say(
-          `${event.actor} tries to heal ${event.receiver} for ${event.amount}`,
-        );
-      case 'received heal':
-        return say(
-          `${event.target} got healed for ${event.amount} to ${event.currentHp} ❤️.`,
-        );
-      case 'join':
-        say(`⚔️ @${event.member} joined the battle alongside you.`);
-        return say(
-          `@${this.battle?.adventurerNames.join(
-            ', @',
-          )} stand united in battle.`,
-        );
-      case 'monster appeared':
-        return say(
-          `⚔️ An ambush! You're party is in a ${event.monster.area}. A wild 😈 ${event.monster.name} appeared. Be prepared! The attack starts in ${timeBetweenAttacksInSeconds} seconds. ❤️: ${event.monster.hp}`,
-        );
-      case 'monster killed':
-        return say(
-          `🏆🏆🏆🎉🏅 VICTORY! 😈 ${
-            event.monster
-          } has been struck down. @${this.battle?.adventurerNames.join(
-            ', @',
-          )} each earned 100 EXP.`,
-        );
-      case 'party killed':
-        return say(
-          `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${event.monster} lived happily ever after.`,
-        );
-      case 'protect cast':
-        return say(`${event.actor} tries to cast Protect on ${event.target}`);
-      case 'received protect cast':
-        return say(
-          `${event.target} received Protect spell. All damage is halfed!`,
-        );
-      case 'leveled up':
-        return say(`🏅🏅🏅🏅 @${event.target} reached level ${event.level}!`);
-    }
-  }
   private async joinParty(username: string, battle: Battle) {
     const adventurer = await this.adventurers.findOneOrCreate(
       username,
@@ -273,10 +219,6 @@ export class ChatbotService {
     }
   }
 }
-
-const say = (text: string) => {
-  console.log(text);
-};
 
 const includesACommand = (msg: string) =>
   Object.values(Command).some((cmd) => msg.includes(cmd));
