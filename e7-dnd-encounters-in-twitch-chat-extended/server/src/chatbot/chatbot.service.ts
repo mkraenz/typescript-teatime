@@ -152,6 +152,16 @@ export class ChatbotService {
   }
 
   private async pollBattleLogs() {
+    this.notifyBattleLogSubscribers();
+    const battleEnded = this.battle?.log.find(
+      (e) => e.type === 'monster killed' || e.type === 'party killed',
+    );
+    if (battleEnded) {
+      await this.endBattle();
+    }
+  }
+
+  private notifyBattleLogSubscribers() {
     const hasNewEvents = this.battle!.log.length > this.lastLogCount;
     if (hasNewEvents) {
       for (let i = this.lastLogCount; i < this.battle!.log.length; i++) {
@@ -163,22 +173,24 @@ export class ChatbotService {
       }
       this.lastLogCount = this.battle!.log.length;
     }
-    const battleEnded = this.battle?.log.find(
-      (e) => e.type === 'monster killed' || e.type === 'party killed',
-    );
-    if (battleEnded) {
-      await this.endBattle();
-    }
   }
 
   private async saveAdventurerToDatabase() {
     for (const adventurer of this.joinedAdventurers) {
-      adventurer.addExperience(100);
       await adventurer.save();
     }
   }
 
+  private rewardAdventurers() {
+    this.joinedAdventurers.forEach((adventurer) =>
+      adventurer.addExperience(100),
+    );
+  }
+
   private async endBattle() {
+    this.rewardAdventurers();
+    this.notifyBattleLogSubscribers(); // final notification before clearing variables
+
     global.clearInterval(this.watchBattleLogs!);
     this.battle?.endBattle();
     this.watchBattleLogs = undefined;
@@ -187,7 +199,7 @@ export class ChatbotService {
 
     await this.saveAdventurerToDatabase();
     this.joinedAdventurers = [];
-    console.log('battle ended');
+    console.log('chatbot: battle ended');
   }
 
   private renderBattleEvent(event: IEvent) {
@@ -239,6 +251,8 @@ export class ChatbotService {
         return say(
           `${event.target} received Protect spell. All damage is halfed!`,
         );
+      case 'leveled up':
+        return say(`🏅🏅🏅🏅 @${event.target} reached level ${event.level}!`);
     }
   }
   private async joinParty(username: string, battle: Battle) {

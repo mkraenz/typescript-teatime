@@ -51,11 +51,12 @@ export class Adventurer {
 
   public addExperience(exp: number, forceUpdateLevel = false) {
     this.experience += exp;
-    // 1 -> 2  200xp
-    // 2 -> 3  600xp
-    // 3 -> 4  1100xp
-    // 4 -> 5  1600xp
-    const level = 1 + Math.floor(Math.pow(this.experience / 200, 2 / 3));
+    // 1 -> 2  100xp
+    // 2 -> 3  300xp
+    // 3 -> 4  600xp
+    // 4 -> 5  1200xp
+    // https://www.wolframalpha.com/input?i=1+%2B+floor%28+%28x+%2F+100%29+%5E+%282+%2F3%29%29+where+x+in+100+to+700
+    const level = 1 + Math.floor(Math.pow(this.experience / 100, 2 / 3));
     const leveledUp = level > this.level;
     if (forceUpdateLevel) {
       this.level = level;
@@ -63,7 +64,7 @@ export class Adventurer {
       this.level = level;
       this.log.push({
         type: 'leveled up',
-        level: level,
+        level,
         target: this.username,
       });
     }
