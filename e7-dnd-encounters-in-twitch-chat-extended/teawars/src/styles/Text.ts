@@ -5,42 +5,42 @@ type Style = Partial<GameObjects.TextStyle>;
 
 export const TextConfig: Record<string, Style> = {
     title: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "10rem",
         color: Color.WhiteSilver,
     },
     gameOverTitle: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "10rem",
         color: Color.Orange,
     },
     buttonSm: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "7rem",
         color: Color.WhiteSilver,
     },
     version: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         color: Color.WhiteSilver,
         fontSize: "2rem",
     },
     xl: {
-        fontFamily: "Baloo",
-        fontSize: "118px",
+        fontFamily: "PressStart2P",
+        fontSize: "60px",
         color: Color.WhiteSilver,
     },
     lg: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "20px",
         color: Color.WhiteSilver,
     },
     md: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "16px",
         color: Color.WhiteSilver,
     },
     sm: {
-        fontFamily: "Baloo",
+        fontFamily: "PressStart2P",
         fontSize: "12px",
         color: Color.WhiteSilver,
     },
@@ -48,6 +48,17 @@ export const TextConfig: Record<string, Style> = {
         fontFamily: "Courier",
         fontSize: "12px",
         color: Color.HackerGreen,
+    },
+    monsterHealthBar: {
+        fontFamily: "PressStart2P",
+        fontSize: "bold 50px",
+        align: "center",
+        color: "rgb(255,255,255,0.7)",
+    },
+    adventurerHealthBar: {
+        fontFamily: "PressStart2P",
+        fontSize: `12px`,
+        color: "rgb(255,255,255,0.9)",
     },
 };
 

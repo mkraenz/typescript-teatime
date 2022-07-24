@@ -8,6 +8,7 @@ import {
 import { MonsterAura } from "../anims/MonsterAura";
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
+import { TextConfig } from "../styles/Text";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
 import { MonsterActivityBar } from "./MonsterActivityBar";
@@ -56,11 +57,12 @@ export class Monster extends GameObjects.Image {
         this.healthbar = new MonsterHealthbar(scene, hp);
         this.activityBar = new MonsterActivityBar(scene, turnInterval);
         const label = this.scene.add
-            .text(scene.scale.width / 2, 84, startCase(name), {
-                fontSize: "bold 60px",
-                align: "center",
-                color: "rgb(255,255,255,0.7)",
-            })
+            .text(
+                scene.scale.width / 2,
+                84,
+                startCase(name),
+                TextConfig.monsterHealthBar
+            )
             .setOrigin(0.5);
         setTextShadow(label);
 

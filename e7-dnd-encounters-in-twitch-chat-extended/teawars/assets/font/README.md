@@ -1,3 +1,3 @@
 # Font Licenses
 
-- [baloo](https://www.1001fonts.com/baloo-font.html)
+- [Press Start 2P](https://fonts.google.com/attribution)

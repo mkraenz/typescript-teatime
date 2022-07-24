@@ -80,7 +80,7 @@ export class LoadingScene extends Scene {
             y: this.halfHeight - 50,
             text: translations.loading,
             style: {
-                font: "30px Baloo",
+                font: "30px PressStart2P",
             },
         });
         loadingText.setOrigin(0.5);
@@ -100,7 +100,7 @@ export class LoadingScene extends Scene {
             y: this.halfHeight + 65,
             text: "",
             style: {
-                font: "18px Baloo",
+                font: "18px PressStart2P",
             },
         });
         assetText.setOrigin(0.5);
