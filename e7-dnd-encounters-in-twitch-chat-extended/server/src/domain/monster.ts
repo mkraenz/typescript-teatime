@@ -30,7 +30,7 @@ export class Monster {
   }
 
   public attack(adventurer: Adventurer) {
-    const damage = random(this.maxDamage - 1) + 1;
+    const damage = this.getDamage(adventurer);
     this.log.push({
       type: 'attack',
       isMonster: true,
@@ -38,6 +38,13 @@ export class Monster {
       target: adventurer.username,
     });
     adventurer.takeDamage(damage);
+  }
+
+  private getDamage(adventurer: Adventurer) {
+    if (adventurer.isProtected) {
+      return Math.ceil((random(this.maxDamage - 1) + 1) / 2);
+    }
+    return random(this.maxDamage - 1) + 1;
   }
 
   public takeDamage(damage: number) {

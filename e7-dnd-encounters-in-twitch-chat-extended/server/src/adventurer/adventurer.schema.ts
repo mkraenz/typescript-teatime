@@ -4,20 +4,23 @@ import { IEvent } from '../domain/events';
 import type { Monster } from '../domain/monster';
 
 export class Adventurer {
-  @prop({ unique: true, required: true })
+  @prop({ unique: true, required: true, type: String })
   public username!: string;
 
-  @prop({ default: 150 })
+  @prop({ default: 150, type: Number })
   public maxHp = 150;
 
-  @prop({ default: 150 })
+  @prop({ default: 150, type: Number })
   public hp = 150;
 
-  @prop({ default: 1 })
+  @prop({ default: 1, type: Number })
   public level = 1;
 
-  @prop({ default: 0 })
+  @prop({ default: 0, type: Number })
   public experience = 0;
+
+  @prop({ default: false, type: Boolean })
+  public isProtected = false;
 
   private log!: IEvent[];
 
@@ -82,7 +85,7 @@ export class Adventurer {
     return amount;
   }
 
-  healParty(partySize: number) {
+  public healParty(partySize: number) {
     if (this.isDead) return;
     if (this.hasActedThisTurn) return;
 
@@ -110,6 +113,17 @@ export class Adventurer {
     if (this.hp > this.maxHp) {
       this.hp = this.maxHp;
     }
+  }
+
+  public receiveProtectCast() {
+    if (this.isDead) return;
+
+    this.log.push({
+      type: 'received protect cast',
+      target: this.username,
+    });
+
+    this.isProtected = true;
   }
 
   public unblockAttack(): void {
@@ -157,5 +171,18 @@ export class Adventurer {
     });
     this.hasActedThisTurn = true;
     monster.takeDamage(damage);
+  }
+
+  castProtect(target: string) {
+    if (this.isDead) return;
+    if (this.hasActedThisTurn) return;
+
+    this.log.push({
+      type: 'protect cast',
+      target,
+      actor: this.username,
+    });
+    this.hasActedThisTurn = true;
+    return true;
   }
 }

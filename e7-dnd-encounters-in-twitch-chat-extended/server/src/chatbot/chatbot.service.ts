@@ -24,11 +24,23 @@ export type BattleLogSubscriber = (event: IEvent) => void;
 
 enum Command {
   Attack = '!attack',
+  Attack1 = '!strike',
+  Attack2 = '!hit',
+  Attack3 = '!charge',
+  Attack4 = '!assault',
   Join = '!join',
   Fire = '!fire',
   Ice = '!ice',
   Heal = '!heal',
+  Protect = '!protect',
 }
+const attackAliases = [
+  Command.Attack,
+  Command.Attack1,
+  Command.Attack2,
+  Command.Attack3,
+  Command.Attack4,
+];
 
 @Injectable()
 export class ChatbotService {
@@ -84,7 +96,7 @@ export class ChatbotService {
     if (msg.includes(Command.Join)) {
       return await this.joinParty(username, this.battle);
     }
-    if (msg.includes(Command.Attack)) {
+    if (attackAliases.some((cmd) => msg.includes(cmd))) {
       return this.battle.attack(username);
     }
     if (msg.includes(Command.Fire)) {
@@ -97,22 +109,46 @@ export class ChatbotService {
       // using message to handle uppercase characters in username receiving heal
       return this.handleHeal(this.battle, message, username);
     }
+    if (msg.includes(Command.Protect)) {
+      return this.handleProtect(this.battle, message, username);
+    }
     if (DMs.includes(username) && msg.includes('!flee')) {
       return this.endBattle();
     }
   }
 
+  /**
+   * msg should be like:
+   * !heal @maceisgrace
+   */
   private handleHeal(battle: Battle, msg: string, username: string) {
-    // msg should be like:
-    // !heal @maceisgrace
-    // filter for ignoring whitespace
-    const healed = msg.split(' ').filter((m) => !isEmpty(m))[1];
+    const healed = this.getTargetUsername(msg);
     const singleTargetCast = healed && healed[0] === '@';
     if (singleTargetCast) {
       const healedTargetUser = healed.substring(1);
       return battle.heal(username, healedTargetUser);
     }
     return battle.healParty(username);
+  }
+
+  private getTargetUsername(msg: string) {
+    // filter for ignoring whitespace
+    return msg.split(' ').filter((m) => !isEmpty(m))[1];
+  }
+
+  /**
+   * msg should be like:
+   * !protect @maceisgrace
+   */
+  private handleProtect(battle: Battle, msg: string, username: string) {
+    // msg should be like:
+    // !protect @maceisgrace
+    const shielded = this.getTargetUsername(msg);
+    const singleTargetCast = shielded && shielded[0] === '@';
+    if (singleTargetCast) {
+      const protectedTargetUser = shielded.substring(1);
+      return battle.castProtect(username, protectedTargetUser);
+    }
   }
 
   private async pollBattleLogs() {
@@ -196,6 +232,12 @@ export class ChatbotService {
       case 'party killed':
         return say(
           `🔥🔥🔥🔥🔥 ⚰️⚰️⚰️⚰️ Defeat! The battle is lost. The world must rely on another group of adventurers. 😈 ${event.monster} lived happily ever after.`,
+        );
+      case 'protect cast':
+        return say(`${event.actor} tries to cast Protect on ${event.target}`);
+      case 'received protect cast':
+        return say(
+          `${event.target} received Protect spell. All damage is halfed!`,
         );
     }
   }

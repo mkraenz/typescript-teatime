@@ -55,6 +55,7 @@ export class Battle {
     }
   }
 
+  // TODO extract parameter decorator
   public getAdventurer(username: string): Adventurer | undefined {
     return this.party.find(
       (a) => a.username.toLowerCase() === username.toLowerCase(),
@@ -75,7 +76,15 @@ export class Battle {
     healedAdventurer.receivesHeal(healedHp);
   }
 
-  // TODO extract parameter decorator
+  public castProtect(caster: string, target: string) {
+    const casterAdventurer = this.getAdventurer(caster);
+    const targetAdventurer = this.getAdventurer(target);
+    if (!casterAdventurer || !targetAdventurer) return;
+
+    const success = casterAdventurer.castProtect(targetAdventurer.username);
+    if (success) targetAdventurer.receiveProtectCast();
+  }
+
   public healParty(healer: string) {
     const healingAdventurer = this.getAdventurer(healer);
     if (!healingAdventurer) return;
