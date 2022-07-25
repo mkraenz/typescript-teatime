@@ -4,6 +4,7 @@ import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
 import { IceEffect } from "../anims/IceEffect";
 import { animateLevelUp } from "../anims/LevelUp";
+import { InternalEvents } from "../events/InternalEvents";
 import { setTextShadow } from "../styles/setTextShadow";
 import { TextConfig } from "../styles/Text";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
@@ -292,9 +293,15 @@ export class Adventurer extends GameObjects.Image {
     }
 
     public levelUp(newLevel: number, duration: number) {
+        const onComplete = () => {
+            this.scene.events.emit(
+                InternalEvents.BattleEndEventHandlerFinished
+            );
+        };
+
         const { x, y } = this.getBottomCenter();
         animateLevelUp(this.scene, x, y, duration);
-        this.showLevelUpText(newLevel, duration);
+        this.showLevelUpText(newLevel, duration, onComplete);
         this.scene.time.delayedCall(500, () =>
             this.scene.sound.play("level-up", {
                 volume: 0.5,
@@ -302,7 +309,11 @@ export class Adventurer extends GameObjects.Image {
         );
     }
 
-    private showLevelUpText(level: number, duration: number) {
+    private showLevelUpText(
+        level: number,
+        duration: number,
+        onComplete: () => void
+    ) {
         const label = `${this.username}\nreached level ${level}!`;
         const text = this.scene.add
             .text(
@@ -314,7 +325,10 @@ export class Adventurer extends GameObjects.Image {
             .setOrigin(0.5)
             .setDepth(99999);
         setTextShadow(text);
-        this.scene.time.delayedCall(duration, () => text.destroy());
+        this.scene.time.delayedCall(duration, () => {
+            onComplete();
+            text.destroy();
+        });
     }
 
     public debugAttack() {

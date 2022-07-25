@@ -3,9 +3,10 @@ import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import {
     monsterMapping,
-    monsterSprites,
+    monsterSprites
 } from "../../assets/images/monsters/monsters";
 import { MonsterAura } from "../anims/MonsterAura";
+import { InternalEvents } from "../events/InternalEvents";
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { TextConfig } from "../styles/Text";
@@ -325,7 +326,12 @@ export class Monster extends GameObjects.Image {
             targets: {},
             x: 0,
             delay: 2000,
-            onStart: () => this.playBgm("fanfare"),
+            onStart: () => {
+                this.scene.events.emit(
+                    InternalEvents.BattleEndEventHandlerFinished
+                );
+                this.playBgm("fanfare");
+            },
         });
         timeline.play();
     }

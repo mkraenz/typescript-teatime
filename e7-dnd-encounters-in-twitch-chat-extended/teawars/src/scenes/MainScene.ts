@@ -7,6 +7,7 @@ import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
 import { Ambushed, IEvent } from "../events/Event";
+import { InternalEvents } from "../events/InternalEvents";
 import { translations } from "../localizations";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
@@ -40,6 +41,7 @@ export class MainScene extends Scene {
     private monster?: Monster;
     private gui!: GUI;
     private currentMonsterIndex = -1;
+    private battleEndEventQueue: IEvent[] = [];
 
     public constructor() {
         super({
@@ -55,6 +57,7 @@ export class MainScene extends Scene {
         this.gui = new GUI();
         this.gui.hide();
         this.maybeEnableDevMode();
+        this.registerBattleEndEventListener();
 
         this.client = io(process.env.WEBSOCKET_SERVER_URL!);
 
@@ -143,17 +146,37 @@ export class MainScene extends Scene {
             }
 
             if (event.type === "monster killed") {
-                this.onAttackImpact(() => {
-                    this.monster?.die();
-                });
+                this.battleEndEventQueue.push(event);
+                // starts processing the battle end worker queue
+                this.events.emit(InternalEvents.BattleEndEventHandlerFinished);
             }
 
             if (event.type === "leveled up") {
-                // TODO put this in a queue and play one after another
-                const adventurer = this.getAdventurer(event.target);
-                adventurer?.levelUp(event.level, 8000);
+                this.battleEndEventQueue.push(event);
             }
         });
+    }
+
+    private registerBattleEndEventListener() {
+        this.events.on(InternalEvents.BattleEndEventHandlerFinished, () => {
+            const nextEvent = this.battleEndEventQueue.shift();
+            if (nextEvent) {
+                this.handleEventAtBattleEnd(nextEvent);
+            }
+        });
+    }
+
+    private handleEventAtBattleEnd(event: IEvent) {
+        if (event.type === "monster killed") {
+            this.onAttackImpact(() => {
+                this.monster?.die();
+            });
+        }
+
+        if (event.type === "leveled up") {
+            const adventurer = this.getAdventurer(event.target);
+            adventurer?.levelUp(event.level, 8000);
+        }
     }
 
     private playBgm(key: "fanfare" | "battleloop") {

@@ -19,7 +19,6 @@ export class Adventurer {
   @prop({ default: 0, type: Number })
   public experience = 0;
 
-  @prop({ default: false, type: Boolean })
   public isProtected = false;
 
   private log!: IEvent[];
