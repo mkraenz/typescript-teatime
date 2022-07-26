@@ -132,7 +132,7 @@ export class Adventurer extends GameObjects.Image {
         const currentX = this.x;
         const currentY = this.y;
         const slice = this.scene.add
-            .image(currentX + 150, currentY, "shapes", "slash_03")
+            .image(currentX + 100, currentY, "shapes", "slash_03")
             .setScale(3)
             .setRotation(Phaser.Math.TAU / 2)
             .setDepth(9000);
