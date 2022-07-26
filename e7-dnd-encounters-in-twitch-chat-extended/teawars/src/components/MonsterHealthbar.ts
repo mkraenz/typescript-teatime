@@ -1,6 +1,8 @@
 import { GameObjects, Scene } from "phaser";
 
 export class MonsterHealthbar extends GameObjects.Image {
+    private emptyHealthbar: GameObjects.Image;
+
     constructor(
         scene: Scene,
         public readonly maxHealth: number,
@@ -11,9 +13,11 @@ export class MonsterHealthbar extends GameObjects.Image {
 
         this.setScale(6, 4);
 
-        const emptyHealthbar = scene.add
+        this.emptyHealthbar = scene.add
             .image(scene.scale.width / 2, 100, "empty-health-bar")
             .setScale(6, 4);
+
+        this.setVisible(false);
     }
 
     public takeDamage(damage: number) {
@@ -24,5 +28,11 @@ export class MonsterHealthbar extends GameObjects.Image {
     private setHealth(health: number) {
         const factor = Math.max(health / this.maxHealth, 0);
         this.setCrop(0, 0, this.width * factor, this.height);
+    }
+
+    public setVisible(value: boolean): this {
+        this.emptyHealthbar.setVisible(value);
+        super.setVisible(value);
+        return this;
     }
 }

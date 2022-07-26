@@ -3,7 +3,7 @@ import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import {
     monsterMapping,
-    monsterSprites
+    monsterSprites,
 } from "../../assets/images/monsters/monsters";
 import { MonsterAura } from "../anims/MonsterAura";
 import { InternalEvents } from "../events/InternalEvents";
@@ -64,10 +64,16 @@ export class Monster extends GameObjects.Image {
                 startCase(name),
                 TextConfig.monsterHealthBar
             )
-            .setOrigin(0.5);
+            .setOrigin(0.5)
+            .setVisible(false);
         setTextShadow(label);
+        const showHud = () => {
+            label.setVisible(true);
+            this.healthbar.setVisible(true);
+            this.activityBar.setVisible(true);
+        };
 
-        this.ambush();
+        this.ambush(showHud);
 
         this.setupDevMode(gui, name);
     }
@@ -88,7 +94,7 @@ export class Monster extends GameObjects.Image {
         folder.add(this, "die");
     }
 
-    private ambush() {
+    private ambush(onComplete: () => void) {
         if (devCfg.skipIntro) {
             this.setY(cfg.y);
             return;
@@ -119,6 +125,7 @@ export class Monster extends GameObjects.Image {
                 });
                 scream.once("complete", () => {
                     this.playBgm("battleloop");
+                    onComplete();
                 });
 
                 const emitter = this.scene.add.particles(
