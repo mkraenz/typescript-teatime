@@ -3,10 +3,8 @@ import { random } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
 import { IceEffect } from "../anims/IceEffect";
-import { animateLevelUp } from "../anims/LevelUp";
+import { animateLevelUp, animateLevelUpText } from "../anims/LevelUp";
 import { InternalEvents } from "../events/InternalEvents";
-import { setTextShadow } from "../styles/setTextShadow";
-import { TextConfig } from "../styles/Text";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
@@ -59,6 +57,7 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "die");
         folder.add(this, "castHeal").name("cast Heal");
         folder.add(this, "debugReceiveHeal").name("receive Heal");
+        folder.add(this, "receiveProtectCast").name("receive Protect");
         folder.add(this, "animateSlice").name("slice");
         folder.add(this, "debugCastFire").name("cast Fire");
         folder.add(this, "debugCastIce").name("cast Ice");
@@ -215,7 +214,7 @@ export class Adventurer extends GameObjects.Image {
     }
 
     public receiveProtectCast() {
-        this.scene.sound.play("heal", { volume: 0.5 });
+        this.scene.sound.play("protect", { volume: 0.5 });
 
         const emitter = this.scene.add.particles(
             "shapes",
@@ -301,34 +300,18 @@ export class Adventurer extends GameObjects.Image {
 
         const { x, y } = this.getBottomCenter();
         animateLevelUp(this.scene, x, y, duration);
-        this.showLevelUpText(newLevel, duration, onComplete);
-        this.scene.time.delayedCall(500, () =>
+        animateLevelUpText(
+            this.scene,
+            this.username,
+            newLevel,
+            duration,
+            onComplete
+        );
+        this.scene.time.delayedCall(100, () =>
             this.scene.sound.play("level-up", {
-                volume: 0.5,
+                volume: 0.8,
             })
         );
-    }
-
-    private showLevelUpText(
-        level: number,
-        duration: number,
-        onComplete: () => void
-    ) {
-        const label = `${this.username}\nreached level ${level}!`;
-        const text = this.scene.add
-            .text(
-                this.scene.scale.width / 2,
-                this.scene.scale.height / 3,
-                label,
-                { ...TextConfig.xl, align: "center" }
-            )
-            .setOrigin(0.5)
-            .setDepth(99999);
-        setTextShadow(text);
-        this.scene.time.delayedCall(duration, () => {
-            onComplete();
-            text.destroy();
-        });
     }
 
     public debugAttack() {

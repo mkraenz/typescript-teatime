@@ -68,7 +68,8 @@ export class LoadingScene extends Scene {
             .audio("monster-scream", sound("scream_horror1.mp3"))
             .audio("battleloop", sound("8BitBattleLoop.ogg"))
             .audio("ice", sound("freeze.mp3"))
-            .audio("level-up", sound("level-up.mp3"));
+            .audio("protect", sound("level-up.mp3"))
+            .audio("level-up", sound("snare.mp3"));
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));
         });

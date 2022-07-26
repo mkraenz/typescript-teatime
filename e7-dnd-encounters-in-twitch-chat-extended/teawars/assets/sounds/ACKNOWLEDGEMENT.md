@@ -15,3 +15,4 @@
   - Changes: converted to `.mp3`
 - [freeze.mp3 by artisticdude under CC0](https://opengameart.org/content/freeze-spell-0)
 - [level-up.mp3 by phoenix1291 under CC0](https://opengameart.org/content/sound-effects-mini-pack15)
+- [snare.mp3 - part of "Level up sound effects" by Bart Kelsey. Commissioned by Will Corwin for OpenGameArt.org (http://opengameart.org) - under CC-BY 3.0](https://opengameart.org/content/level-up-sound-effects)
