@@ -1,5 +1,5 @@
 import { GUI } from "dat.gui";
-import { random } from "lodash";
+import { random, range } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { AdventurerName } from "../AdventurerName";
 import { IceEffect } from "../anims/IceEffect";
@@ -9,7 +9,46 @@ import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
 
-export class Adventurer extends GameObjects.Image {
+// number of different adventurer images in the spritesheet in a single row
+const numberOfAdventurerImages = 22;
+
+// found values by trial-and-error
+const frameNumberToFrameRate: { [key: number]: number } = {
+    4: 5.2,
+    14: 0.8,
+};
+
+export class Adventurer extends GameObjects.Sprite {
+    static createAdventurerAnims(scene: Scene) {
+        const genFrames = (adventurerImageIndex: number) =>
+            scene.anims.generateFrameNumbers("adventurers", {
+                frames: [
+                    adventurerImageIndex,
+                    adventurerImageIndex + numberOfAdventurerImages,
+                ],
+            });
+
+        range(numberOfAdventurerImages).forEach((index) => {
+            // idle
+            scene.anims.create({
+                key: `idle-${index}`,
+                frames: genFrames(index),
+                repeat: -1,
+                frameRate: frameNumberToFrameRate[index] ?? 1,
+                showOnStart: true,
+                yoyo: false,
+            });
+            scene.anims.create({
+                key: `attack-${index}`,
+                frames: scene.anims.generateFrameNumbers("adventurers", {
+                    frames: [index],
+                }),
+                repeat: -1,
+                frameRate: 999999,
+            });
+        });
+    }
+
     private healthbar: AdventurerHealthbar;
     private nameLabel: GameObjects.Text;
     private iceEffect?: IceEffect;
@@ -23,7 +62,9 @@ export class Adventurer extends GameObjects.Image {
         public readonly username: string,
         private hp: number,
         maxHp: number,
-        gui: GUI
+        gui: GUI,
+        // 4 and 14 have idle anims
+        private imageIndex: number = random(numberOfAdventurerImages - 1)
     ) {
         super(scene, 0, 0, "adventurers");
         scene.add.existing(this);
@@ -33,9 +74,7 @@ export class Adventurer extends GameObjects.Image {
             400,
             scene.scale.width / 2 - 50,
             scene.scale.height * (2 / 5)
-        )
-            .setScale(4.5)
-            .setFrame(random(21));
+        ).setScale(4.5);
         this.setDepth(this.y);
 
         if (this.isDead) {
@@ -45,9 +84,15 @@ export class Adventurer extends GameObjects.Image {
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
 
+        this.play(`idle`);
+
         this.join();
 
         this.setupDevMode(gui);
+    }
+
+    public play(key: "idle" | "attack") {
+        return super.play(`${key}-${this.imageIndex}`);
     }
 
     private setupDevMode(gui: GUI) {
@@ -80,28 +125,6 @@ export class Adventurer extends GameObjects.Image {
         });
     }
 
-    private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
-        const x = this.x;
-        const y = this.y;
-        const startPoint = new Phaser.Math.Vector2(x, y);
-        const controlPoint1 = new Phaser.Math.Vector2(x, y - 100);
-        const controlPoint2 = new Phaser.Math.Vector2(
-            x2,
-            0.8 * y2 + 0.2 * this.y
-        );
-        const endPoint = new Phaser.Math.Vector2(x2, y2);
-
-        return {
-            path: { t: 0, vec: new Phaser.Math.Vector2() },
-            curve: new Phaser.Curves.CubicBezier(
-                startPoint,
-                controlPoint1,
-                controlPoint2,
-                endPoint
-            ),
-        };
-    }
-
     public attack(target: { x: number; y: number }, jumpDuration: number) {
         const { path, curve } = this.addAttackCurve(target);
         const setPlayerToCurvePosition = () => {
@@ -123,7 +146,31 @@ export class Adventurer extends GameObjects.Image {
                     this.animateSlice();
                 }
             },
+            onComplete: () => this.play("idle"),
         });
+        this.play("attack");
+    }
+
+    private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {
+        const x = this.x;
+        const y = this.y;
+        const startPoint = new Phaser.Math.Vector2(x, y);
+        const controlPoint1 = new Phaser.Math.Vector2(x, y - 100);
+        const controlPoint2 = new Phaser.Math.Vector2(
+            x2,
+            0.8 * y2 + 0.2 * this.y
+        );
+        const endPoint = new Phaser.Math.Vector2(x2, y2);
+
+        return {
+            path: { t: 0, vec: new Phaser.Math.Vector2() },
+            curve: new Phaser.Curves.CubicBezier(
+                startPoint,
+                controlPoint1,
+                controlPoint2,
+                endPoint
+            ),
+        };
     }
 
     private animateSlice() {

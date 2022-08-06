@@ -16,7 +16,7 @@ import { Scenes } from "./Scenes";
 const cfg = {
     dev: {
         enabled: false,
-        adventurers: 0,
+        adventurers: 1,
     },
     fadeIn: 200,
     title: {
@@ -56,109 +56,111 @@ export class MainScene extends Scene {
 
         this.gui = new GUI();
         this.gui.hide();
+        this.createAnimFrames();
         this.maybeEnableDevMode();
         this.registerBattleEndEventListener();
-        this.createAnimFrames();
 
         this.client = io(process.env.WEBSOCKET_SERVER_URL!);
-
         this.client.on("init", (data: IEvent[]) => {
             this.battleLog.push(...data);
         });
-        this.client.on("append log", (event: IEvent) => {
-            console.log(JSON.stringify(event));
-            this.battleLog.push(event);
+        this.client.on("append log", this.handleEvent.bind(this));
+    }
 
-            if (event.type === "monster appeared") {
-                this.addMonster(event);
-            }
-            if (event.type === "join") {
-                this.addAdventurer(event.member, event.hp, event.maxHp);
-                this.monster?.startActivityBar();
-            }
+    private handleEvent(event: IEvent) {
+        console.log(JSON.stringify(event));
+        this.battleLog.push(event);
 
-            if (event.type === "attack" && !event.isMonster && this.monster) {
-                const adventurer = this.getAdventurer(event.attacker);
-                adventurer?.attack(this.monster, cfg.jumpAttackDuration);
-            }
+        if (event.type === "monster appeared") {
+            this.addMonster(event);
+        }
+        if (event.type === "join") {
+            this.addAdventurer(event.member, event.hp, event.maxHp);
+            this.monster?.startActivityBar();
+        }
 
-            if (event.type === "damage received" && event.isMonster) {
-                this.onAttackImpact(() => {
-                    this.monster?.receiveDamage(event.damage);
-                });
-            }
+        if (event.type === "attack" && !event.isMonster && this.monster) {
+            const adventurer = this.getAdventurer(event.attacker);
+            adventurer?.attack(this.monster, cfg.jumpAttackDuration);
+        }
 
-            if (event.type === "attack" && event.isMonster && this.monster) {
-                const adventurer = this.getAdventurer(event.target);
-                if (adventurer) {
-                    this.monster.attack(
-                        adventurer.getCenter(),
-                        cfg.jumpAttackDuration
-                    );
-                }
-            }
+        if (event.type === "damage received" && event.isMonster) {
+            this.onAttackImpact(() => {
+                this.monster?.receiveDamage(event.damage);
+            });
+        }
 
-            if (event.type === "fire cast" && this.monster) {
-                const adventurer = this.getAdventurer(event.actor);
-                if (adventurer) {
-                    adventurer.castFire(this.monster.getBottomCenter());
-                }
-            }
-
-            if (event.type === "ice cast" && this.monster) {
-                const adventurer = this.getAdventurer(event.actor);
-                if (adventurer) {
-                    adventurer.castIce(this.monster.getCenter());
-                }
-            }
-
-            if (event.type === "damage received" && !event.isMonster) {
-                const adventurerReceivedDamage = event;
-                const adventurer = this.getAdventurer(
-                    adventurerReceivedDamage.target
+        if (event.type === "attack" && event.isMonster && this.monster) {
+            const adventurer = this.getAdventurer(event.target);
+            if (adventurer) {
+                this.monster.attack(
+                    adventurer.getCenter(),
+                    cfg.jumpAttackDuration
                 );
-                this.onAttackImpact(() => {
-                    adventurer?.receiveDamage(adventurerReceivedDamage.damage);
-                });
             }
+        }
 
-            if (event.type === "adventurer killed") {
-                const adventurer = this.getAdventurer(event.name);
-                this.onAttackImpact(() => adventurer?.die());
+        if (event.type === "fire cast" && this.monster) {
+            const adventurer = this.getAdventurer(event.actor);
+            if (adventurer) {
+                adventurer.castFire(this.monster.getBottomCenter());
             }
+        }
 
-            if (
-                event.type === "heal cast" ||
-                event.type === "heal party cast" ||
-                // TODO own animation for protect cast
-                event.type === "protect cast"
-            ) {
-                const adventurer = this.getAdventurer(event.actor);
-                adventurer?.castHeal();
+        if (event.type === "ice cast" && this.monster) {
+            const adventurer = this.getAdventurer(event.actor);
+            if (adventurer) {
+                adventurer.castIce(this.monster.getCenter());
             }
+        }
 
-            if (event.type === "received heal") {
-                const adventurer = this.getAdventurer(event.target);
-                adventurer?.receiveHeal(event.currentHp, event.amount);
-            }
-            if (event.type === "protect cast") {
-                const adventurer = this.getAdventurer(event.target);
-                adventurer?.receiveProtectCast();
-            }
+        if (event.type === "damage received" && !event.isMonster) {
+            const adventurerReceivedDamage = event;
+            const adventurer = this.getAdventurer(
+                adventurerReceivedDamage.target
+            );
+            this.onAttackImpact(() => {
+                adventurer?.receiveDamage(adventurerReceivedDamage.damage);
+            });
+        }
 
-            if (event.type === "monster killed") {
-                this.battleEndEventQueue.push(event);
-                // starts processing the battle end worker queue
-                this.events.emit(InternalEvents.BattleEndEventHandlerFinished);
-            }
+        if (event.type === "adventurer killed") {
+            const adventurer = this.getAdventurer(event.name);
+            this.onAttackImpact(() => adventurer?.die());
+        }
 
-            if (event.type === "leveled up") {
-                this.battleEndEventQueue.push(event);
-            }
-        });
+        if (
+            event.type === "heal cast" ||
+            event.type === "heal party cast" ||
+            // TODO own animation for protect cast
+            event.type === "protect cast"
+        ) {
+            const adventurer = this.getAdventurer(event.actor);
+            adventurer?.castHeal();
+        }
+
+        if (event.type === "received heal") {
+            const adventurer = this.getAdventurer(event.target);
+            adventurer?.receiveHeal(event.currentHp, event.amount);
+        }
+        if (event.type === "protect cast") {
+            const adventurer = this.getAdventurer(event.target);
+            adventurer?.receiveProtectCast();
+        }
+
+        if (event.type === "monster killed") {
+            this.battleEndEventQueue.push(event);
+            // starts processing the battle end worker queue
+            this.events.emit(InternalEvents.BattleEndEventHandlerFinished);
+        }
+
+        if (event.type === "leveled up") {
+            this.battleEndEventQueue.push(event);
+        }
     }
 
     private createAnimFrames() {
+        Adventurer.createAdventurerAnims(this);
         this.anims.create({
             key: "lightningAnim",
             frames: this.anims.generateFrameNumbers("lightning", {
