@@ -13,6 +13,12 @@ import { IPoint } from "./IPoint";
 const numOfImages = 22;
 
 const AnimCfg = {
+    0: {
+        idle: {
+            frames: [0, 0 + numOfImages],
+            frameRate: 0.5,
+        },
+    },
     4: {
         idle: {
             frames: [4, 4 + numOfImages],
@@ -20,6 +26,18 @@ const AnimCfg = {
         },
         attack: {
             frames: [4],
+        },
+    },
+    7: {
+        idle: {
+            frames: [7, 7 + numOfImages],
+            frameRate: 0.5,
+        },
+    },
+    12: {
+        idle: {
+            frames: [12, 12 + numOfImages],
+            frameRate: 1,
         },
     },
     14: {
