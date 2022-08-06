@@ -58,6 +58,7 @@ export class MainScene extends Scene {
         this.gui.hide();
         this.maybeEnableDevMode();
         this.registerBattleEndEventListener();
+        this.createAnimFrames();
 
         this.client = io(process.env.WEBSOCKET_SERVER_URL!);
 
@@ -154,6 +155,18 @@ export class MainScene extends Scene {
             if (event.type === "leveled up") {
                 this.battleEndEventQueue.push(event);
             }
+        });
+    }
+
+    private createAnimFrames() {
+        this.anims.create({
+            key: "lightningAnim",
+            frames: this.anims.generateFrameNumbers("lightning", {
+                first: 0,
+                end: 3,
+            }),
+            frameRate: 16,
+            repeat: -1,
         });
     }
 

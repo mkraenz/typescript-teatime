@@ -61,6 +61,7 @@ export class Adventurer extends GameObjects.Image {
         folder.add(this, "animateSlice").name("slice");
         folder.add(this, "debugCastFire").name("cast Fire");
         folder.add(this, "debugCastIce").name("cast Ice");
+        folder.add(this, "debugCastLightning").name("cast Lightning");
         folder.add(this, "debugLevelUp").name("level up");
         folder.open();
     }
@@ -194,6 +195,37 @@ export class Adventurer extends GameObjects.Image {
         });
     }
 
+    // TODO add backend commands bolt lightning blitz thunder
+    public castLightning(target: IPoint) {
+        const sfx = this.scene.sound.add("lightning", {
+            volume: 0.2,
+            loop: true,
+        });
+        sfx.play();
+
+        const angle = Phaser.Math.Angle.Between(
+            this.x,
+            this.y,
+            target.x,
+            target.y
+        );
+        const lightning = this.scene.add
+            .sprite(this.x + 50, this.y, "lightning")
+            .setOrigin(0, 0.5)
+            .setDepth(99999)
+            .setRotation(angle);
+        const diffX = target.x - this.x;
+        const curb = 0.95; // we want to target slightly before the center of the monster
+        const scaleX = (diffX / (256 / 4)) * curb;
+        lightning.setScale(scaleX, 3);
+        lightning.play("lightningAnim");
+
+        this.scene.time.delayedCall(1000, () => {
+            sfx.stop();
+            lightning.destroy();
+        });
+    }
+
     public receiveHeal(currentHp: number, amountHealed: number) {
         this.scene.sound.play("heal", { volume: 0.5 });
         this.healthbar.receiveHeal(currentHp);
@@ -314,27 +346,31 @@ export class Adventurer extends GameObjects.Image {
         );
     }
 
-    public debugAttack() {
+    private debugAttack() {
         this.attack({ x: 1000, y: this.scene.scale.height / 2 }, 1000);
     }
 
-    public debugReceiveDamage() {
+    private debugReceiveDamage() {
         this.receiveDamage(20);
     }
 
-    public debugReceiveHeal() {
+    private debugReceiveHeal() {
         this.receiveHeal(130, 14);
     }
 
-    public debugCastFire() {
+    private debugCastFire() {
         this.castFire({ x: 1100, y: 750 });
     }
 
-    public debugCastIce() {
+    private debugCastIce() {
         this.castIce({ x: 1100, y: 600 });
     }
 
-    public debugLevelUp() {
+    private debugLevelUp() {
         this.levelUp(99, 5000);
+    }
+
+    private debugCastLightning() {
+        this.castLightning({ x: 1100, y: 600 });
     }
 }

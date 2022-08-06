@@ -1,0 +1,42 @@
+[
+    {
+        "active": true,
+        "visible": true,
+        "collideBottom": true,
+        "collideLeft": true,
+        "collideRight": true,
+        "collideTop": true,
+        "on": true,
+        "particleBringToTop": true,
+        "radial": true,
+        "frame": {
+            "frames": ["spark_01", "spark_02", "spark_07"],
+            "cycle": false,
+            "quantity": 1
+        },
+        "frequency": 60,
+        "gravityX": 0,
+        "gravityY": 0,
+        "maxParticles": 100,
+        "timeScale": 1,
+        "blendMode": 0,
+        "accelerationX": 0,
+        "accelerationY": 0,
+        "alpha": 0.3,
+        "angle": { "min": 0, "max": 360, "ease": "Linear" },
+        "bounce": 0,
+        "delay": 0,
+        "lifespan": 1000,
+        "maxVelocityX": 10000,
+        "maxVelocityY": 10000,
+        "moveToX": 0,
+        "moveToY": 0,
+        "quantity": 1,
+        "rotate": { "ease": "Linear", "min": 0, "max": 360 },
+        "scale": 2.5,
+        "speed": 0,
+        "x": 400,
+        "y": 300,
+        "tint": [5951454]
+    }
+]

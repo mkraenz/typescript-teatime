@@ -48,6 +48,10 @@ export class LoadingScene extends Scene {
                     frameHeight: 32,
                 }
             )
+            .spritesheet("lightning", img("lightning.sprite.png"), {
+                frameWidth: 256 / 4,
+                frameHeight: 512 / 8,
+            })
             .atlas(
                 "shapes",
                 "assets/particles/shapes.png",
@@ -69,6 +73,7 @@ export class LoadingScene extends Scene {
             .audio("battleloop", sound("8BitBattleLoop.ogg"))
             .audio("ice", sound("freeze.mp3"))
             .audio("protect", sound("level-up.mp3"))
+            .audio("lightning", sound("electricity.mp3"))
             .audio("level-up", sound("snare.mp3"));
         monsterSprites.forEach((sprite) => {
             this.load.image(sprite.key, monsterImg(sprite.path));

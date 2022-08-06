@@ -46,6 +46,7 @@
 - [ice-crystal.png by MNDV.ecb under CC0](https://opengameart.org/content/elemental-badges-from-the-savage-swordsman)
 - [unicorn.png, pegasus.png, and horse.png by AntumDeluge under CC-BY 3.0](https://opengameart.org/content/lpc-horses-rework)
   - Changes: Cut out horse from spritesheet, mirrored sprite horizontally
+- [lightning.sprite.png by Clint Bellanger under CC-BY 3.0](https://opengameart.org/content/lightning-shock-spell)
 - General note: Sprites may appear tinted in-game.
 
 ### Generating favicon.ico
