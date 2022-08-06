@@ -10,39 +10,62 @@ import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
 
 // number of different adventurer images in the spritesheet in a single row
-const numberOfAdventurerImages = 22;
+const numOfImages = 22;
 
-// found values by trial-and-error
-const frameNumberToFrameRate: { [key: number]: number } = {
-    4: 5.2,
-    14: 0.8,
+const AnimCfg = {
+    4: {
+        idle: {
+            frames: [4, 4 + numOfImages],
+            frameRate: 5.2,
+        },
+        attack: {
+            frames: [4],
+        },
+    },
+    14: {
+        idle: {
+            frames: [14, 14 + numOfImages],
+            frameRate: 0.8,
+        },
+        attack: {
+            frames: [14],
+        },
+    },
+    21: {
+        idle: {
+            frames: [21, 21 + numOfImages],
+            frameRate: 1,
+        },
+        attack: {
+            frames: [21],
+        },
+    },
 };
+type AnimCfg = typeof AnimCfg;
 
 export class Adventurer extends GameObjects.Sprite {
     static createAdventurerAnims(scene: Scene) {
-        const genFrames = (adventurerImageIndex: number) =>
+        const genFrames = (frames: number[]) =>
             scene.anims.generateFrameNumbers("adventurers", {
-                frames: [
-                    adventurerImageIndex,
-                    adventurerImageIndex + numberOfAdventurerImages,
-                ],
+                frames,
             });
 
-        range(numberOfAdventurerImages).forEach((index) => {
+        range(numOfImages).forEach((index) => {
+            const cfg = (AnimCfg[index as keyof AnimCfg] ?? {}) as Partial<
+                AnimCfg[4]
+            >;
             // idle
             scene.anims.create({
                 key: `idle-${index}`,
-                frames: genFrames(index),
+                frames: genFrames(cfg.idle?.frames ?? [index]),
                 repeat: -1,
-                frameRate: frameNumberToFrameRate[index] ?? 1,
+                frameRate: cfg.idle?.frameRate ?? 1,
                 showOnStart: true,
                 yoyo: false,
             });
             scene.anims.create({
                 key: `attack-${index}`,
-                frames: scene.anims.generateFrameNumbers("adventurers", {
-                    frames: [index],
-                }),
+                frames: genFrames(cfg.attack?.frames ?? [index]),
                 repeat: -1,
                 frameRate: 999999,
             });
@@ -63,8 +86,8 @@ export class Adventurer extends GameObjects.Sprite {
         private hp: number,
         maxHp: number,
         gui: GUI,
-        // 4 and 14 have idle anims
-        private imageIndex: number = random(numberOfAdventurerImages - 1)
+        // 4, 14 and 21 have idle anims
+        private imageIndex: number = random(numOfImages - 1)
     ) {
         super(scene, 0, 0, "adventurers");
         scene.add.existing(this);
