@@ -70,7 +70,7 @@ export class LoadingScene extends Scene {
             .audio("heal", sound("magical_5.ogg"))
             .audio("fire", sound("Fire.mp3"))
             .audio("monster-scream", sound("scream_horror1.mp3"))
-            .audio("battleloop", sound("8BitBattleLoop.ogg"))
+            .audio("battleloop", sound("8BitBattleLoop.mp3"))
             .audio("ice", sound("freeze.mp3"))
             .audio("protect", sound("level-up.mp3"))
             .audio("lightning", sound("electricity.mp3"))
