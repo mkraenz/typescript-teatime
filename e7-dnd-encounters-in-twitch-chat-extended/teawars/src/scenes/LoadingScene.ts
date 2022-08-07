@@ -48,6 +48,11 @@ export class LoadingScene extends Scene {
                     frameHeight: 64,
                 }
             )
+            .aseprite(
+                "adventurer-red-onehanded",
+                img("adventurers/adventurer-red-onehanded.png"),
+                img("adventurers/adventurer-red-onehanded.json")
+            )
             .spritesheet("lightning", img("lightning.sprite.png"), {
                 frameWidth: 256 / 4,
                 frameHeight: 512 / 8,

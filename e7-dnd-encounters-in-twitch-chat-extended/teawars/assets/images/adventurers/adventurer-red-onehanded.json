@@ -1,0 +1,72 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 36, "w": 26, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 22, "y": 16, "w": 24, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 300
+   },
+   "1": {
+    "frame": { "x": 28, "y": 36, "w": 26, "h": 33 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 22, "y": 17, "w": 24, "h": 31 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 300
+   },
+   "2": {
+    "frame": { "x": 48, "y": 1, "w": 39, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 16, "w": 37, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 300
+   },
+   "3": {
+    "frame": { "x": 48, "y": 1, "w": 39, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 16, "w": 37, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   "4": {
+    "frame": { "x": 1, "y": 1, "w": 46, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 12, "y": 16, "w": 44, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "5": {
+    "frame": { "x": 88, "y": 1, "w": 37, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 24, "y": 16, "w": 35, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 300
+   },
+   "6": {
+    "frame": { "x": 55, "y": 36, "w": 24, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 24, "y": 16, "w": 22, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.39-x64",
+  "image": "adventurer-red-onehanded.png",
+  "format": "I8",
+  "size": { "w": 125, "h": 70 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 1, "direction": "forward" },
+   { "name": "run", "from": 2, "to": 2, "direction": "forward" },
+   { "name": "attack", "from": 3, "to": 6, "direction": "forward" }
+  ]
+ }
+}

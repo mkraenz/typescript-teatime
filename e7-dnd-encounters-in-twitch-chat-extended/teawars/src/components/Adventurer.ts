@@ -12,7 +12,20 @@ import { IPoint } from "./IPoint";
 // number of different adventurer images in the spritesheet in a single row
 const numOfImages = 22;
 
-const AnimCfg = {
+// TODO Phaser3 with Aseprite tutorial https://newdocs.phaser.io/docs/3.54.0/focus/Phaser.Loader.LoaderPlugin-aseprite
+
+const AnimCfg: {
+    [key: number]: {
+        /** textureKey is used for sprites loaded separately (via Aseprite) from the large adventurer png file.
+         * TODO switch to phaser@3.60.0 once released we use a beta version because of a bug with Aseprite and custom animation frame durations.
+         * see https://github.com/photonstorm/phaser/discussions/5990#:~:text=Animation.createFromAseprite%20would%20calculate%20an%20incorrect%20frame%20duration%20if%20the%20frames%20didn%27t%20all%20have%20the%20same%20speed
+         */
+        textureKey?: string;
+        idle?: { repeat?: number; frames?: number[]; frameRate?: number };
+        attack?: { repeat?: number; frames?: number[]; frameRate?: number };
+        run?: { repeat?: number; frames?: number[]; frameRate?: number };
+    };
+} = {
     0: {
         idle: {
             frames: [0, 0 + numOfImages],
@@ -20,9 +33,9 @@ const AnimCfg = {
         },
     },
     3: {
+        textureKey: "adventurer-red-onehanded",
         idle: {
-            frames: [3, 3 + numOfImages],
-            frameRate: 5.2,
+            repeat: -1,
         },
         attack: {
             frames: [
@@ -78,9 +91,7 @@ export class Adventurer extends GameObjects.Sprite {
             });
 
         range(numOfImages).forEach((index) => {
-            const cfg = (AnimCfg[index as keyof AnimCfg] ?? {}) as Partial<
-                AnimCfg[3]
-            >;
+            const cfg = (AnimCfg[index] ?? {}) as Partial<AnimCfg[number]>;
             // idle
             scene.anims.create({
                 key: `idle-${index}`,
@@ -121,7 +132,7 @@ export class Adventurer extends GameObjects.Sprite {
         gui: GUI,
         private imageIndex: number = random(numOfImages - 1)
     ) {
-        super(scene, 0, 0, "adventurers");
+        super(scene, 0, 0, AnimCfg[imageIndex]?.textureKey ?? "adventurers");
         scene.add.existing(this);
 
         this.setRandomPosition(
@@ -139,7 +150,15 @@ export class Adventurer extends GameObjects.Sprite {
         this.healthbar = new AdventurerHealthbar(scene, hp, maxHp, this);
         this.nameLabel = new AdventurerName(scene, username, this);
 
-        this.play(`idle`);
+        const customTextureKey = AnimCfg[imageIndex]?.textureKey;
+        if (customTextureKey) {
+            scene.anims.createFromAseprite(
+                customTextureKey,
+                undefined,
+                this // creates animation names for only this sprite https://github.com/photonstorm/phaser/commit/8a38f04ef233cab163d2d80d3bb458233198c5d4
+            );
+        }
+        this.play("idle");
 
         this.join();
 
@@ -147,6 +166,11 @@ export class Adventurer extends GameObjects.Sprite {
     }
 
     public play(key: "idle" | "attack" | "run") {
+        const currentCfg = AnimCfg[this.imageIndex];
+        if (currentCfg.textureKey) {
+            const repeat = currentCfg ? currentCfg[key]?.repeat : 0;
+            return super.play({ key, repeat });
+        }
         return super.play(`${key}-${this.imageIndex}`);
     }
 
@@ -172,6 +196,8 @@ export class Adventurer extends GameObjects.Sprite {
         this.scene.sound.play("footsteps", {
             volume: 1,
         });
+        // NOTE: this tween causes a weird warp jump if a user joins and immediately attacks.
+        // That's because the attack anim will be played but this tween is still running (with separate x position)
         this.scene.tweens.add({
             targets: this,
             x,
@@ -199,6 +225,7 @@ export class Adventurer extends GameObjects.Sprite {
                 setPlayerToCurvePosition();
                 if (path.t === maxT) {
                     this.animateSlice();
+                    this.playAttackSound();
                     this.play("attack");
                 }
             },
@@ -230,8 +257,6 @@ export class Adventurer extends GameObjects.Sprite {
     }
 
     private animateSlice() {
-        this.playAttackSound();
-
         const screenHeight = this.scene.scale.height;
         const currentX = this.x;
         const currentY = this.y;
@@ -280,6 +305,10 @@ export class Adventurer extends GameObjects.Sprite {
     }
 
     public update() {
+        if (this.texture.key === "adventurer-red-onehanded") {
+            // console.log(this.texture.frames);
+            console.log({ frame: this.frame.name });
+        }
         this.nameLabel.update();
         this.healthbar.update();
         this.iceEffect?.update();
