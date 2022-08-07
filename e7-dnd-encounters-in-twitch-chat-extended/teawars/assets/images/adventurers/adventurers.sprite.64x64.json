@@ -1,0 +1,69 @@
+{ "frames": {
+   "adventurers.sprite.64x64 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 100
+   },
+   "adventurers.sprite.64x64 1.aseprite": {
+    "frame": { "x": 0, "y": 64, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 100
+   },
+   "adventurers.sprite.64x64 2.aseprite": {
+    "frame": { "x": 0, "y": 128, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 100
+   },
+   "adventurers.sprite.64x64 3.aseprite": {
+    "frame": { "x": 0, "y": 192, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 450
+   },
+   "adventurers.sprite.64x64 4.aseprite": {
+    "frame": { "x": 0, "y": 256, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 200
+   },
+   "adventurers.sprite.64x64 5.aseprite": {
+    "frame": { "x": 0, "y": 320, "w": 1408, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1408, "h": 64 },
+    "sourceSize": { "w": 1408, "h": 64 },
+    "duration": 600
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.39-x64",
+  "image": "adventurers.sprite.64x64.png",
+  "format": "RGBA8888",
+  "size": { "w": 1408, "h": 384 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 1, "direction": "forward" },
+   { "name": "attack", "from": 2, "to": 5, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "base", "opacity": 255, "blendMode": "normal" },
+   { "name": "sketch outline", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

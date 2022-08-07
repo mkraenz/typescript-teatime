@@ -22,7 +22,16 @@ const AnimCfg: {
          */
         textureKey?: string;
         idle?: { repeat?: number; frames?: number[]; frameRate?: number };
-        attack?: { repeat?: number; frames?: number[]; frameRate?: number };
+        attack?: {
+            repeat?: number;
+            frames?: number[];
+            frameRate?: number;
+            hideSlice?: boolean;
+            /** how long the adventurer will stay at the monster before jumping back */
+            holdDuration?: number;
+            /** how long to wait before screenshake + attack sound as a duration diff from when the adventurer stands in front of the monster */
+            impactDelay?: number;
+        };
         run?: { repeat?: number; frames?: number[]; frameRate?: number };
     };
 } = {
@@ -32,22 +41,25 @@ const AnimCfg: {
             frameRate: 0.5,
         },
     },
+    1: {
+        textureKey: "adventurer-kendoka",
+        idle: {
+            repeat: -1,
+        },
+        attack: {
+            hideSlice: true,
+            holdDuration: 1200,
+            impactDelay: 500,
+        },
+    },
     3: {
         textureKey: "adventurer-red-onehanded",
         idle: {
             repeat: -1,
         },
         attack: {
-            frames: [
-                3 + numOfImages * 2,
-                3 + numOfImages * 3,
-                3 + numOfImages * 4,
-            ],
-            frameRate: 12,
-        },
-        run: {
-            frames: [3 + numOfImages * 2],
-            frameRate: 1,
+            hideSlice: true,
+            impactDelay: 300,
         },
     },
     7: {
@@ -220,12 +232,20 @@ export class Adventurer extends GameObjects.Sprite {
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,
-            hold: 800,
+            hold: AnimCfg[this.imageIndex]?.attack?.holdDuration ?? 800,
             onUpdate: () => {
                 setPlayerToCurvePosition();
                 if (path.t === maxT) {
-                    this.animateSlice();
-                    this.playAttackSound();
+                    if (!AnimCfg[this.imageIndex]?.attack?.hideSlice) {
+                        this.animateSlice();
+                    }
+                    this.scene.time.delayedCall(
+                        AnimCfg[this.imageIndex]?.attack?.impactDelay ?? 250,
+                        () => {
+                            this.scene.cameras.main.shake(100, 0.01, true);
+                            this.playAttackSound();
+                        }
+                    );
                     this.play("attack");
                 }
             },
@@ -261,7 +281,7 @@ export class Adventurer extends GameObjects.Sprite {
         const currentX = this.x;
         const currentY = this.y;
         const slice = this.scene.add
-            .image(currentX + 100, currentY, "shapes", "slash_03")
+            .image(currentX + 120, currentY, "shapes", "slash_03")
             .setScale(3)
             .setRotation(Phaser.Math.TAU / 2)
             .setDepth(9000);
@@ -275,7 +295,6 @@ export class Adventurer extends GameObjects.Sprite {
             targets: shape,
             y: 0,
             duration: 250,
-            onComplete: () => this.scene.cameras.main.shake(300, 0.02, true),
         });
         timeline.add({
             targets: shape,
@@ -305,10 +324,6 @@ export class Adventurer extends GameObjects.Sprite {
     }
 
     public update() {
-        if (this.texture.key === "adventurer-red-onehanded") {
-            // console.log(this.texture.frames);
-            console.log({ frame: this.frame.name });
-        }
         this.nameLabel.update();
         this.healthbar.update();
         this.iceEffect?.update();

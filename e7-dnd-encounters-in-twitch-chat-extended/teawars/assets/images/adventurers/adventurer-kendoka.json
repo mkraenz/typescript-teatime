@@ -1,0 +1,77 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 45, "w": 29, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 16, "w": 27, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1200
+   },
+   "1": {
+    "frame": { "x": 43, "y": 36, "w": 29, "h": 35 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 15, "w": 27, "h": 33 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1200
+   },
+   "2": {
+    "frame": { "x": 1, "y": 45, "w": 29, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 16, "w": 27, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 77, "y": 1, "w": 24, "h": 44 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 6, "w": 22, "h": 42 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 450
+   },
+   "4": {
+    "frame": { "x": 1, "y": 1, "w": 41, "h": 43 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 7, "w": 39, "h": 41 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   "5": {
+    "frame": { "x": 43, "y": 1, "w": 33, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 16, "w": 31, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 600
+   },
+   "6": {
+    "frame": { "x": 1, "y": 45, "w": 29, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 19, "y": 16, "w": 27, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 600
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.39-x64",
+  "image": "adventurer-kendoka.png",
+  "format": "I8",
+  "size": { "w": 101, "h": 79 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 1, "direction": "forward" },
+   { "name": "run", "from": 2, "to": 2, "direction": "forward" },
+   { "name": "attack", "from": 3, "to": 6, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
