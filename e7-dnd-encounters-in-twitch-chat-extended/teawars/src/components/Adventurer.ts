@@ -19,13 +19,22 @@ const AnimCfg = {
             frameRate: 0.5,
         },
     },
-    4: {
+    3: {
         idle: {
-            frames: [4, 4 + numOfImages],
+            frames: [3, 3 + numOfImages],
             frameRate: 5.2,
         },
         attack: {
-            frames: [4],
+            frames: [
+                3 + numOfImages * 2,
+                3 + numOfImages * 3,
+                3 + numOfImages * 4,
+            ],
+            frameRate: 12,
+        },
+        run: {
+            frames: [3 + numOfImages * 2],
+            frameRate: 1,
         },
     },
     7: {
@@ -70,7 +79,7 @@ export class Adventurer extends GameObjects.Sprite {
 
         range(numOfImages).forEach((index) => {
             const cfg = (AnimCfg[index as keyof AnimCfg] ?? {}) as Partial<
-                AnimCfg[4]
+                AnimCfg[3]
             >;
             // idle
             scene.anims.create({
@@ -84,8 +93,14 @@ export class Adventurer extends GameObjects.Sprite {
             scene.anims.create({
                 key: `attack-${index}`,
                 frames: genFrames(cfg.attack?.frames ?? [index]),
+                repeat: 0,
+                frameRate: cfg.attack?.frameRate ?? 1,
+            });
+            scene.anims.create({
+                key: `run-${index}`,
+                frames: genFrames(cfg.run?.frames ?? [index]),
                 repeat: -1,
-                frameRate: 999999,
+                frameRate: cfg.run?.frameRate ?? 1,
             });
         });
     }
@@ -104,7 +119,6 @@ export class Adventurer extends GameObjects.Sprite {
         private hp: number,
         maxHp: number,
         gui: GUI,
-        // 4, 14 and 21 have idle anims
         private imageIndex: number = random(numOfImages - 1)
     ) {
         super(scene, 0, 0, "adventurers");
@@ -132,7 +146,7 @@ export class Adventurer extends GameObjects.Sprite {
         this.setupDevMode(gui);
     }
 
-    public play(key: "idle" | "attack") {
+    public play(key: "idle" | "attack" | "run") {
         return super.play(`${key}-${this.imageIndex}`);
     }
 
@@ -180,16 +194,17 @@ export class Adventurer extends GameObjects.Sprite {
             ease: "Sine.easeInOut",
             duration: jumpDuration,
             yoyo: true,
-            hold: 600,
+            hold: 800,
             onUpdate: () => {
                 setPlayerToCurvePosition();
                 if (path.t === maxT) {
                     this.animateSlice();
+                    this.play("attack");
                 }
             },
+            onStart: () => this.play("run"),
             onComplete: () => this.play("idle"),
         });
-        this.play("attack");
     }
 
     private addAttackCurve({ x: x2, y: y2 }: { x: number; y: number }) {

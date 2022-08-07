@@ -42,10 +42,10 @@ export class LoadingScene extends Scene {
             .image("ice-crystal", img("ice-crystal.png"))
             .spritesheet(
                 "adventurers",
-                img("adventurers/adventurers.sprite.32x32.png"),
+                img("adventurers/adventurers.sprite.64x64.png"),
                 {
-                    frameWidth: 32,
-                    frameHeight: 32,
+                    frameWidth: 64,
+                    frameHeight: 64,
                 }
             )
             .spritesheet("lightning", img("lightning.sprite.png"), {

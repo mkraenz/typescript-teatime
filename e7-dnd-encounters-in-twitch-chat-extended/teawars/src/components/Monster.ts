@@ -15,7 +15,7 @@ import { IPoint } from "./IPoint";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const devCfg = { tint: 0x000000, skipIntro: false };
+const devCfg = { tint: 0x000000, skipIntro: true };
 
 const cfg = {
     initY: -300,
