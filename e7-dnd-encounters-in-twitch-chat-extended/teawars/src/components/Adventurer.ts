@@ -52,6 +52,12 @@ const AnimCfg: {
             impactDelay: 500,
         },
     },
+    2: {
+        idle: {
+            frames: [2, 2 + numOfImages],
+            frameRate: 0.7,
+        },
+    },
     3: {
         textureKey: "adventurer-red-onehanded",
         idle: {

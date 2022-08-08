@@ -58,6 +58,11 @@ export class LoadingScene extends Scene {
                 img("adventurers/adventurer-kendoka.png"),
                 img("adventurers/adventurer-kendoka.json")
             )
+            .aseprite(
+                "adventurer-bowman",
+                img("adventurers/adventurer-bowman.png"),
+                img("adventurers/adventurer-bowman.json")
+            )
             .spritesheet("lightning", img("lightning.sprite.png"), {
                 frameWidth: 256 / 4,
                 frameHeight: 512 / 8,

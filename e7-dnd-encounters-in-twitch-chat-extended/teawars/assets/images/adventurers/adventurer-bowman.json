@@ -1,0 +1,52 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 50, "y": 1, "w": 33, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 18, "y": 16, "w": 31, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1200
+   },
+   "1": {
+    "frame": { "x": 84, "y": 1, "w": 33, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 18, "y": 16, "w": 31, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 1200
+   },
+   "2": {
+    "frame": { "x": 50, "y": 1, "w": 33, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 18, "y": 16, "w": 31, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 450
+   },
+   "3": {
+    "frame": { "x": 1, "y": 1, "w": 48, "h": 35 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 18, "y": 15, "w": 46, "h": 33 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 400
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.39-x64",
+  "image": "adventurer-bowman.png",
+  "format": "I8",
+  "size": { "w": 117, "h": 36 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 1, "direction": "forward" },
+   { "name": "attack", "from": 2, "to": 3, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
