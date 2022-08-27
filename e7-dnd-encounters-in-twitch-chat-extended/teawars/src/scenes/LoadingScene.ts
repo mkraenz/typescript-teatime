@@ -2,7 +2,6 @@ import { range } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { monsterSprites } from "../../assets/images/monsters/monsters";
 import { DEV } from "../dev-config";
-import { GRegistry } from "../gRegistry";
 import { translations } from "../localizations";
 import { Color, toHex } from "../styles/Color";
 import { setDefaultTextStyle, TextConfig } from "../styles/Text";
@@ -130,7 +129,6 @@ export class LoadingScene extends Scene {
         this.load.on("fileprogress", this.getAssetTextWriter(assetText));
         this.load.on("complete", () => {
             if (DEV.startInGameOverScene) {
-                GRegistry.setScore(this, 13650);
                 this.scene.add(Scenes.GameOver, GameOverScene, true);
             } else {
                 this.scene.add(Scenes.Main, MainScene, true);
