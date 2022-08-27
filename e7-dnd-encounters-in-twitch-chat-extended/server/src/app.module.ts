@@ -30,7 +30,7 @@ import { TestWebsocketsModule } from './test-websockets/test-websockets.module';
     BattleModule,
     TestWebsocketsModule,
     ServeStaticModule.forRoot({
-      rootPath: join([__dirname, '..', '..', 'teawars'], '/'),
+      rootPath: join([__dirname, '..', '..', 'teawars', 'build'], '/'),
     }),
   ],
   controllers: [AppController],

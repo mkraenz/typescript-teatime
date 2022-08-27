@@ -1,8 +1,7 @@
 import { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { Scene } from "phaser";
-import * as io from "socket.io-client";
-import { monsterMapping } from "../../assets/images/monsters/monsters";
+import io, { Socket } from "socket.io-client";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
@@ -10,6 +9,7 @@ import { isProd } from "../dev-config";
 import { Ambushed, IEvent } from "../events/Event";
 import { InternalEvents } from "../events/InternalEvents";
 import { translations } from "../localizations";
+import { monsterMapping } from "../monsters-mapping";
 import { Color } from "../styles/Color";
 import { TextConfig } from "../styles/Text";
 import { Scenes } from "./Scenes";
@@ -36,7 +36,7 @@ const cfg = {
 };
 
 export class MainScene extends Scene {
-    private client!: SocketIOClient.Socket;
+    private client!: Socket;
     private battleLog!: IEvent[];
     private party!: Adventurer[];
     private monster?: Monster;
@@ -55,13 +55,15 @@ export class MainScene extends Scene {
         this.battleLog = [];
         this.party = [];
 
-        this.gui = new GUI();
-        this.gui.hide();
+        if (!isProd) {
+            this.gui = new GUI();
+            this.gui.hide();
+        }
         this.createAnimFrames();
         this.maybeEnableDevMode();
         this.registerBattleEndEventListener();
 
-        this.client = io(process.env.WEBSOCKET_SERVER_URL!);
+        this.client = io(import.meta.env.VITE_WEBSOCKET_SERVER_URL);
         this.client.on("init", (data: IEvent[]) => {
             this.battleLog.push(...data);
         });

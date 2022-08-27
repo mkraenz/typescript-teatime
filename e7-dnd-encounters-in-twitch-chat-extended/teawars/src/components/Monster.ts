@@ -1,12 +1,9 @@
-import { GUI } from "dat.gui";
+import type { GUI } from "dat.gui";
 import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
-import {
-    monsterMapping,
-    monsterSprites,
-} from "../../assets/images/monsters/monsters";
 import { MonsterAura } from "../anims/MonsterAura";
 import { InternalEvents } from "../events/InternalEvents";
+import { monsterMapping, monsterSprites } from "../monsters-mapping";
 import { Color, toHex } from "../styles/Color";
 import { setTextShadow } from "../styles/setTextShadow";
 import { TextConfig } from "../styles/Text";
