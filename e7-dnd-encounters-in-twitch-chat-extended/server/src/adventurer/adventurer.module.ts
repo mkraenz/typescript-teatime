@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AdventurerController } from './adventurer.controller';
-import { Adventurer } from './adventurer.schema';
+import { Adventurer, AdventurerSchema } from './adventurer.schema';
 import { AdventurerService } from './adventurer.service';
 
 @Module({
   imports: [
-    TypegooseModule.forFeature([
-      { typegooseClass: Adventurer, schemaOptions: {} },
+    MongooseModule.forFeature([
+      { name: Adventurer.name, schema: AdventurerSchema },
     ]),
   ],
   controllers: [AdventurerController],

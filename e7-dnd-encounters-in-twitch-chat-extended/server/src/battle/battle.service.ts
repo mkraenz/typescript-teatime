@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose';
-import { InjectModel } from 'nestjs-typegoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import {
   BattleLogSubscriber,
   ChatbotService,
 } from '../chatbot/chatbot.service';
 import { IEvent } from '../domain/events';
-import { Battle } from './battle.schema';
-
-type Awaited<T> = T extends Promise<infer U> ? U : never;
+import { Battle, BattleDocument } from './battle.schema';
 
 interface ISubscribable {
   appendToLog: BattleLogSubscriber;
@@ -23,8 +21,8 @@ export class BattleService implements ISubscribable {
   private saveDaemon: NodeJS.Timeout | null = null;
 
   constructor(
-    @InjectModel(Battle)
-    private battleModel: ReturnModelType<typeof Battle>,
+    @InjectModel(Battle.name)
+    private battleModel: Model<BattleDocument>,
     chatbot: ChatbotService,
   ) {
     // TODO fix type

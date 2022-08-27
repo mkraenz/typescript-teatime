@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { DocumentType } from '@typegoose/typegoose';
 import { isEmpty } from 'lodash';
+import { Document } from 'mongoose';
 import { ChatUserstate, Client } from 'tmi.js';
-import { Adventurer } from '../adventurer/adventurer.schema';
+import {
+  Adventurer,
+  AdventurerDocument,
+} from '../adventurer/adventurer.schema';
 import { AdventurerService } from '../adventurer/adventurer.service';
 import { Battle } from '../domain/battle';
 import { IEvent } from '../domain/events';
+
+type Adventurer_ = Adventurer &
+  Document &
+  Document<any, any, AdventurerDocument>;
 
 const tmiConfig = {
   options: { debug: true },
@@ -49,7 +56,7 @@ export class ChatbotService {
   private battle?: Battle;
   private lastLogCount = 0;
   private watchBattleLogs?: NodeJS.Timeout;
-  private joinedAdventurers: DocumentType<Adventurer>[] = [];
+  private joinedAdventurers: AdventurerDocument[] = [];
   private listenersToBattleLogChanges: BattleLogSubscriber[] = [];
 
   constructor(adventurers: AdventurerService) {
