@@ -13,7 +13,7 @@ interface ISubscribable {
 
 // don't provide port WebSocketGateWay() to run on same port as web app https://github.com/nestjs/nest/issues/126#issuecomment-341832752
 @Injectable()
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class WebsocketGateway implements OnGatewayConnection, ISubscribable {
   // TODO add Socket io Socket type
   @WebSocketServer() private server!: {
