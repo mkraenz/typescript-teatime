@@ -1,11 +1,11 @@
-import { GUI } from "dat.gui";
+import type { GUI } from "dat.gui";
 import { random, range } from "lodash";
 import { GameObjects, Scene } from "phaser";
-import { AdventurerName } from "../AdventurerName";
 import { IceEffect } from "../anims/IceEffect";
 import { animateLevelUp, animateLevelUpText } from "../anims/LevelUp";
 import { InternalEvents } from "../events/InternalEvents";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
+import { AdventurerName } from "./AdventurerName";
 import { DamageText } from "./DamageText";
 import { IPoint } from "./IPoint";
 
@@ -185,8 +185,8 @@ export class Adventurer extends GameObjects.Sprite {
 
     public play(key: "idle" | "attack" | "run") {
         const currentCfg = AnimCfg[this.imageIndex];
-        if (currentCfg.textureKey) {
-            const repeat = currentCfg ? currentCfg[key]?.repeat : 0;
+        if (currentCfg?.textureKey) {
+            const repeat = currentCfg[key]?.repeat ?? 0;
             return super.play({ key, repeat });
         }
         return super.play(`${key}-${this.imageIndex}`);

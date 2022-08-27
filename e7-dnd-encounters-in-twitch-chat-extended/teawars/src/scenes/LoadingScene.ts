@@ -1,8 +1,8 @@
 import { range } from "lodash";
 import { GameObjects, Scene } from "phaser";
-import { monsterSprites } from "../../assets/images/monsters/monsters";
 import { DEV } from "../dev-config";
 import { translations } from "../localizations";
+import { monsterSprites } from "../monsters-mapping";
 import { Color, toHex } from "../styles/Color";
 import { setDefaultTextStyle, TextConfig } from "../styles/Text";
 import { GameOverScene } from "./GameOverScene";

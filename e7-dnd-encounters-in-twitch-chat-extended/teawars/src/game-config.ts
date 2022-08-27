@@ -1,7 +1,7 @@
-import { Types } from "phaser";
+import type { Types } from "phaser";
 import { LoadingScene } from "./scenes/LoadingScene";
 
-export const gameConfig: Types.Core.GameConfig = {
+const gameConfig: Types.Core.GameConfig = {
     scene: LoadingScene,
     type: Phaser.AUTO,
     dom: {
@@ -22,7 +22,7 @@ export const gameConfig: Types.Core.GameConfig = {
         // OBS browser overlay dimensions
         width: 1440,
         height: 1080,
-        // width: window.innerWidth * window.devicePixelRatio,
-        // height: window.innerHeight * window.devicePixelRatio,
     },
 };
+
+export default gameConfig;

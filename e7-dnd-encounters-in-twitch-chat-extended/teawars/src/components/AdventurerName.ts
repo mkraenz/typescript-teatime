@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser";
-import { setTextShadow } from "./styles/setTextShadow";
-import { TextConfig } from "./styles/Text";
+import { setTextShadow } from "../styles/setTextShadow";
+import { TextConfig } from "../styles/Text";
 
 const Cfg = {
     yOffset: 114,
