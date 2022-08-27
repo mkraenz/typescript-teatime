@@ -1,22 +1,24 @@
-import { prop } from '@typegoose/typegoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ceil, random } from 'lodash';
+import { Document } from 'mongoose';
 import { IEvent } from '../domain/events';
 import type { Monster } from '../domain/monster';
 
+@Schema()
 export class Adventurer {
-  @prop({ unique: true, required: true, type: String })
+  @Prop({ unique: true, required: true, type: String })
   public username!: string;
 
-  @prop({ default: 150, type: Number })
+  @Prop({ default: 150, type: Number })
   public maxHp = 150;
 
-  @prop({ default: 150, type: Number })
+  @Prop({ default: 150, type: Number })
   public hp = 150;
 
-  @prop({ default: 1, type: Number })
+  @Prop({ default: 1, type: Number })
   public level = 1;
 
-  @prop({ default: 0, type: Number })
+  @Prop({ default: 0, type: Number })
   public experience = 0;
 
   public isProtected = false;
@@ -183,3 +185,8 @@ export class Adventurer {
     return true;
   }
 }
+
+export type AdventurerDocument = Adventurer & Document;
+export const AdventurerSchema = SchemaFactory.createForClass(Adventurer);
+// https://github.com/nestjs/mongoose/issues/408#issuecomment-761687363
+AdventurerSchema.loadClass(Adventurer);

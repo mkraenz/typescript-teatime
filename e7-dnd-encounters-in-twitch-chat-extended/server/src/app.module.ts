@@ -1,8 +1,8 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'lodash';
-import { TypegooseModule } from 'nestjs-typegoose';
 import { AdventurerModule } from './adventurer/adventurer.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,7 +14,7 @@ import { TestWebsocketsModule } from './test-websockets/test-websockets.module';
 @Module({
   imports: [
     MongoUriModule,
-    TypegooseModule.forRootAsync({
+    MongooseModule.forRootAsync({
       imports: [MongoUriModule],
       useFactory: (uri: string) => {
         return {

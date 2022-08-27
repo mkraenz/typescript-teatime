@@ -1,22 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ChatbotModule } from '../chatbot/chatbot.module';
 import { BattleController } from './battle.controller';
-import { Battle } from './battle.schema';
+import { Battle, BattleSchema } from './battle.schema';
 import { BattleService } from './battle.service';
 
 @Module({
   imports: [
-    TypegooseModule.forFeature([
-      {
-        typegooseClass: Battle,
-        schemaOptions: {
-          // dont care about schema here
-          strict: false,
-          timestamps: true,
-        },
-      },
-    ]),
+    MongooseModule.forFeature([{ name: Battle.name, schema: BattleSchema }]),
     ChatbotModule,
   ],
   controllers: [BattleController],
