@@ -68,6 +68,7 @@ Check out this cool [how-to](https://github.com/samme/phaser3-faq/wiki#how-do-i-
 - [Awesome Github Actions](https://github.com/sdras/awesome-actions)
 - [tl;dr legal](https://tldrlegal.com/) summary of licenses
 - [dat.GUI.js](https://github.com/dataarts/dat.gui) Dynamically change game object props and more
+- [Remove Background](https://www.remove.bg/)
 - [Audacity](https://www.audacityteam.org/) Audio software
 - [CutMp3](http://manpages.ubuntu.com/manpages/bionic/man1/cutmp3.1.html) Audacity sometimes leaves a few milliseconds of silence at the end of an mp3 file. To make those files usable for looping, use this to cut. E.g. `cutmp3 -i wind.mp3 -o no_silence -a 00:00 -b 00:17`
 - [Phaser3 Particle Editor](https://koreezgames.github.io/phaser3-particle-editor/)

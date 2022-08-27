@@ -6,6 +6,7 @@ import { monsterMapping } from "../../assets/images/monsters/monsters";
 import { Adventurer } from "../components/Adventurer";
 import { BackgroundImage } from "../components/BackgroundImage";
 import { Monster } from "../components/Monster";
+import { isProd } from "../dev-config";
 import { Ambushed, IEvent } from "../events/Event";
 import { InternalEvents } from "../events/InternalEvents";
 import { translations } from "../localizations";
@@ -15,8 +16,8 @@ import { Scenes } from "./Scenes";
 
 const cfg = {
     dev: {
-        enabled: false,
-        adventurers: 1,
+        enabled: !isProd,
+        adventurers: 3,
     },
     fadeIn: 200,
     title: {
