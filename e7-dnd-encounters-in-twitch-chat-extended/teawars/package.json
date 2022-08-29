@@ -12,14 +12,14 @@
     },
     "dependencies": {
         "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
+        "dat.gui": "^0.7.9",
         "lodash": "^4.17.21",
-        "phaser": "^3.60.0-beta.9",
+        "phaser": "file:../phaser/phaser-3.60.0-beta.10.tgz",
         "socket.io-client": "^4.0.0"
     },
     "devDependencies": {
         "@types/dat.gui": "^0.7.7",
         "@types/lodash": "^4.14.184",
-        "dat.gui": "^0.7.9",
         "typescript": "^4.6.4",
         "vite": "^3.0.7"
     }

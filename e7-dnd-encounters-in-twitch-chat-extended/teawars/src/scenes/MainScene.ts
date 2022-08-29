@@ -55,10 +55,8 @@ export class MainScene extends Scene {
         this.battleLog = [];
         this.party = [];
 
-        if (!isProd) {
-            this.gui = new GUI();
-            this.gui.hide();
-        }
+        this.gui = new GUI();
+        this.gui.hide();
         this.createAnimFrames();
         this.maybeEnableDevMode();
         this.registerBattleEndEventListener();

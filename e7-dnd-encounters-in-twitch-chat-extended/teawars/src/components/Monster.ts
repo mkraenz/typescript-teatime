@@ -2,6 +2,7 @@ import type { GUI } from "dat.gui";
 import { startCase } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { MonsterAura } from "../anims/MonsterAura";
+import { isProd } from "../dev-config";
 import { InternalEvents } from "../events/InternalEvents";
 import { monsterMapping, monsterSprites } from "../monsters-mapping";
 import { Color, toHex } from "../styles/Color";
@@ -12,7 +13,7 @@ import { IPoint } from "./IPoint";
 import { MonsterActivityBar } from "./MonsterActivityBar";
 import { MonsterHealthbar } from "./MonsterHealthbar";
 
-const devCfg = { tint: 0x000000, skipIntro: true };
+const devCfg = isProd ? {} : { tint: 0x000000, skipIntro: false };
 
 const cfg = {
     initY: -300,
