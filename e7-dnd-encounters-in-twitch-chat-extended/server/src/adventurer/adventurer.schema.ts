@@ -173,6 +173,19 @@ export class Adventurer {
     monster.takeDamage(damage);
   }
 
+  public castLightning(monster: Monster) {
+    if (!this.canAct) return;
+
+    const damage = random(19) + this.level;
+    this.log.push({
+      type: 'lightning cast',
+      actor: this.username,
+      target: monster.name,
+    });
+    this.hasActedThisTurn = true;
+    monster.takeDamage(damage);
+  }
+
   castProtect(target: string) {
     if (!this.canAct) return;
 

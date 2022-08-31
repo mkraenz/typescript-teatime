@@ -37,6 +37,10 @@ enum Command {
   Attack4 = '!assault',
   Join = '!join',
   Fire = '!fire',
+  Lightning = '!lightning',
+  Lightning1 = '!bolt',
+  Lightning2 = '!thunder',
+  Lightning3 = '!blitz',
   Ice = '!ice',
   Heal = '!heal',
   Protect = '!protect',
@@ -47,6 +51,13 @@ const attackAliases = [
   Command.Attack2,
   Command.Attack3,
   Command.Attack4,
+];
+
+const lightningAliases = [
+  Command.Lightning,
+  Command.Lightning1,
+  Command.Lightning2,
+  Command.Lightning3,
 ];
 
 @Injectable()
@@ -111,6 +122,9 @@ export class ChatbotService {
     }
     if (msg.includes(Command.Ice)) {
       return this.battle.castIce(username);
+    }
+    if (lightningAliases.some((cmd) => msg.includes(cmd))) {
+      return this.battle.castLightning(username);
     }
     if (msg.includes(Command.Heal)) {
       // using message to handle uppercase characters in username receiving heal

@@ -11,6 +11,7 @@ export type IEvent =
   | HealPartyCast
   | FireCast
   | IceCast
+  | LightningCast
   | LeveledUp
   | ReceivedProtectCasted
   | ProtectCast;
@@ -53,6 +54,12 @@ export interface FireCast {
 
 export interface IceCast {
   type: 'ice cast';
+  target: string;
+  actor: string;
+}
+
+export interface LightningCast {
+  type: 'lightning cast';
   target: string;
   actor: string;
 }

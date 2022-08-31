@@ -55,6 +55,15 @@ export class Battle {
     }
   }
 
+  public castLightning(username: string) {
+    const adventurer = this.getAdventurer(username);
+    if (!adventurer) return;
+    adventurer.castLightning(this.monster);
+    if (this.monster.isDead) {
+      this.endBattle();
+    }
+  }
+
   // TODO extract parameter decorator
   public getAdventurer(username: string): Adventurer | undefined {
     return this.party.find(
