@@ -348,7 +348,6 @@ export class Adventurer extends GameObjects.Sprite {
         });
     }
 
-    // TODO add backend commands bolt lightning blitz thunder
     public castLightning(target: IPoint) {
         const sfx = this.scene.sound.add("lightning", {
             volume: 0.2,

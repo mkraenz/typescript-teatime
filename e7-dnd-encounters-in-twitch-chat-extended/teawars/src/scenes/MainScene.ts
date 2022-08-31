@@ -115,6 +115,13 @@ export class MainScene extends Scene {
             }
         }
 
+        if (event.type === "lightning cast" && this.monster) {
+            const adventurer = this.getAdventurer(event.actor);
+            if (adventurer) {
+                adventurer.castLightning(this.monster.getCenter());
+            }
+        }
+
         if (event.type === "damage received" && !event.isMonster) {
             const adventurerReceivedDamage = event;
             const adventurer = this.getAdventurer(
