@@ -60,7 +60,7 @@ combines the annotations of two or more workers into a single label for your dat
 Before a labeling task is sent to the worker, your pre-annotation Lambda function is invoked.
 Ground Truth sends your Lambda function a JSON-formatted request to provide details about the labeling job and the data object.
 
-# What did we achieve?
+## What did we achieve?
 
 - we uploaded images to file storage (S3)
 - setup AWS SageMaker GroundTruth to label the images (i.e. manually create bounding boxes around the ingredients list) to train our ML model on (in a later step)
