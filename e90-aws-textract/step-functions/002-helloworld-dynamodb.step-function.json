@@ -1,0 +1,122 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Choice",
+  "States": {
+    "Choice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.name",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.name",
+              "IsString": true
+            },
+            {
+              "Not": {
+                "Variable": "$.name",
+                "StringEquals": ""
+              }
+            }
+          ],
+          "Next": "Transform for DynamoDB"
+        }
+      ],
+      "Default": "hello world"
+    },
+    "Transform for DynamoDB": {
+      "Type": "Pass",
+      "Next": "Save name and age",
+      "Parameters": {
+        "name.$": "$.name",
+        "age.$": "States.Format('{}', $.age)"
+      }
+    },
+    "Save name and age": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:putItem",
+      "Parameters": {
+        "TableName": "SFhelloworld",
+        "Item": {
+          "name": {
+            "S.$": "$.name"
+          },
+          "age": {
+            "N.$": "$.age"
+          }
+        }
+      },
+      "Next": "Wait 5s",
+      "ResultPath": null
+    },
+    "Wait 5s": {
+      "Type": "Wait",
+      "Seconds": 5,
+      "Next": "Get by name"
+    },
+    "Get by name": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:getItem",
+      "Parameters": {
+        "TableName": "SFhelloworld",
+        "Key": {
+          "name": {
+            "S.$": "$.name"
+          }
+        }
+      },
+      "Next": "hello name",
+      "ResultSelector": {
+        "name.$": "$.Item.name.S",
+        "ageAsString.$": "$.Item.age.N"
+      }
+    },
+    "hello world": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:756399734264:function:SFhelloWorld:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true
+    },
+    "hello name": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:756399734264:function:SFhelloName:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true
+    }
+  }
+}

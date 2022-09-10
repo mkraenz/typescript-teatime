@@ -1,0 +1,213 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Choice",
+  "States": {
+    "Choice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.name",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.name",
+              "IsString": true
+            },
+            {
+              "Not": {
+                "Variable": "$.name",
+                "StringEquals": ""
+              }
+            }
+          ],
+          "Next": "Parallel"
+        }
+      ],
+      "Default": "hello world"
+    },
+    "Parallel": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "Transform for DynamoDB",
+          "States": {
+            "Transform for DynamoDB": {
+              "Type": "Pass",
+              "Parameters": {
+                "name.$": "$.name",
+                "age.$": "States.Format('{}', $.age)"
+              },
+              "Next": "Save name and age"
+            },
+            "Save name and age": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::dynamodb:putItem",
+              "Parameters": {
+                "TableName": "SFhelloworld",
+                "Item": {
+                  "name": {
+                    "S.$": "$.name"
+                  },
+                  "age": {
+                    "N.$": "$.age"
+                  }
+                }
+              },
+              "ResultPath": null,
+              "Next": "Wait 5s"
+            },
+            "Wait 5s": {
+              "Type": "Wait",
+              "Seconds": 5,
+              "Next": "Get by name"
+            },
+            "Get by name": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::dynamodb:getItem",
+              "Parameters": {
+                "TableName": "SFhelloworld",
+                "Key": {
+                  "name": {
+                    "S.$": "$.name"
+                  }
+                }
+              },
+              "ResultSelector": {
+                "name.$": "$.Item.name.S",
+                "ageAsString.$": "$.Item.age.N"
+              },
+              "Next": "hello name"
+            },
+            "hello name": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:756399734264:function:SFhelloName:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Transform for DynamoDB uuid",
+          "States": {
+            "Transform for DynamoDB uuid": {
+              "Type": "Pass",
+              "Parameters": {
+                "uuid.$": "States.UUID()",
+                "name.$": "$.name",
+                "age.$": "States.Format('{}', $.age)"
+              },
+              "Next": "DynamoDB PutItem"
+            },
+            "DynamoDB PutItem": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::dynamodb:putItem",
+              "Parameters": {
+                "TableName": "SFhelloworldWithUuid",
+                "Item": {
+                  "uuid": {
+                    "S.$": "$.uuid"
+                  },
+                  "name": {
+                    "S.$": "$.name"
+                  },
+                  "age": {
+                    "N.$": "$.age"
+                  }
+                }
+              },
+              "ResultPath": null,
+              "Next": "Wait 5s (1)"
+            },
+            "Wait 5s (1)": {
+              "Type": "Wait",
+              "Seconds": 5,
+              "Next": "DynamoDB GetItem"
+            },
+            "DynamoDB GetItem": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::dynamodb:getItem",
+              "Parameters": {
+                "TableName": "SFhelloworldWithUuid",
+                "Key": {
+                  "uuid": {
+                    "S.$": "$"
+                  }
+                }
+              },
+              "InputPath": "$.uuid",
+              "Next": "hello name (1)",
+              "ResultSelector": {
+                "uuid.$": "$.Item.uuid.S",
+                "name.$": "$.Item.name.S",
+                "ageAsString.$": "$.Item.age.N"
+              }
+            },
+            "hello name (1)": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:756399734264:function:SFhelloName:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "End": true
+            }
+          }
+        }
+      ],
+      "End": true
+    },
+    "hello world": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:756399734264:function:SFhelloWorld:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true
+    }
+  }
+}
