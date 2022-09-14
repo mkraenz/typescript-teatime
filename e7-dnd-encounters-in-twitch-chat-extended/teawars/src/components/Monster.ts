@@ -73,7 +73,7 @@ export class Monster extends GameObjects.Image {
 
         this.ambush(showHud);
 
-        this.setupDevMode(gui, name);
+        if(!isProd) this.setupDevMode(gui, name);
     }
 
     public update(time: number, delta: number) {

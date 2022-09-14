@@ -3,6 +3,7 @@ import { random, range } from "lodash";
 import { GameObjects, Scene } from "phaser";
 import { IceEffect } from "../anims/IceEffect";
 import { animateLevelUp, animateLevelUpText } from "../anims/LevelUp";
+import { isProd } from "../dev-config";
 import { InternalEvents } from "../events/InternalEvents";
 import { AdventurerHealthbar } from "./AdventurerHealthbar";
 import { AdventurerName } from "./AdventurerName";
@@ -180,7 +181,7 @@ export class Adventurer extends GameObjects.Sprite {
 
         this.join();
 
-        this.setupDevMode(gui);
+        if(!isProd) this.setupDevMode(gui);
     }
 
     public play(key: "idle" | "attack" | "run") {
