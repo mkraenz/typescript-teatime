@@ -1,0 +1,12 @@
+{
+  "ContactListName": "EmailNewsletter",
+  "Description": "Creating a contact list example",
+  "Topics": [
+    {
+      "TopicName": "Newsletter",
+      "DisplayName": "Blog Post Newsletter",
+      "Description": "Never miss a new blog post by subscribing to our newsletter.",
+      "DefaultSubscriptionStatus": "OPT_OUT"
+    }
+  ]
+}

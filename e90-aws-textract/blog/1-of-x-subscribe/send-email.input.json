@@ -1,0 +1,13 @@
+{
+  "FromEmailAddress": "typescriptteatime@gmail.com",
+  "Destination": {
+    "ToAddresses": ["dopilij444@keyido.com"]
+  },
+  "Content": {
+    "Template": {
+      "TemplateName": "EmailNewsletterWelcome",
+      "TemplateArn": "arn:aws:ses:us-east-1:756399734264:template/EmailNewsletterWelcome",
+      "TemplateData": "{\"email\":\"dipilij444@keyido.com\"}"
+    }
+  }
+}

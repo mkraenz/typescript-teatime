@@ -1,0 +1,32 @@
+{
+  "FromEmailAddress": "typescriptteatime@gmail.com",
+  "DefaultContent": {
+    "Template": {
+      "TemplateName": "EmailNewsletterWelcome",
+      "TemplateArn": "arn:aws:ses:us-east-1:756399734264:template/EmailNewsletterWelcome",
+      "TemplateData": "{\"email\":\"subscriber\"}"
+    }
+  },
+  "BulkEmailEntries": [
+    {
+      "Destination": {
+        "ToAddresses": ["gidey59108@dineroa.com"]
+      },
+      "ReplacementEmailContent": {
+        "ReplacementTemplate": {
+          "ReplacementTemplateData": "{\"email\":\"gidey59108@dineroa.com\"}"
+        }
+      }
+    },
+    {
+      "Destination": {
+        "ToAddresses": ["nabove6368@edxplus.com"]
+      },
+      "ReplacementEmailContent": {
+        "ReplacementTemplate": {
+          "ReplacementTemplateData": "{\"email\":\"nabove6368@edxplus.com\"}"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
+Content-Type: application/json
+
+{
+  "email": "typescriptteatime@gmail.com",
+  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
+}
+
+###
+POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
+Content-Type: application/json
+
+{
+  "email": "gidey59108@dineroa.com",
+  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
+}
+
+###
+POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
+Content-Type: application/json
+
+{
+  "email": "nabove6368@edxplus.com",
+  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
+}
+
+###
+GET https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input={"email":"typescriptteatime@gmail.com"}
