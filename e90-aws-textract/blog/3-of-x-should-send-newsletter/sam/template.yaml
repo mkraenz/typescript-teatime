@@ -19,6 +19,8 @@ Resources:
       DefinitionSubstitutions:
         HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
         ChunkContactsFunctionArn: !GetAtt ChunkContactsFunction.Arn
+        TransformToSendBulkEmailFunctionArn: !GetAtt TransformToSendBulkEmailFunction.Arn
+        ContactListName: EmailNewsletter
       Events:
         Schedule:
           Type: Schedule # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#schedule
@@ -32,8 +34,28 @@ Resources:
             FunctionName: !Ref HasNewBlogArticleFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref ChunkContactsFunction
-            # TODO permissions to call SES ListContacts
-            # TODO permissions to call SES SendBulkEmail
+        - LambdaInvokePolicy:
+            FunctionName: !Ref TransformToSendBulkEmailFunction
+        - Statement:
+            - Sid: SESListContactsPolicy
+              Effect: Allow
+              Action:
+                - ses:ListContacts
+              Resource: "arn:aws:ses:us-east-1:756399734264:contact-list/EmailNewsletter"
+            - Sid: SESSendBulkEmailPolicy
+              Effect: Allow
+              Action:
+                - ses:SendBulkEmail
+              Resource:
+                - "arn:aws:ses:us-east-1:756399734264:identity/*"
+                - "arn:aws:ses:us-east-1:756399734264:template/NewBlogArticle"
+            - Sid: SESSendBulkTemplatedEmailPolicy
+              Effect: Allow
+              Action:
+                - ses:SendBulkTemplatedEmail
+              Resource:
+                - "arn:aws:ses:us-east-1:756399734264:identity/*"
+                - "arn:aws:ses:us-east-1:756399734264:template/NewBlogArticle"
 
   HasNewBlogArticleFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -65,16 +87,44 @@ Resources:
         - x86_64
       Environment:
         Variables:
-          # TODO set to 50
-          CHUNK_SIZE: "1"
+          CHUNK_SIZE: "50"
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
         Target: "es2020"
-        # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
         EntryPoints:
           - app.ts
+
+  TransformToSendBulkEmailFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: transform-to-send-bulk-email/
+      Handler: app.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TEMPLATE_ARN: "arn:aws:ses:us-east-1:756399734264:template/NewBlogArticle"
+          FROM_EMAIL_ADDRESS: "typescriptteatime@gmail.com"
+          TEMPLATE_NAME: NewBlogArticle
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        EntryPoints:
+          - app.ts
+
+  NewBlogArticleEmailTemplate:
+    Type: AWS::SES::Template
+    Properties:
+      Template:
+        TemplateName: NewBlogArticle
+        SubjectPart: "New Article: {{articleTitle}}"
+        HtmlPart: '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D"  target="_blank">unsubscribe</a>.</p>'
+        TextPart: 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D'
 
 Outputs:
   HasNewBlogArticleFunction:

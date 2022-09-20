@@ -42,7 +42,7 @@
       "Type": "Task",
       "Next": "Chunk Contacts",
       "Parameters": {
-        "ContactListName": "EmailNewsletter"
+        "ContactListName": "${ContactListName}"
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:listContacts",
       "ResultPath": "$.output"
@@ -67,15 +67,43 @@
           "BackoffRate": 2
         }
       ],
-      "Next": "Map Contacts"
+      "Next": "For Each Contact Chunk"
     },
-    "Map Contacts": {
+    "For Each Contact Chunk": {
       "Type": "Map",
       "Iterator": {
-        "StartAt": "Placeholder: LambdaInvoke Send newsletter emails",
+        "StartAt": "Transform to Send Email Parameters",
         "States": {
-          "Placeholder: LambdaInvoke Send newsletter emails": {
-            "Type": "Pass",
+          "Transform to Send Email Parameters": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "OutputPath": "$.Payload",
+            "Parameters": {
+              "Payload.$": "$",
+              "FunctionName": "${TransformToSendBulkEmailFunctionArn}"
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.ServiceException",
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException"
+                ],
+                "IntervalSeconds": 2,
+                "MaxAttempts": 6,
+                "BackoffRate": 2
+              }
+            ],
+            "Next": "Send Email in Bulk"
+          },
+          "Send Email in Bulk": {
+            "Type": "Task",
+            "Parameters": {
+              "BulkEmailEntries.$": "$.BulkEmailEntries",
+              "DefaultContent.$": "$.DefaultContent",
+              "FromEmailAddress.$": "$.FromEmailAddress"
+            },
+            "Resource": "arn:aws:states:::aws-sdk:sesv2:sendBulkEmail",
             "End": true
           }
         }
