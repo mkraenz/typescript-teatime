@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ses:SendTemplatedEmail",
+      "Resource": [
+        "arn:aws:ses:us-east-1:756399734264:configuration-set/NewsletterConfigSet",
+        "arn:aws:ses:*:756399734264:identity/*",
+        "arn:aws:ses:us-east-1:756399734264:template/EmailNewsletterWelcome"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ses:CreateContact",
+      "Resource": "arn:aws:ses:us-east-1:756399734264:contact-list/EmailNewsletter"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}

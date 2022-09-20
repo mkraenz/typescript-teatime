@@ -1,0 +1,90 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Has new blog article within last 24 hours",
+  "States": {
+    "Has new blog article within last 24 hours": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "${HasNewBlogArticleFunctionArn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Has new Blog Article?"
+    },
+    "Has new Blog Article?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.hasNewBlogArticle",
+              "BooleanEquals": true
+            }
+          ],
+          "Next": "List Contacts"
+        }
+      ],
+      "Default": "No new article > do nothing"
+    },
+    "List Contacts": {
+      "Type": "Task",
+      "Next": "Chunk Contacts",
+      "Parameters": {
+        "ContactListName": "EmailNewsletter"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:listContacts",
+      "ResultPath": "$.output"
+    },
+    "Chunk Contacts": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${ChunkContactsFunctionArn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Map Contacts"
+    },
+    "Map Contacts": {
+      "Type": "Map",
+      "Iterator": {
+        "StartAt": "Placeholder: LambdaInvoke Send newsletter emails",
+        "States": {
+          "Placeholder: LambdaInvoke Send newsletter emails": {
+            "Type": "Pass",
+            "End": true
+          }
+        }
+      },
+      "ItemsPath": "$.chunks",
+      "End": true
+    },
+    "No new article > do nothing": {
+      "Type": "Succeed"
+    }
+  }
+}

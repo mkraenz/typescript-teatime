@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  should-send-newsletter
+
+  Sample SAM Template for should-send-newsletter
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    # how long can the lambda functions run until they abort with an error
+    Timeout: 3
+
+Resources:
+  NewsletterSfn:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: newsletter.asl.json
+      DefinitionSubstitutions:
+        HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
+        ChunkContactsFunctionArn: !GetAtt ChunkContactsFunction.Arn
+      Events:
+        Schedule:
+          Type: Schedule # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#schedule
+          Properties:
+            Schedule: cron(0 4 * * ? *)
+            Description: Invoke every day at 4am UTC
+            Enabled: true
+      Name: NewsletterDaily
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref HasNewBlogArticleFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ChunkContactsFunction
+            # TODO permissions to call SES ListContacts
+            # TODO permissions to call SES SendBulkEmail
+
+  HasNewBlogArticleFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: has-new-blog-article/
+      Handler: app.lambdaHandler
+      Environment:
+        Variables:
+          RSS_FEED_URL: "https://dev.to/rss"
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
+        EntryPoints:
+          - app.ts
+
+  ChunkContactsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: chunk-contacts/
+      Handler: app.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          # TODO set to 50
+          CHUNK_SIZE: "1"
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
+        EntryPoints:
+          - app.ts
+
+Outputs:
+  HasNewBlogArticleFunction:
+    Description: "HasNewBlogArticle Lambda Function ARN"
+    Value: !GetAtt HasNewBlogArticleFunction.Arn
+  HasNewBlogArticleFunctionIamRole:
+    Description: "Implicit IAM Role created for HasNewBlogArticle function"
+    Value: !GetAtt HasNewBlogArticleFunctionRole.Arn
+  NewsletterSfnArn:
+    Description: "Blog Newsletter state machine ARN"
+    Value: !Ref NewsletterSfn
+  NewsletterSfnRole:
+    Description: "IAM Role created for Blog Newsletter state machine based on the specified SAM Policy Templates"
+    Value: !GetAtt NewsletterSfnRole.Arn

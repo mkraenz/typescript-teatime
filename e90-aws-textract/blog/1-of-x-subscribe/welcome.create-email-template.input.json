@@ -1,0 +1,8 @@
+{
+  "TemplateName": "EmailNewsletterWelcome",
+  "TemplateContent": {
+    "Subject": "Welcome to the Newsletter",
+    "Text": "Welcome to the Newsletter. You will receive a new email whenever there is a new blog post.",
+    "Html": "<h1>Welcome to the Newsletter</h1><p>Hi {{email}},</><p>You will receive a new email whenever there is a new blog post.</p>"
+  }
+}
