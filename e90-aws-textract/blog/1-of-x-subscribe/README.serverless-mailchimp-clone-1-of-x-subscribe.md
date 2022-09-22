@@ -70,6 +70,8 @@ Why serverless? Serverless Computing provides us with the benefit that as long a
 
 ## Pricing - tl;dr free
 
+<!-- TODO SES is not free https://aws.amazon.com/ses/pricing/ -->
+
 AWS provides you with [a generous free tier](https://aws.amazon.com/free/) for the first 12 month. Moreover, AWS Step Functions and Amazon Simple Email Service (SES), the services we will be using today, stay free forever up to some thresholds, and AWS IAM is completely free. Even if you are past the 12 month, building and operating this for a few hundred email subscribers should cost you less than one dollar over several months.
 
 ## Prerequisites
