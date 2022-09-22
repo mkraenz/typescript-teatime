@@ -1,0 +1,15 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "DeleteContact",
+  "States": {
+    "DeleteContact": {
+      "Type": "Task",
+      "End": true,
+      "Parameters": {
+        "ContactListName": "${ContactListName}",
+        "EmailAddress.$": "$.email"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:deleteContact"
+    }
+  }
+}
