@@ -1,22 +1,4 @@
-POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
-Content-Type: application/json
-
-{
-  "email": "typescriptteatime@gmail.com",
-  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
-}
-
-###
-POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
-Content-Type: application/json
-
-{
-  "email": "gidey59108@dineroa.com",
-  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
-}
-
-###
-POST https://evef8ow37e.execute-api.us-east-1.amazonaws.com/subscribe
+POST https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/subscribe
 Content-Type: application/json
 
 {
@@ -25,4 +7,13 @@ Content-Type: application/json
 }
 
 ###
-GET https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input={"email":"typescriptteatime@gmail.com"}
+POST https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/subscribe
+Content-Type: application/json
+
+{
+  "email": "gidey59108@dineroa.com",
+  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
+}
+
+###
+GET https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/unsubscribe?input={"email":"gidey59108@dineroa.com"}
