@@ -235,6 +235,12 @@ Resources:
           Description: Never miss a new blog post by subscribing to our newsletter.
           DefaultSubscriptionStatus: OPT_OUT
 
+  SesIdentity:
+    Type: AWS::SES::EmailIdentity
+    DeletionPolicy: Delete
+    Properties:
+      EmailIdentity: "typescriptteatime@gmail.com"
+
 Outputs:
   ApiBasePath:
     Description: "API Gateway endpoint URL"
