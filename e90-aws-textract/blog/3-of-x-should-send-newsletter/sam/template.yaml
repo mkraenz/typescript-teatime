@@ -12,6 +12,59 @@ Globals:
     Timeout: 3
 
 Resources:
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefinitionBody:
+        "Fn::Transform":
+          Name: "AWS::Include"
+          Parameters:
+            Location: api.yaml
+
+  HttpApiSubscribeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "apigateway.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: StepFunctionsStartExecutionOfNewsletterSubscribe
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: !GetAtt SubscribeSfn.Arn
+
+  SubscribeSfn:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: Subscribe
+      DefinitionUri: state-machines/subscribe.asl.json
+      DefinitionSubstitutions:
+        ContactListName: !Ref NewsletterContactList
+        EmailSource: typescriptteatime@gmail.com
+        WelcomeEmailTemplate: Welcome
+      Policies:
+        - Statement:
+            - Sid: SESSendWelcomeEmail
+              Effect: Allow
+              Action:
+                - ses:SendTemplatedEmail
+              Resource:
+                - "arn:aws:ses:us-east-1:756399734264:identity/*"
+                - "arn:aws:ses:us-east-1:756399734264:template/Welcome"
+            - Sid: SESCreateContact
+              Effect: Allow
+              Action:
+                - ses:CreateContact
+              Resource: arn:aws:ses:us-east-1:756399734264:contact-list/EmailNewsletter
+
   NewsletterSfn:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -126,7 +179,32 @@ Resources:
         HtmlPart: '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D"  target="_blank">unsubscribe</a>.</p>'
         TextPart: 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://evef8ow37e.execute-api.us-east-1.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D'
 
+  WelcomeEmailTemplate:
+    Type: AWS::SES::Template
+    Properties:
+      Template:
+        TemplateName: Welcome
+        SubjectPart: Welcome to the Newsletter
+        HtmlPart: "<h1>Welcome to the Newsletter</h1><p>Hi {{email}},</><p>You will receive a new email whenever there is a new blog post.</p>"
+        TextPart: "Welcome to the Newsletter. You will receive a new email whenever there is a new blog post."
+
+  NewsletterContactList:
+    Type: AWS::SES::ContactList
+    DeletionPolicy: Delete
+    Properties:
+      ContactListName: EmailNewsletter
+      Description: Creating a contact list example
+      Topics:
+        - TopicName: Newsletter
+          DisplayName: Blog Post Newsletter
+          Description: Never miss a new blog post by subscribing to our newsletter.
+          DefaultSubscriptionStatus: OPT_OUT
+
 Outputs:
+  ApiBasePath:
+    Description: "API Gateway endpoint URL"
+    # TODO use region in all places where we hardcoded the region
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
   HasNewBlogArticleFunction:
     Description: "HasNewBlogArticle Lambda Function ARN"
     Value: !GetAtt HasNewBlogArticleFunction.Arn
