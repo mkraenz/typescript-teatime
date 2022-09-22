@@ -1,0 +1,73 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Simplified Validation",
+  "States": {
+    "Simplified Validation": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.email",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.email",
+              "IsString": true
+            },
+            {
+              "Variable": "$.privacyPolicyAcceptedAt",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.privacyPolicyAcceptedAt",
+              "IsString": true
+            }
+          ],
+          "Next": "Save Contact"
+        }
+      ],
+      "Default": "Pass"
+    },
+    "Save Contact": {
+      "Type": "Task",
+      "Parameters": {
+        "ContactListName": "${ContactListName}",
+        "EmailAddress.$": "$.email",
+        "AttributesData": {
+          "privacyPolicyAcceptedAt.$": "$.privacyPolicyAcceptedAt"
+        }
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:createContact",
+      "ResultPath": null,
+      "Next": "Transform for Welcome Email"
+    },
+    "Transform for Welcome Email": {
+      "Type": "Pass",
+      "Parameters": {
+        "email.$": "$.email",
+        "templateData": {
+          "email.$": "$.email"
+        }
+      },
+      "Next": "Send Welcome Email"
+    },
+    "Send Welcome Email": {
+      "Type": "Task",
+      "Parameters": {
+        "Destination": {
+          "ToAddresses.$": "States.Array($.email)"
+        },
+        "Source": "${EmailSource}",
+        "Template": "${WelcomeEmailTemplate}",
+        "TemplateData.$": "States.JsonToString($.templateData)"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:ses:sendTemplatedEmail",
+      "End": true
+    },
+    "Pass": {
+      "Type": "Pass",
+      "End": true
+    }
+  }
+}
