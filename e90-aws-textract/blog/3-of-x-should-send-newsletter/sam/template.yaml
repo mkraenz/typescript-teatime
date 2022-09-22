@@ -41,6 +41,26 @@ Resources:
                   - states:StartExecution
                 Resource: !GetAtt SubscribeSfn.Arn
 
+  HttpApiUnsubscribeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "apigateway.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: StepFunctionsStartExecutionOfNewsletterUnsubscribe
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: !GetAtt UnsubscribeSfn.Arn
+
   SubscribeSfn:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -65,9 +85,25 @@ Resources:
                 - ses:CreateContact
               Resource: arn:aws:ses:us-east-1:756399734264:contact-list/EmailNewsletter
 
+  UnsubscribeSfn:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: Unsubscribe
+      DefinitionUri: state-machines/unsubscribe.asl.json
+      DefinitionSubstitutions:
+        ContactListName: !Ref NewsletterContactList
+      Policies:
+        - Statement:
+            - Sid: SESDeleteContact
+              Effect: Allow
+              Action:
+                - ses:DeleteContact
+              Resource: "arn:aws:ses:us-east-1:756399734264:contact-list/EmailNewsletter"
+
   NewsletterSfn:
     Type: AWS::Serverless::StateMachine
     Properties:
+      Name: NewsletterDaily
       DefinitionUri: newsletter.asl.json
       DefinitionSubstitutions:
         HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
@@ -81,7 +117,6 @@ Resources:
             Schedule: cron(0 4 * * ? *)
             Description: Invoke every day at 4am UTC
             Enabled: true
-      Name: NewsletterDaily
       Policies:
         - LambdaInvokePolicy:
             FunctionName: !Ref HasNewBlogArticleFunction

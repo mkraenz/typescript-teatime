@@ -9,21 +9,22 @@ servers:
     basePath:
       default: ""
 paths:
-  # /unsubscribe:
-  #   get:
-  #     responses:
-  #       default:
-  #         description: "Default response for GET /unsubscribe"
-  #     x-amazon-apigateway-integration:
-  #       integrationSubtype: "StepFunctions-StartExecution"
-  #       credentials: "arn:aws:iam::756399734264:role/ApiGatewayExecutionRoleForStepFunctionsNewsletterUnsubscribe"
-  #       requestParameters:
-  #         Input: "$request.querystring.input"
-  #         StateMachineArn: "arn:aws:states:us-east-1:756399734264:stateMachine:NewsletterUnsubscribe"
-  #       payloadFormatVersion: "1.0"
-  #       type: "aws_proxy"
-  #       connectionType: "INTERNET"
-  #       timeoutInMillis: 30000
+  /unsubscribe:
+    get:
+      responses:
+        default:
+          description: "Default response for GET /unsubscribe"
+      x-amazon-apigateway-integration:
+        integrationSubtype: "StepFunctions-StartExecution"
+        credentials: 
+          Fn::GetAtt: [HttpApiUnsubscribeRole, Arn]
+        requestParameters:
+          Input: "$request.querystring.input"
+          StateMachineArn:
+            Fn::GetAtt: [UnsubscribeSfn, Arn]
+        payloadFormatVersion: "1.0"
+        type: "aws_proxy"
+        connectionType: "INTERNET"
   /subscribe:
     post:
       responses:
