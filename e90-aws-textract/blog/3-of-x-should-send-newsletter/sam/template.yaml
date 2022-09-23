@@ -245,9 +245,6 @@ Outputs:
   EmailIdentity:
     Description: The email address used to send emails from
     Value: !Ref SesIdentity
-  TryingToGenArn:
-    Description: "TryingToGen Email Template ARN"
-    Value: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${WelcomeEmailTemplate}"
   ApiBasePath:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
