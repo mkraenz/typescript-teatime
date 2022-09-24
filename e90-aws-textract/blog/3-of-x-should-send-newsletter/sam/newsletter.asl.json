@@ -101,7 +101,7 @@
             "Parameters": {
               "BulkEmailEntries.$": "$.BulkEmailEntries",
               "DefaultContent.$": "$.DefaultContent",
-              "FromEmailAddress.$": "$.FromEmailAddress"
+              "FromEmailAddress.$": "$.FromEmailAddress",
             },
             "Resource": "arn:aws:states:::aws-sdk:sesv2:sendBulkEmail",
             "End": true

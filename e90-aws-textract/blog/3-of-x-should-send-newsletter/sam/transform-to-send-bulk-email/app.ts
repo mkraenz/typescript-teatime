@@ -1,10 +1,28 @@
 import { BulkEmailArgs, ContactChunk } from './interfaces';
 
+const getEnvVars = () => {
+    if (!process.env.TEMPLATE_ARN) {
+        throw new Error('TEMPLATE_ARN is not defined');
+    }
+    if (!process.env.FROM_EMAIL_ADDRESS) {
+        throw new Error('FROM_EMAIL_ADDRESS is not defined');
+    }
+    if (!process.env.TEMPLATE_NAME) {
+        throw new Error('TEMPLATE_NAME is not defined');
+    }
+    if (!process.env.API_GATEWAY_API_ID) {
+        throw new Error('API_GATEWAY_API_ID is not defined');
+    }
+    return {
+        TemplateArn: process.env.TEMPLATE_ARN,
+        FromEmailAddress: process.env.FROM_EMAIL_ADDRESS,
+        TemplateName: process.env.TEMPLATE_NAME,
+        apiGatewayApiId: process.env.API_GATEWAY_API_ID,
+    };
+};
+
 export const lambdaHandler = async (event: ContactChunk): Promise<BulkEmailArgs> => {
-    const TemplateArn =
-        process.env.TEMPLATE_ARN || 'arn:aws:ses:us-east-1:756399734264:template/EmailNewsletterWelcome';
-    const FromEmailAddress = process.env.FROM_EMAIL_ADDRESS || 'typescriptteatime@gmail.com';
-    const TemplateName = process.env.TEMPLATE_NAME || 'EmailNewsletterWelcome';
+    const { TemplateArn, FromEmailAddress, TemplateName, apiGatewayApiId } = getEnvVars();
     return {
         FromEmailAddress,
         DefaultContent: {
@@ -15,6 +33,7 @@ export const lambdaHandler = async (event: ContactChunk): Promise<BulkEmailArgs>
                     email: 'subscriber',
                     articleTitle: event.newBlogArticle.title,
                     linkToArticle: event.newBlogArticle.link,
+                    apiGatewayApiId,
                 }),
             },
         },

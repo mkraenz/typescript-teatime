@@ -1,15 +1,25 @@
 {
-  "Comment": "A description of my state machine",
+  "Comment": "Unsubscribe from email newsletter. Input: JSON object with properties email: string",
   "StartAt": "DeleteContact",
   "States": {
     "DeleteContact": {
       "Type": "Task",
-      "End": true,
       "Parameters": {
         "ContactListName": "${ContactListName}",
         "EmailAddress.$": "$.email"
       },
-      "Resource": "arn:aws:states:::aws-sdk:sesv2:deleteContact"
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:deleteContact",
+      "Catch": [
+        {
+          "ErrorEquals": ["SesV2.NotFoundException"],
+          "Next": "Email not found -> do nothing",
+          "Comment": "Email not found"
+        }
+      ],
+      "End": true
+    },
+    "Email not found -> do nothing": {
+      "Type": "Succeed"
     }
   }
 }
