@@ -84,6 +84,11 @@ Resources:
               Action:
                 - ses:CreateContact
               Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactList}"
+            - Sid: SESGetContact
+              Effect: Allow
+              Action:
+                - ses:GetContact
+              Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactList}"
 
   UnsubscribeSfn:
     Type: AWS::Serverless::StateMachine
@@ -104,6 +109,7 @@ Resources:
     Type: AWS::Serverless::StateMachine
     Properties:
       Name: NewsletterDaily
+      #  TODO move to state-machines/
       DefinitionUri: newsletter.asl.json
       DefinitionSubstitutions:
         HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
@@ -197,6 +203,7 @@ Resources:
           TEMPLATE_ARN: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${NewBlogArticleEmailTemplate}"
           FROM_EMAIL_ADDRESS: !Ref SesIdentity
           TEMPLATE_NAME: !Ref NewBlogArticleEmailTemplate
+          API_GATEWAY_API_ID: !Ref HttpApi
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -211,8 +218,8 @@ Resources:
       Template:
         TemplateName: NewBlogArticle
         SubjectPart: "New Article: {{articleTitle}}"
-        HtmlPart: !Sub '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D"  target="_blank">unsubscribe</a>.</p>'
-        TextPart: !Sub 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D'
+        HtmlPart: !Sub '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D"  target="_blank">unsubscribe</a>.</p>'
+        TextPart: !Sub 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D'
 
   WelcomeEmailTemplate:
     Type: AWS::SES::Template

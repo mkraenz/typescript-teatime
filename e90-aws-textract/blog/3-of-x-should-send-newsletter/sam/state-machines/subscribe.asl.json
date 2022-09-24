@@ -1,6 +1,6 @@
 {
-  "Comment": "A description of my state machine",
   "StartAt": "Simplified Validation",
+  "Comment": "Subscribe to email newsletter. Input: JSON object with properties email: string, privacyPolicyAcceptedAt: string",
   "States": {
     "Simplified Validation": {
       "Type": "Choice",
@@ -40,7 +40,16 @@
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:createContact",
       "ResultPath": null,
-      "Next": "Transform for Welcome Email"
+      "Next": "Transform for Welcome Email",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "SesV2.AlreadyExistsException"
+          ],
+          "Next": "Email already subscribed -> do nothing",
+          "Comment": "Email already subscribed"
+        }
+      ]
     },
     "Transform for Welcome Email": {
       "Type": "Pass",
@@ -64,6 +73,9 @@
       },
       "Resource": "arn:aws:states:::aws-sdk:ses:sendTemplatedEmail",
       "End": true
+    },
+    "Email already subscribed -> do nothing": {
+      "Type": "Succeed"
     },
     "Pass": {
       "Type": "Pass",

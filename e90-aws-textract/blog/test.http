@@ -5,6 +5,14 @@ Content-Type: application/json
   "email": "nabove6368@edxplus.com",
   "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
 }
+###
+POST https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/subscribe
+Content-Type: application/json
+
+{
+  "email": "typescriptteatime@gmail.com",
+  "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
+}
 
 ###
 POST https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/subscribe
@@ -16,4 +24,4 @@ Content-Type: application/json
 }
 
 ###
-GET https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/unsubscribe?input={"email":"gidey59108@dineroa.com"}
+GET https://4nzzns5pvc.execute-api.us-east-1.amazonaws.com/unsubscribe?input={"email":"typescriptteatime@gmail.com"}
