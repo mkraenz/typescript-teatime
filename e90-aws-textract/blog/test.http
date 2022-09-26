@@ -40,5 +40,6 @@ Content-Type: application/json
 }
 
 ###
-GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe2?email=typescriptteatime@gmail.com
-
+GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe?email=typescriptteatime@gmail.com
+###
+GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe?email=hi
