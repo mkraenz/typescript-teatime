@@ -1,34 +1,7 @@
 {
-  "StartAt": "Simplified Validation",
+  "StartAt": "Save Contact",
   "Comment": "Subscribe to email newsletter. Input: JSON object with properties email: string, privacyPolicyAcceptedAt: string",
   "States": {
-    "Simplified Validation": {
-      "Type": "Choice",
-      "Choices": [
-        {
-          "And": [
-            {
-              "Variable": "$.email",
-              "IsPresent": true
-            },
-            {
-              "Variable": "$.email",
-              "IsString": true
-            },
-            {
-              "Variable": "$.privacyPolicyAcceptedAt",
-              "IsPresent": true
-            },
-            {
-              "Variable": "$.privacyPolicyAcceptedAt",
-              "IsString": true
-            }
-          ],
-          "Next": "Save Contact"
-        }
-      ],
-      "Default": "Pass"
-    },
     "Save Contact": {
       "Type": "Task",
       "Parameters": {
@@ -76,10 +49,6 @@
     },
     "Email already subscribed -> do nothing": {
       "Type": "Succeed"
-    },
-    "Pass": {
-      "Type": "Pass",
-      "End": true
     }
   }
 }
