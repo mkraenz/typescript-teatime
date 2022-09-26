@@ -11,9 +11,18 @@
       "Resource": "arn:aws:states:::aws-sdk:sesv2:deleteContact",
       "Catch": [
         {
-          "ErrorEquals": ["SesV2.NotFoundException"],
+          "ErrorEquals": [
+            "SesV2.NotFoundException"
+          ],
           "Next": "Email not found -> do nothing",
           "Comment": "Email not found"
+        },
+        {
+          "ErrorEquals": [
+            "SesV2.BadRequestException"
+          ],
+          "Comment": "Email malformed",
+          "Next": "Email not found -> do nothing"
         }
       ],
       "End": true
