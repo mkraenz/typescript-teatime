@@ -82,25 +82,19 @@ Resources:
       PathPart: unsubscribe
       RestApiId: !Ref ApiGateway
 
-  ApiGatewayUnsubscribe2Route:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: unsubscribe2
-      RestApiId: !Ref ApiGateway
-
   # Api endpoint GET /unsubscribe2?email=hello@example.com to unsubscribe from newsletter. It invokes the Unsubscribe Step Function State Machine, and returns a static HTML page to the client with Header Content-Type: text/html
   # After changing the code, don't forget to redeploy the API Gateway Deployment!
-  ApiGatewayUnsubscribe2Method:
+  ApiGatewayUnsubscribeMethod:
     Type: AWS::ApiGateway::Method
     Properties:
       RestApiId: !Ref ApiGateway
-      ResourceId: !Ref ApiGatewayUnsubscribe2Route
+      ResourceId: !Ref ApiGatewayUnsubscribeRoute
       HttpMethod: GET
       AuthorizationType: NONE
       # Step 1: Method Request, including validation of the query string parameters
       RequestParameters:
         method.request.querystring.email: true
+        # TODO can we Validate email address, too?
       RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
       # Step 2: Integration Request
       Integration:
@@ -179,42 +173,6 @@ Resources:
       ResourceId: !Ref ApiGatewaySubscribeRoute
       RestApiId: !Ref ApiGateway
 
-  ApiGatewayUnsubscribeMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: GET
-      RequestParameters:
-        method.request.querystring.email: true
-      RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: Empty
-      Integration:
-        IntegrationHttpMethod: POST
-        Type: AWS
-        Credentials: !GetAtt ApiGatewayUnsubscribeSfnRole.Arn
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
-        PassthroughBehavior: WHEN_NO_TEMPLATES
-        # TODO make it work for GET requests
-        RequestTemplates:
-          # Docs say: When the Content-Type header is absent in the request, API Gateway assumes that its default value is application/json
-          application/json: !Sub
-            - |-
-              #set($email = $util.escapeJavaScript($input.params('email')))
-              {
-                "input": "{\"email\": \"$email\"}",
-                "stateMachineArn": "${StateMachineArn}"
-              }
-            - { StateMachineArn: !Ref UnsubscribeSfn }
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseTemplates:
-              application/json: ""
-      ResourceId: !Ref ApiGatewayUnsubscribeRoute
-      RestApiId: !Ref ApiGateway
-
   ApiGatewaySubscribeSfnRole:
     Type: AWS::IAM::Role
     Properties:
@@ -230,7 +188,7 @@ Resources:
               Service:
                 - apigateway.amazonaws.com
       Policies:
-        - PolicyName: CallStepFunctions #TODO rename
+        - PolicyName: ApiGatewayToSubscribeSfnPolicy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -348,8 +306,7 @@ Resources:
     Type: AWS::Serverless::StateMachine
     Properties:
       Name: NewsletterDaily
-      #  TODO move to state-machines/
-      DefinitionUri: newsletter.asl.json
+      DefinitionUri: state-machines/newsletter.asl.json
       DefinitionSubstitutions:
         HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
         ChunkContactsFunctionArn: !GetAtt ChunkContactsFunction.Arn
@@ -442,7 +399,7 @@ Resources:
           TEMPLATE_ARN: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${NewBlogArticleEmailTemplate}"
           FROM_EMAIL_ADDRESS: !Ref SesIdentity
           TEMPLATE_NAME: !Ref NewBlogArticleEmailTemplate
-          API_GATEWAY_API_ID: "12345" # TODO
+          API_GATEWAY_API_ID: !Ref ApiGateway
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
