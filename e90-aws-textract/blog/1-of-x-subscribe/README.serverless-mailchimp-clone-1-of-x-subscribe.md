@@ -37,6 +37,7 @@ A GitHub repository with the full example code can be found at TODO.
   - [Next Steps](#next-steps)
   - [Closing](#closing)
   - [References](#references)
+  - [TODO Further blog ideas](#todo-further-blog-ideas)
   <!-- TODO generate -->
 
 ## Target Workflow
@@ -700,3 +701,14 @@ That's it for now. I hope you enjoyed this post. If you have any questions or co
 - [AWS CLI ses (version 1)](https://docs.aws.amazon.com/cli/latest/reference/ses/index.html)
 - [AWS CLI sesv2](https://docs.aws.amazon.com/cli/latest/reference/sesv2/index.html)
 - [AWS API Gateway - Working with AWS Service Integrations](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-aws-services.html)
+
+## TODO Further blog ideas
+
+- how to run a step functions state machine from Api Gateway GET method
+  - using RestApi
+  - most important part: the api route has GET, but the integration Request uses POST
+    - if using the wrong integration method, using `TEST` will log an `UnknownOperationException` even though the requestpayload etc from APIGW to the step functions API look alright
+  - to pass query string parameters to the state machine input, the Mapping Template in Integration Request is important
+- how to validate (and transform) input on Api Gateway for your Step Function state machine
+- how to return a static html from API Gateway that also triggers a Step Function State Machine
+- Typical mistakes with API GW: after changing stuff, did not deploy? missing autodeploy? Also if you deployed, it may need a couple of minutes to be accessible from the public internet. This is contrary to calling the API from within the AWS Console using the `TEST` button under Resources -> select any method.

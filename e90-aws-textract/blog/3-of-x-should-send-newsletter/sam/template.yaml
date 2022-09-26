@@ -12,16 +12,255 @@ Globals:
     Timeout: 3
 
 Resources:
-  HttpApi:
-    Type: AWS::Serverless::HttpApi
+  ApiGateway:
+    Type: AWS::ApiGateway::RestApi
     Properties:
-      DefinitionBody:
-        "Fn::Transform":
-          Name: "AWS::Include"
-          Parameters:
-            Location: api.yaml
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: !Sub ${AWS::StackName}-api
 
-  HttpApiSubscribeRole:
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - ApiGatewaySubscribeRoute
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: "dev"
+
+  ApiGatewaySubscribeRoute:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: subscribe
+      RestApiId: !Ref ApiGateway
+
+  ApiGatewaySubscribeReqBodyModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      ContentType: application/json
+      Description: Request body for the /subscribe route
+      Name: SubscribeRequestBody
+      RestApiId: !Ref ApiGateway
+      Schema:
+        $schema: "http://json-schema.org/draft-04/schema#"
+        title: SubscribeRequestBodySchema
+        type: object
+        required:
+          - email
+          - privacyPolicyAcceptedAt
+        properties:
+          email:
+            type: string
+            pattern: '^\S+@\S+\.\S+$'
+            description: "Email address to subscribe. Validation is best-effort but far from perfect"
+          privacyPolicyAcceptedAt:
+            type: string
+            pattern: '^\d{4}(-\d\d(-\d\d(T\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?$'
+            description: "ISO8601 timestamp in UTC timezone"
+
+  ApiGatewawRequestBodyValidator:
+    Type: AWS::ApiGateway::RequestValidator
+    Properties:
+      Name: RequestBodyValidator
+      RestApiId: !Ref ApiGateway
+      ValidateRequestBody: true
+      ValidateRequestParameters: false
+
+  ApiGatewawRequestParametersValidator:
+    Type: AWS::ApiGateway::RequestValidator
+    Properties:
+      Name: RequestParametersValidator
+      RestApiId: !Ref ApiGateway
+      ValidateRequestBody: false
+      ValidateRequestParameters: true
+
+  ApiGatewayUnsubscribeRoute:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: unsubscribe
+      RestApiId: !Ref ApiGateway
+
+  ApiGatewayUnsubscribe2Route:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: unsubscribe2
+      RestApiId: !Ref ApiGateway
+
+  # Api endpoint GET /unsubscribe2?email=hello@example.com to unsubscribe from newsletter. It invokes the Unsubscribe Step Function State Machine, and returns a static HTML page to the client with Header Content-Type: text/html
+  # After changing the code, don't forget to redeploy the API Gateway Deployment!
+  ApiGatewayUnsubscribe2Method:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref ApiGatewayUnsubscribe2Route
+      HttpMethod: GET
+      AuthorizationType: NONE
+      # Step 1: Method Request, including validation of the query string parameters
+      RequestParameters:
+        method.request.querystring.email: true
+      RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
+      # Step 2: Integration Request
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST # IMPORTANT! Step functions StartExecution API requires POST. Otherwise we get UnknownOperationException
+        Credentials: !GetAtt ApiGatewayUnsubscribeSfnRole.Arn
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
+        # Step 2: Integration Request Mapping Template
+        RequestTemplates:
+          application/json: !Sub
+            - |-
+              #set($email = $util.escapeJavaScript($input.params('email')))
+              { 
+                "input": "{\"email\": \"$email\"}", 
+                "stateMachineArn": "${StateMachineArn}"
+              }
+            - { StateMachineArn: !Ref UnsubscribeSfn }
+        # Step 3 Integration Response, incl Mapping Template and headers
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: "'text/html'"
+            ResponseTemplates:
+              application/json: |-
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Unsubscribe from Newsletter</title>
+                </head>
+                <body>
+                    You are now unsubscribed.
+                </body>
+                </html>
+      # Step 4: Method Response
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            text/html: Empty
+          ResponseParameters:
+            method.response.header.Content-Type: true
+
+  ApiGatewaySubscribeMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      RequestModels:
+        application/json: !Ref ApiGatewaySubscribeReqBodyModel
+      RequestValidatorId: !Ref ApiGatewawRequestBodyValidator
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS
+        Credentials: !GetAtt ApiGatewaySubscribeSfnRole.Arn
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        RequestTemplates:
+          application/json: !Sub
+            - |-
+              #set($data = $util.escapeJavaScript($input.json('$')))
+              {
+                "input": "$data",
+                "stateMachineArn": "${StateMachineArn}"
+              }
+            - { StateMachineArn: !Ref SubscribeSfn }
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseTemplates:
+              application/json: ""
+      ResourceId: !Ref ApiGatewaySubscribeRoute
+      RestApiId: !Ref ApiGateway
+
+  ApiGatewayUnsubscribeMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.querystring.email: true
+      RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS
+        Credentials: !GetAtt ApiGatewayUnsubscribeSfnRole.Arn
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:states:action/StartExecution
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        # TODO make it work for GET requests
+        RequestTemplates:
+          # Docs say: When the Content-Type header is absent in the request, API Gateway assumes that its default value is application/json
+          application/json: !Sub
+            - |-
+              #set($email = $util.escapeJavaScript($input.params('email')))
+              {
+                "input": "{\"email\": \"$email\"}",
+                "stateMachineArn": "${StateMachineArn}"
+              }
+            - { StateMachineArn: !Ref UnsubscribeSfn }
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseTemplates:
+              application/json: ""
+      ResourceId: !Ref ApiGatewayUnsubscribeRoute
+      RestApiId: !Ref ApiGateway
+
+  ApiGatewaySubscribeSfnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: !Join ["", ["/", !Ref "AWS::StackName", "/"]]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: AllowApiGatewayServiceToAssumeRole
+            Effect: Allow
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+      Policies:
+        - PolicyName: CallStepFunctions #TODO rename
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "states:StartExecution"
+                Resource:
+                  - !Ref SubscribeSfn
+
+  ApiGatewayUnsubscribeSfnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "apigateway.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: StepFunctionsStartExecutionOfUnsubscribe
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: !GetAtt UnsubscribeSfn.Arn
+
+  ApiSubscribeRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -203,7 +442,7 @@ Resources:
           TEMPLATE_ARN: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${NewBlogArticleEmailTemplate}"
           FROM_EMAIL_ADDRESS: !Ref SesIdentity
           TEMPLATE_NAME: !Ref NewBlogArticleEmailTemplate
-          API_GATEWAY_API_ID: !Ref HttpApi
+          API_GATEWAY_API_ID: "12345" # TODO
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -252,9 +491,6 @@ Outputs:
   EmailIdentity:
     Description: The email address used to send emails from
     Value: !Ref SesIdentity
-  ApiBasePath:
-    Description: "API Gateway endpoint URL"
-    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
   HasNewBlogArticleFunction:
     Description: "HasNewBlogArticle Lambda Function ARN"
     Value: !GetAtt HasNewBlogArticleFunction.Arn
@@ -267,3 +503,6 @@ Outputs:
   NewsletterSfnRole:
     Description: "IAM Role created for Blog Newsletter state machine based on the specified SAM Policy Templates"
     Value: !GetAtt NewsletterSfnRole.Arn
+  ApiGatewayUrl:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/dev/"
