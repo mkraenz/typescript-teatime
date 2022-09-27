@@ -60,8 +60,7 @@ Resources:
             pattern: '^\d{4}(-\d\d(-\d\d(T\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?$'
             description: "ISO8601 timestamp in UTC timezone"
 
-  # TODO fix typo
-  ApiGatewawRequestBodyValidator:
+  ApiGatewayRequestBodyValidator:
     Type: AWS::ApiGateway::RequestValidator
     Properties:
       Name: RequestBodyValidator
@@ -69,8 +68,7 @@ Resources:
       ValidateRequestBody: true
       ValidateRequestParameters: false
 
-  # TODO fix typo
-  ApiGatewawRequestParametersValidator:
+  ApiGatewayRequestParametersValidator:
     Type: AWS::ApiGateway::RequestValidator
     Properties:
       Name: RequestParametersValidator
@@ -97,7 +95,7 @@ Resources:
       # Step 1: Method Request, including validation of the query string parameters
       RequestParameters:
         method.request.querystring.id: true
-      RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
+      RequestValidatorId: !Ref ApiGatewayRequestParametersValidator
       # Step 2: Integration Request
       Integration:
         Type: AWS
@@ -150,7 +148,7 @@ Resources:
       AuthorizationType: NONE
       RequestModels:
         application/json: !Ref ApiGatewaySubscribeReqBodyModel
-      RequestValidatorId: !Ref ApiGatewawRequestBodyValidator
+      RequestValidatorId: !Ref ApiGatewayRequestBodyValidator
       MethodResponses:
         - StatusCode: 200
           ResponseModels:
