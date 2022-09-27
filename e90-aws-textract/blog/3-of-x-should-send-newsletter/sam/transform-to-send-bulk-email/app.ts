@@ -34,6 +34,7 @@ export const lambdaHandler = async (event: ContactChunk): Promise<BulkEmailArgs>
                     articleTitle: event.newBlogArticle.title,
                     linkToArticle: event.newBlogArticle.link,
                     apiGatewayApiId,
+                    subscriberId: 'fake-id',
                 }),
             },
         },
@@ -43,7 +44,10 @@ export const lambdaHandler = async (event: ContactChunk): Promise<BulkEmailArgs>
             },
             ReplacementEmailContent: {
                 ReplacementTemplate: {
-                    ReplacementTemplateData: JSON.stringify({ email: contact.email }),
+                    ReplacementTemplateData: JSON.stringify({
+                        email: contact.email,
+                        subscriberId: contact.id,
+                    }),
                 },
             },
         })),

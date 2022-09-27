@@ -346,9 +346,12 @@ Resources:
       DefinitionUri: state-machines/newsletter.asl.json
       DefinitionSubstitutions:
         HasNewBlogArticleFunctionArn: !GetAtt HasNewBlogArticleFunction.Arn
+        # WARNING: to keep things simple, we do not paginate the ListContacs results. the default page size seems to be 1000 (it's not properly documented, so we don't know for sure)
         ChunkContactsFunctionArn: !GetAtt ChunkContactsFunction.Arn
         TransformToSendBulkEmailFunctionArn: !GetAtt TransformToSendBulkEmailFunction.Arn
         ContactListName: !Ref NewsletterContactList
+        # WARNING: to keep things simple, we do not paginate the scan results. DynamoDB has a limit of 1MB per scan result.
+        SubscribersTable: !Ref SubscribersTable
       Events:
         Schedule:
           Type: Schedule # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#schedule
@@ -383,6 +386,12 @@ Resources:
               Resource:
                 - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*"
                 - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${NewBlogArticleEmailTemplate}"
+            - Sid: ScanSubscribersTable
+              Effect: Allow
+              Action:
+                - dynamodb:scan
+              Resource:
+                - !GetAtt SubscribersTable.Arn
 
   HasNewBlogArticleFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -399,6 +408,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
+        Sourcemap: true
         Target: "es2020"
         # Sourcemap: true # Enabling source maps will create the required NODE_OPTIONS environment variables on your lambda function during sam build
         EntryPoints:
@@ -419,6 +429,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
+        Sourcemap: true
         Target: "es2020"
         EntryPoints:
           - app.ts
@@ -441,6 +452,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
+        Sourcemap: true
         Target: "es2020"
         EntryPoints:
           - app.ts
@@ -448,12 +460,11 @@ Resources:
   NewBlogArticleEmailTemplate:
     Type: AWS::SES::Template
     Properties:
-      # TODO include the id in the unsubscribe link
       Template:
         TemplateName: NewBlogArticle
         SubjectPart: "New Article: {{articleTitle}}"
-        HtmlPart: !Sub '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D"  target="_blank">unsubscribe</a>.</p>'
-        TextPart: !Sub 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/unsubscribe?input=%7B%22email%22:%22{{email}}%22%7D'
+        HtmlPart: !Sub '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/unsubscribe?id={{subscriberId}}"  target="_blank">unsubscribe</a>.</p>'
+        TextPart: !Sub 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/unsubscribe?id={{subscriberId}}'
 
   WelcomeEmailTemplate:
     Type: AWS::SES::Template
