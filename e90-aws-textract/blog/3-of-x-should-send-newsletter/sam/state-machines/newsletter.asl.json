@@ -40,12 +40,21 @@
     },
     "List Contacts": {
       "Type": "Task",
-      "Next": "Chunk Contacts",
+      "Next": "Get all Ids and Emails",
       "Parameters": {
         "ContactListName": "${ContactListName}"
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:listContacts",
-      "ResultPath": "$.output"
+      "ResultPath": "$.ses"
+    },
+    "Get all Ids and Emails": {
+      "Type": "Task",
+      "Next": "Chunk Contacts",
+      "Parameters": {
+        "TableName": "${SubscribersTable}"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:dynamodb:scan",
+      "ResultPath": "$.dynamodb"
     },
     "Chunk Contacts": {
       "Type": "Task",
@@ -101,7 +110,7 @@
             "Parameters": {
               "BulkEmailEntries.$": "$.BulkEmailEntries",
               "DefaultContent.$": "$.DefaultContent",
-              "FromEmailAddress.$": "$.FromEmailAddress",
+              "FromEmailAddress.$": "$.FromEmailAddress"
             },
             "Resource": "arn:aws:states:::aws-sdk:sesv2:sendBulkEmail",
             "End": true

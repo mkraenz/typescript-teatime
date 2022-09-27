@@ -52,5 +52,5 @@ interface Item {
 
 export interface ContactChunk {
     newBlogArticle: Item;
-    contacts: { email: string }[];
+    contacts: { email: string; id: string }[];
 }
