@@ -13,7 +13,7 @@
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:createContact",
       "ResultPath": null,
-      "Next": "Transform for Welcome Email",
+      "Next": "DynamoDB PutItem",
       "Catch": [
         {
           "ErrorEquals": [
@@ -23,6 +23,21 @@
           "Comment": "Email already subscribed"
         }
       ]
+    },
+    "DynamoDB PutItem": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:putItem",
+      "Parameters": {
+        "TableName": "${SubscribersTable}",
+        "Item": {
+          "id": {
+            "S.$": "States.UUID()"
+          },
+          "email.$": "$.email"
+        }
+      },
+      "Next": "Transform for Welcome Email",
+      "ResultPath": null
     },
     "Transform for Welcome Email": {
       "Type": "Pass",

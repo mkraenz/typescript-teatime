@@ -1,7 +1,45 @@
 {
   "Comment": "Unsubscribe from email newsletter. Input: JSON object with properties email: string",
-  "StartAt": "DeleteContact",
+  "StartAt": "Find email by id in lookup table",
   "States": {
+    "Find email by id in lookup table": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:getItem",
+      "Parameters": {
+        "TableName": "${SubscribersTable}",
+        "Key": {
+          "id": {
+            "S.$": "$.id"
+          }
+        }
+      },
+      "Next": "Found?",
+      "Comment": "GetItem succeeds and returns a JSON _without_ the Item property when id not found"
+    },
+    "Found?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Not": {
+            "Variable": "$.Item",
+            "IsPresent": true
+          },
+          "Next": "Email by Id not found -> do nothing"
+        }
+      ],
+      "Default": "Pick email and id"
+    },
+    "Pick email and id": {
+      "Type": "Pass",
+      "Next": "DeleteContact",
+      "Parameters": {
+        "id.$": "$.Item.id.S",
+        "email.$": "$.Item.email.S"
+      }
+    },
+    "Email by Id not found -> do nothing": {
+      "Type": "Succeed"
+    },
     "DeleteContact": {
       "Type": "Task",
       "Parameters": {
@@ -11,24 +49,26 @@
       "Resource": "arn:aws:states:::aws-sdk:sesv2:deleteContact",
       "Catch": [
         {
-          "ErrorEquals": [
-            "SesV2.NotFoundException"
-          ],
-          "Next": "Email not found -> do nothing",
-          "Comment": "Email not found"
-        },
-        {
-          "ErrorEquals": [
-            "SesV2.BadRequestException"
-          ],
-          "Comment": "Email malformed",
-          "Next": "Email not found -> do nothing"
+          "ErrorEquals": ["SesV2.NotFoundException"],
+          "Next": "Delete item from lookup table",
+          "Comment": "Email not found in SES but existed in Lookup table. Shouldn't happen"
         }
       ],
-      "End": true
+      "Next": "Delete item from lookup table",
+      "ResultPath": null
     },
-    "Email not found -> do nothing": {
-      "Type": "Succeed"
+    "Delete item from lookup table": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:deleteItem",
+      "Parameters": {
+        "TableName": "${SubscribersTable}",
+        "Key": {
+          "id": {
+            "S.$": "$.id"
+          }
+        }
+      },
+      "End": true
     }
   }
 }

@@ -1,4 +1,4 @@
-POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/subscribe
+POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/subscribe
 Content-Type: application/json
 
 {
@@ -6,7 +6,7 @@ Content-Type: application/json
   "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
 }
 ###
-POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/subscribe
+POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/subscribe
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/subscribe
+POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/subscribe
 Content-Type: application/json
 
 {
@@ -40,7 +40,5 @@ Content-Type: application/json
   "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
 }
 
-###
-GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe?email=typescriptteatime@gmail.com
-###
-GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe?email=hi
+### instead use
+GET https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/unsubscribe?id=89de335f-00e0-43e1-8784-27f0f5afa625

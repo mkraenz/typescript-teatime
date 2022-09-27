@@ -60,6 +60,7 @@ Resources:
             pattern: '^\d{4}(-\d\d(-\d\d(T\d\d:\d\d(:\d\d)?(\.\d+)?(([+-]\d\d:\d\d)|Z)?)?)?)?$'
             description: "ISO8601 timestamp in UTC timezone"
 
+  # TODO fix typo
   ApiGatewawRequestBodyValidator:
     Type: AWS::ApiGateway::RequestValidator
     Properties:
@@ -68,6 +69,7 @@ Resources:
       ValidateRequestBody: true
       ValidateRequestParameters: false
 
+  # TODO fix typo
   ApiGatewawRequestParametersValidator:
     Type: AWS::ApiGateway::RequestValidator
     Properties:
@@ -94,8 +96,7 @@ Resources:
       AuthorizationType: NONE
       # Step 1: Method Request, including validation of the query string parameters
       RequestParameters:
-        method.request.querystring.email: true
-        # TODO can we Validate email address, too?
+        method.request.querystring.id: true
       RequestValidatorId: !Ref ApiGatewawRequestParametersValidator
       # Step 2: Integration Request
       Integration:
@@ -108,9 +109,9 @@ Resources:
         RequestTemplates:
           application/json: !Sub
             - |-
-              #set($email = $util.escapeJavaScript($input.params('email')))
+              #set($id = $util.escapeJavaScript($input.params('id')))
               { 
-                "input": "{\"email\": \"$email\"}", 
+                "input": "{\"id\": \"$id\"}", 
                 "stateMachineArn": "${StateMachineArn}"
               }
             - { StateMachineArn: !Ref UnsubscribeSfn }
@@ -239,6 +240,7 @@ Resources:
                   - states:StartExecution
                 Resource: !GetAtt SubscribeSfn.Arn
 
+  # TODO remove
   HttpApiUnsubscribeRole:
     Type: AWS::IAM::Role
     Properties:
@@ -259,6 +261,23 @@ Resources:
                   - states:StartExecution
                 Resource: !GetAtt UnsubscribeSfn.Arn
 
+  SubscribersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Subscribers
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        # - AttributeName: "email"
+        #   AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      # we dont expect much load at all
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
   SubscribeSfn:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -268,6 +287,7 @@ Resources:
         ContactListName: !Ref NewsletterContactList
         EmailSource: !Ref SesIdentity
         WelcomeEmailTemplate: !Ref WelcomeEmailTemplate
+        SubscribersTable: !Ref SubscribersTable
       Policies:
         - Statement:
             - Sid: SESSendWelcomeEmail
@@ -287,6 +307,11 @@ Resources:
               Action:
                 - ses:GetContact
               Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactList}"
+            - Sid: WriteToSubscribersTable
+              Effect: Allow
+              Action:
+                - dynamodb:PutItem
+              Resource: !GetAtt SubscribersTable.Arn
 
   UnsubscribeSfn:
     Type: AWS::Serverless::StateMachine
@@ -295,6 +320,7 @@ Resources:
       DefinitionUri: state-machines/unsubscribe.asl.json
       DefinitionSubstitutions:
         ContactListName: !Ref NewsletterContactList
+        SubscribersTable: !Ref SubscribersTable
       Policies:
         - Statement:
             - Sid: SESDeleteContact
@@ -302,6 +328,16 @@ Resources:
               Action:
                 - ses:DeleteContact
               Resource: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:contact-list/${NewsletterContactList}"
+            - Sid: ReadFromSubscribersTable
+              Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource: !GetAtt SubscribersTable.Arn
+            - Sid: DeleteFromSubscribersTable
+              Effect: Allow
+              Action:
+                - dynamodb:DeleteItem
+              Resource: !GetAtt SubscribersTable.Arn
 
   NewsletterSfn:
     Type: AWS::Serverless::StateMachine
@@ -412,6 +448,7 @@ Resources:
   NewBlogArticleEmailTemplate:
     Type: AWS::SES::Template
     Properties:
+      # TODO include the id in the unsubscribe link
       Template:
         TemplateName: NewBlogArticle
         SubjectPart: "New Article: {{articleTitle}}"
