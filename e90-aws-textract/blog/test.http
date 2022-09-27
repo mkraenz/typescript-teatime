@@ -30,6 +30,7 @@ Content-Type: application/json
   "email": "hi",
   "privacyPolicyAcceptedAt": "2022-01-01T00:00:00.000Z"
 }
+
 ###
 POST https://prlu3fxzgi.execute-api.us-east-1.amazonaws.com/dev/subscribe
 Content-Type: application/json

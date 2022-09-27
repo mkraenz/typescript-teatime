@@ -24,6 +24,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - ApiGatewaySubscribeRoute
+      - ApiGatewayUnsubscribeRoute
     Properties:
       RestApiId: !Ref ApiGateway
       StageName: "dev"
@@ -142,8 +143,10 @@ Resources:
   ApiGatewaySubscribeMethod:
     Type: AWS::ApiGateway::Method
     Properties:
-      AuthorizationType: NONE
       HttpMethod: POST
+      ResourceId: !Ref ApiGatewaySubscribeRoute
+      RestApiId: !Ref ApiGateway
+      AuthorizationType: NONE
       RequestModels:
         application/json: !Ref ApiGatewaySubscribeReqBodyModel
       RequestValidatorId: !Ref ApiGatewawRequestBodyValidator
@@ -169,9 +172,7 @@ Resources:
         IntegrationResponses:
           - StatusCode: 200
             ResponseTemplates:
-              application/json: ""
-      ResourceId: !Ref ApiGatewaySubscribeRoute
-      RestApiId: !Ref ApiGateway
+              application/json: '{ "success": true }'
 
   ApiGatewaySubscribeSfnRole:
     Type: AWS::IAM::Role
