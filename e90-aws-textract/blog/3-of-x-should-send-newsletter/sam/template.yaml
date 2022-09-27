@@ -218,47 +218,6 @@ Resources:
                   - states:StartExecution
                 Resource: !GetAtt UnsubscribeSfn.Arn
 
-  ApiSubscribeRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: "apigateway.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Policies:
-        - PolicyName: StepFunctionsStartExecutionOfNewsletterSubscribe
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - states:StartExecution
-                Resource: !GetAtt SubscribeSfn.Arn
-
-  # TODO remove
-  HttpApiUnsubscribeRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: "apigateway.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Policies:
-        - PolicyName: StepFunctionsStartExecutionOfNewsletterUnsubscribe
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - states:StartExecution
-                Resource: !GetAtt UnsubscribeSfn.Arn
-
   SubscribersTable:
     Type: AWS::DynamoDB::Table
     Properties:
