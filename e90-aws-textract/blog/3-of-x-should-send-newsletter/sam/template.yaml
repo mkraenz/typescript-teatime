@@ -235,6 +235,17 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
+  ################## TODO ###################
+  # email template for confirmation
+  # change Subscribe step function to use email template + wait for callback
+  # include the confirmation link in the email template
+  # permissions for Subscribe step function to send email (v2) with confirmation template
+  # Api GW resource /confirm
+  # API GW method GET /confirm?token=<callback-token>
+  #   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
+  # API GW permissions to invoke SubscribeSfn.SendTaskSuccess
+  # timeout (HeartbeatSeconds inside ASL) wait for 1 day
+
   SubscribeSfn:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -244,12 +255,14 @@ Resources:
         ContactListName: !Ref NewsletterContactList
         EmailSource: !Ref SesIdentity
         WelcomeEmailTemplate: !Ref WelcomeEmailTemplate
+        WelcomeEmailTemplateArn: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${WelcomeEmailTemplate}"
         SubscribersTable: !Ref SubscribersTable
       Policies:
         - Statement:
             - Sid: SESSendWelcomeEmail
               Effect: Allow
               Action:
+                # provides permissions to use sesv2 SendEmail with Content.Template
                 - ses:SendTemplatedEmail
               Resource:
                 - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*"
@@ -414,13 +427,24 @@ Resources:
         EntryPoints:
           - app.ts
 
+  SubscriptionConfirmationEmailTemplate:
+    Type: AWS::SES::Template
+    Properties:
+      Template:
+        # template data should be
+        # confirmationLink: https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/confirm?token={{confirmationToken}}
+        TemplateName: SubscriptionConfirmation
+        SubjectPart: "Please confirm your subscription to the newsletter"
+        HtmlPart: !Sub '<p>Hi {{email}},</p><p>Thank you always for reading our blog.</p><p>Please confirm your newsletter subscription using the following link</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{confirmationLink}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Confirm subscription </a></div>'
+        TextPart: !Sub "TODO"
+
   NewBlogArticleEmailTemplate:
     Type: AWS::SES::Template
     Properties:
       Template:
         TemplateName: NewBlogArticle
         SubjectPart: "New Article: {{articleTitle}}"
-        HtmlPart: !Sub '<h1>New article:{{articleTitle}}</h1><p>Hi{{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/unsubscribe?id={{subscriberId}}"  target="_blank">unsubscribe</a>.</p>'
+        HtmlPart: !Sub '<h1>New article: {{articleTitle}}</h1><p>Hi {{email}},</p><p>Thank you always for reading our blog.</p><p>We just finished another article that you might be interested in.</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{linkToArticle}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Read the article now </a></div><p>Click here to <a href="https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/unsubscribe?id={{subscriberId}}"  target="_blank">unsubscribe</a>.</p>'
         TextPart: !Sub 'Hi {{email}}, Thank you always for reading our blog. We just finished another article "{{articleTitle}}" that you might be interested in. To read the article, copy the following link into your browsers address bar: {{linkToArticle}}. To unsubscribe, use the following link https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/unsubscribe?id={{subscriberId}}'
 
   WelcomeEmailTemplate:

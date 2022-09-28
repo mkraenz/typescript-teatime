@@ -52,14 +52,19 @@
     "Send Welcome Email": {
       "Type": "Task",
       "Parameters": {
-        "Destination": {
-          "ToAddresses.$": "States.Array($.email)"
-        },
-        "Source": "${EmailSource}",
-        "Template": "${WelcomeEmailTemplate}",
-        "TemplateData.$": "States.JsonToString($.templateData)"
+          "FromEmailAddress": "${EmailSource}",
+          "Destination": {
+            "ToAddresses.$": "States.Array($.email)"
+          },
+          "Content": {
+            "Template": {
+              "TemplateName": "${WelcomeEmailTemplate}",
+              "TemplateArn": "${WelcomeEmailTemplateArn}",
+              "TemplateData.$": "States.JsonToString($.templateData)"
+            }
+          }
       },
-      "Resource": "arn:aws:states:::aws-sdk:ses:sendTemplatedEmail",
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:sendEmail",
       "End": true
     },
     "Email already subscribed -> do nothing": {
