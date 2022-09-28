@@ -236,15 +236,15 @@ Resources:
         WriteCapacityUnits: 1
 
   ################## TODO ###################
-  # email template for confirmation
-  # change Subscribe step function to use email template + wait for callback
-  # include the confirmation link in the email template
-  # permissions for Subscribe step function to send email (v2) with confirmation template
-  # Api GW resource /confirm
-  # API GW method GET /confirm?token=<callback-token>
-  #   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
-  # API GW permissions to invoke SubscribeSfn.SendTaskSuccess
-  # timeout (HeartbeatSeconds inside ASL) wait for 1 day
+  # - [x] email template for confirmation
+  # - [x] change Subscribe step function to use email template + wait for callback
+  # - [x] include the confirmation link in the email template
+  # - [ ] permissions for Subscribe step function to send email (v2) with confirmation template
+  # - [ ] Api GW resource /confirm
+  # - [ ] API GW method GET /confirm?token=<callback-token>
+  # - [ ]   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
+  # - [ ] API GW permissions to invoke SubscribeSfn.SendTaskSuccess
+  # - [ ] timeout (HeartbeatSeconds inside ASL) wait for 1 day
 
   SubscribeSfn:
     Type: AWS::Serverless::StateMachine
@@ -253,13 +253,16 @@ Resources:
       DefinitionUri: state-machines/subscribe.asl.json
       DefinitionSubstitutions:
         ContactListName: !Ref NewsletterContactList
+        ConfirmationEmailTemplate: !Ref SubscriptionConfirmationEmailTemplate
+        ConfirmationEmailTemplateArn: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${SubscriptionConfirmationEmailTemplate}"
+        ConfirmationLinkBase: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/dev/confirm?token="
         EmailSource: !Ref SesIdentity
         WelcomeEmailTemplate: !Ref WelcomeEmailTemplate
         WelcomeEmailTemplateArn: !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${WelcomeEmailTemplate}"
         SubscribersTable: !Ref SubscribersTable
       Policies:
         - Statement:
-            - Sid: SESSendWelcomeEmail
+            - Sid: SESSendConfirmationAndWelcomeEmails
               Effect: Allow
               Action:
                 # provides permissions to use sesv2 SendEmail with Content.Template
@@ -267,6 +270,7 @@ Resources:
               Resource:
                 - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*"
                 - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${WelcomeEmailTemplate}"
+                - !Sub "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:template/${SubscriptionConfirmationEmailTemplate}"
             - Sid: SESCreateContact
               Effect: Allow
               Action:
@@ -435,7 +439,7 @@ Resources:
         # confirmationLink: https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/confirm?token={{confirmationToken}}
         TemplateName: SubscriptionConfirmation
         SubjectPart: "Please confirm your subscription to the newsletter"
-        HtmlPart: !Sub '<p>Hi {{email}},</p><p>Thank you always for reading our blog.</p><p>Please confirm your newsletter subscription using the following link</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{confirmationLink}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Confirm subscription </a></div>'
+        HtmlPart: !Sub '<p>Hi {{email}},</p><p>Thank you always for reading our blog.</p><p>Please confirm your newsletter subscription using the following link</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{confirmationLinkBase}}{{token}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Confirm subscription </a></div><p>Alternatively, copy the following link into your web browser address bar:</p><p>{{confirmationLinkBase}}{{token}}</p>'
         TextPart: !Sub "TODO"
 
   NewBlogArticleEmailTemplate:

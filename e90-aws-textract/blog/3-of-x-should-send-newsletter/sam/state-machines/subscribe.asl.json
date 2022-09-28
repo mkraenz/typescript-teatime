@@ -1,7 +1,30 @@
 {
-  "StartAt": "Save Contact",
+  "StartAt": "Send confirmation email, then wait for confirmation",
   "Comment": "Subscribe to email newsletter. Input: JSON object with properties email: string, privacyPolicyAcceptedAt: string",
   "States": {
+    "Send confirmation email, then wait for confirmation": {
+      "Type": "Task",
+      "Next": "Save Contact",
+      "Parameters": {
+        "FromEmailAddress": "${EmailSource}",
+        "Destination": {
+          "ToAddresses.$": "States.Array($.email)"
+        },
+        "Content": {
+          "Template": {
+            "TemplateName": "${ConfirmationEmailTemplate}",
+            "TemplateArn": "${ConfirmationEmailTemplateArn}",
+            "TemplateData": {
+              "email.$": "$.email",
+              "confirmationLinkBase": "${ConfirmationLinkBase}",
+              "token.$": "$$.Task.Token"
+            }
+          }
+        }
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:sendEmail.waitForTaskToken",
+      "ResultPath": null
+    },
     "Save Contact": {
       "Type": "Task",
       "Parameters": {
@@ -52,17 +75,17 @@
     "Send Welcome Email": {
       "Type": "Task",
       "Parameters": {
-          "FromEmailAddress": "${EmailSource}",
-          "Destination": {
-            "ToAddresses.$": "States.Array($.email)"
-          },
-          "Content": {
-            "Template": {
-              "TemplateName": "${WelcomeEmailTemplate}",
-              "TemplateArn": "${WelcomeEmailTemplateArn}",
-              "TemplateData.$": "States.JsonToString($.templateData)"
-            }
+        "FromEmailAddress": "${EmailSource}",
+        "Destination": {
+          "ToAddresses.$": "States.Array($.email)"
+        },
+        "Content": {
+          "Template": {
+            "TemplateName": "${WelcomeEmailTemplate}",
+            "TemplateArn": "${WelcomeEmailTemplateArn}",
+            "TemplateData.$": "States.JsonToString($.templateData)"
           }
+        }
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:sendEmail",
       "End": true
