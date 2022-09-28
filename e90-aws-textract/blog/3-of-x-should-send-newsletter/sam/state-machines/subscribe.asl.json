@@ -17,13 +17,14 @@
             "TemplateData": {
               "email.$": "$.email",
               "confirmationLinkBase": "${ConfirmationLinkBase}",
-              "token.$": "$$.Task.Token"
+              "token.$": "States.Base64Encode($$.Task.Token)"
             }
           }
         }
       },
       "Resource": "arn:aws:states:::aws-sdk:sesv2:sendEmail.waitForTaskToken",
-      "ResultPath": null
+      "ResultPath": null,
+      "HeartbeatSeconds": 86400
     },
     "Save Contact": {
       "Type": "Task",

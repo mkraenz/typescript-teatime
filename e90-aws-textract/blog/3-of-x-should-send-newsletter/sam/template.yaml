@@ -36,6 +36,13 @@ Resources:
       PathPart: subscribe
       RestApiId: !Ref ApiGateway
 
+  ApiGatewayConfirmRoute:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: confirm
+      RestApiId: !Ref ApiGateway
+
   ApiGatewaySubscribeReqBodyModel:
     Type: AWS::ApiGateway::Model
     Properties:
@@ -139,6 +146,60 @@ Resources:
           ResponseParameters:
             method.response.header.Content-Type: true
 
+  # Api endpoint GET /confirm?token=12345 to confirm subscribing to the newsletter. It continues executing the waiting Subscribe Step Function State Machine, and returns a static HTML page to the client with Header Content-Type: text/html
+  # After changing the code, don't forget to redeploy the API Gateway Deployment!
+  ApiGatewayConfirmMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref ApiGatewayConfirmRoute
+      HttpMethod: GET
+      AuthorizationType: NONE
+      # Step 1: Method Request, including validation of the query string parameters
+      RequestParameters:
+        method.request.querystring.token: true
+      RequestValidatorId: !Ref ApiGatewayRequestParametersValidator
+      # Step 2: Integration Request
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST # IMPORTANT! Step functions StartExecution API requires POST. Otherwise we get UnknownOperationException
+        Credentials: !GetAtt ApiGatewayContinueSubscribeSfnRole.Arn
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:states:action/SendTaskSuccess
+        # Step 2: Integration Request Mapping Template
+        RequestTemplates:
+          application/json: |-
+            #set($token = $util.escapeJavaScript($util.base64Decode($input.params('token'))))
+            { 
+              "taskToken": "$token", 
+              "output": "{}"
+            }
+        # Step 3 Integration Response, incl Mapping Template and headers
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: "'text/html'"
+            ResponseTemplates:
+              application/json: |-
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Thank you</title>
+                </head>
+                <body>
+                    Thank you for subscribing to our blog newsletter.
+                </body>
+                </html>
+      # Step 4: Method Response
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            text/html: Empty
+          ResponseParameters:
+            method.response.header.Content-Type: true
+
   ApiGatewaySubscribeMethod:
     Type: AWS::ApiGateway::Method
     Properties:
@@ -198,6 +259,30 @@ Resources:
                 Resource:
                   - !Ref SubscribeSfn
 
+  ApiGatewayContinueSubscribeSfnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: !Join ["", ["/", !Ref "AWS::StackName", "/"]]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: AllowApiGatewayServiceToAssumeRole
+            Effect: Allow
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+      Policies:
+        - PolicyName: ApiGatewayToContinueSubscribeSfnPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "states:SendTaskSuccess"
+                Resource: "*"
+
   ApiGatewayUnsubscribeSfnRole:
     Type: AWS::IAM::Role
     Properties:
@@ -239,11 +324,11 @@ Resources:
   # - [x] email template for confirmation
   # - [x] change Subscribe step function to use email template + wait for callback
   # - [x] include the confirmation link in the email template
-  # - [ ] permissions for Subscribe step function to send email (v2) with confirmation template
-  # - [ ] Api GW resource /confirm
-  # - [ ] API GW method GET /confirm?token=<callback-token>
-  # - [ ]   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
-  # - [ ] API GW permissions to invoke SubscribeSfn.SendTaskSuccess
+  # - [x] permissions for Subscribe step function to send email (v2) with confirmation template
+  # - [ x] Api GW resource /confirm
+  # - [ x] API GW method GET /confirm?token=<callback-token>
+  # - [ x]   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
+  # - [ x] API GW permissions to invoke SubscribeSfn.SendTaskSuccess
   # - [ ] timeout (HeartbeatSeconds inside ASL) wait for 1 day
 
   SubscribeSfn:
