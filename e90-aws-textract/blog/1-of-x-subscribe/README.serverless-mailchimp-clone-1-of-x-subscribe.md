@@ -45,8 +45,6 @@ A GitHub repository with the full example code can be found at TODO.
 
 ## Target Workflow
 
-<!-- TODO update image with newest version (no dynamodb) -->
-
 ![Step Functions Graph for Subscription Workflow](./subscribe_stepfunctions_graph.svg)
 
 <!-- <img src="./subscribe_stepfunctions_graph.svg" alt="Step Functions Graph for Subscription Workflow"> -->
@@ -82,7 +80,6 @@ As an example, if you publish a blog article every day, then 1 Dollar covers the
 
 - AWS account. If you don't have an account yet, you can create one here via the [AWS website](https://aws.amazon.com/).
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) installed and configured (I tested this with `aws-cli/2.7.31 Python/3.9.11` on Ubuntu Linux)
-<!-- - (TODO test with `PowerUserAccess`) -->
 - Access permissions on your user (I tested with `AdministratorAccess` policy. `PowerUserAccess` does not suffice since at least the `iam:CreateRole` permission is missing.)
 - default profile and default region set in your AWS CLI config
 
@@ -316,8 +313,6 @@ aws sesv2 delete-contact --contact-list-name "EmailNewsletter" --email-address $
 
 Congratulations! Let's dive into connecting these commands using a AWS Step Functions state machine.
 
-<!-- TODO validated up to this point. Dont touch it anymore. -->
-
 ## Build the Subscribe-to-Newsletter Workflow with Step Functions
 
 We will now get into modeling the actual subscribe-workflow that uses the SES api calls to, first, save a new subscriber as a new contact, and second, send a welcome email to this new subscriber. Step Functions uses the term _state machine_ to refer to the workflow because it models business workflows as state machines. A state machine is some collection of _states_ and _transitions_ between states. States are, for example, api calls to other AWS services, if-else statements, or data transformations. Transitions describe how to go from one state to the next state, and what data to pass on to the next state.
@@ -494,15 +489,19 @@ If you are very attentive, you might notice that we do not use `ses:SendTemplate
 
 Let's immediately try out our new workflow. The best way to do this is via the AWS Console, or see below on how to do it from the CLI. I encourage you to do it at least once using the AWS Console though... to see the work _flow_.
 
-So login to [AWS](http://aws.amazon.com/), select your region from the top, and go to the Step Functions service. From the sidebar, select _State machines_. Then select our newly created state machine named `NewsletterSubscribe`. Click on it and then click on the "Start Execution" button. In the dialog that opens, provide the following state machine input (replace `YOUR_CONTACT_EMAIL` with your email address that is validated in SES):
+So login to [AWS](http://aws.amazon.com/), select your region from the top, and go to the Step Functions service. From the sidebar, select _State machines_. Then select our newly created state machine named `NewsletterSubscribe`. Click on it and then click on the "Start Execution" button. In the dialog that opens, provide the following state machine input (replace `YOUR_CONTACT_EMAIL` with your email address that is validated in SES) and click on "Start Execution".
 
-```sh
+```json
 {
   "email": "YOUR_CONTACT_EMAIL"
 }
 ```
 
-<!-- TODO add an image -->
+If everything goes fine, you see the flow your code has taken. Here's an example of what it looks like:
+
+![Step Functions Graph Inspector of the successful Execution](./subscibe_stepfunction_graph_inspector.png)
+
+<!-- <img src="./subscibe_stepfunction_graph_inspector.png" alt="Step Functions Graph Inspector of the successful Execution"> -->
 
 For a more automated approach, here's the CLI command to do the same thing using [start-execution](https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/start-execution.html):
 
@@ -545,8 +544,6 @@ Here are a few errors into which I ran and how to resolve them:
 - Workflow is green but no email received in your inbox
   - Via the Step Functions UI verify that the _Step Input_ of the execution used the correct email.
   - Ensure that sending works via `aws sesv2 send-email` as described in this [previous section](#send-your-first-templated-email). You can find more troubleshooting information about this issue in that section.
-
-<!-- TODO remove comment: Validated until here. Good job -->
 
 ## Setup API Gateway and invoke your subscribe workflow via HTTP
 
