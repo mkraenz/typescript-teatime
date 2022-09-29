@@ -10,13 +10,30 @@ A GitHub repository with the full example code can be found at TODO.
 
 > Disclaimer: Both the AWS Console and AWS CLI are great for learning. If, however, you are trying to build some actual service, I recommend using the AWS CLI for finding out the right command, and then codifying everything in an Infrastructure-as-Code tool like [AWS CloudFormation](https://aws.amazon.com/cloudformation/), [AWS SAM](https://aws.amazon.com/serverless/sam/), [AWS CDK](https://aws.amazon.com/cdk/), [Terraform](https://www.terraform.io/), or [Pulumi](https://www.pulumi.com/). Using such a tool, the whole deployment will just be one or two commands. For beginners, I recommend AWS SAM which is specifically for building serverless applications.
 
+## Target Workflow
+
+![Step Functions Graph for Subscription Workflow](./subscribe_stepfunctions_graph.svg)
+
+<!-- <img src="./subscribe_stepfunctions_graph.svg" alt="Step Functions Graph for Subscription Workflow"> -->
+
+This workflow is going to be triggered by the following HTTP request:
+
+```http
+POST YOUR_AWS_API_GATEWAY_URL/subscribe
+Content-Type: application/json
+
+{
+  "email": "hello@example.com"
+}
+```
+
 ## Contents
 
 <!-- TODO don't include the blog title here. it autogenerates on save -->
 
 - [Deep Dive: Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 1 - Subscribe endpoint](#deep-dive-build-a-serverless-mailchimp-clone-with-aws-step-functions-and-amazon-simple-email-service---part-1---subscribe-endpoint)
-  - [Contents](#contents)
   - [Target Workflow](#target-workflow)
+  - [Contents](#contents)
   - [Motivation](#motivation)
   - [Pricing](#pricing)
   - [Prerequisites](#prerequisites)
@@ -42,23 +59,6 @@ A GitHub repository with the full example code can be found at TODO.
   - [Cleanup](#cleanup)
   - [Closing](#closing)
   - [References](#references)
-
-## Target Workflow
-
-![Step Functions Graph for Subscription Workflow](./subscribe_stepfunctions_graph.svg)
-
-<!-- <img src="./subscribe_stepfunctions_graph.svg" alt="Step Functions Graph for Subscription Workflow"> -->
-
-This workflow is going to be triggered by the following HTTP request:
-
-```http
-POST YOUR_AWS_API_GATEWAY_URL/subscribe
-Content-Type: application/json
-
-{
-  "email": "hello@example.com"
-}
-```
 
 ## Motivation
 
