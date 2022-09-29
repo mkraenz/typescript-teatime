@@ -1,5 +1,7 @@
 # Deep Dive: Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 3 - Should Send Newsletter Lambda
 
+TODO write me. Most stuff is unter `./sam/`
+
 ## Choosing the right tool
 
 Requirements
