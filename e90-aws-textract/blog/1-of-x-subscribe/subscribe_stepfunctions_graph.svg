@@ -1,4 +1,210 @@
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" id="sfn-svg" class="sfn-workflow-graph" width="293" height="441">
-    
-    
-<g transform="translate(11.999998092651367,19.718568801879883)"><g class="nodes"><g class="node-container" transform="translate(94.2055344581604,18.18181800842285)"><g class="node anchor"><circle class="shape" x="-15.900385856628418" y="-8.181818008422852" r="25.900385856628418"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Start</tspan></text></g></g><g class="node-container" transform="translate(94.2055344581604,386.36363410949707)"><g class="node anchor"><circle class="shape" x="-12.166193008422852" y="-8.181818008422852" r="22.16619300842285"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">End</tspan></text></g></g><g class="node-container" transform="translate(94.2055344581604,79.54545402526855)"><g class="node state Choice NotYetStarted"><rect class="shape" rx="5" ry="5" x="-76.09375" y="-18.18181800842285" width="152.1875" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Simplified Validation</tspan></text></g></g><g class="node-container" transform="translate(164.39288902282715,140.90909004211426)"><g class="node state Task NotYetStarted"><rect class="shape" rx="5" ry="5" x="-100.26988220214844" y="-18.18181800842285" width="200.53976440429688" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Save Contact for compliance</tspan></text></g></g><g class="node-container" transform="translate(24.018179893493652,324.99999809265137)"><g class="node state Pass NotYetStarted"><rect class="shape" rx="5" ry="5" x="-24.018179893493652" y="-18.18181800842285" width="48.036359786987305" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Pass</tspan></text></g></g><g class="node-container" transform="translate(164.39288902282715,202.27272605895996)"><g class="node state Task NotYetStarted"><rect class="shape" rx="5" ry="5" x="-51.40667724609375" y="-18.18181800842285" width="102.8133544921875" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Save Contact</tspan></text></g></g><g class="node-container" transform="translate(164.39288902282715,263.63636207580566)"><g class="node state Pass NotYetStarted"><rect class="shape" rx="5" ry="5" x="-104.12641906738281" y="-18.18181800842285" width="208.25283813476562" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Transform for Welcome Email</tspan></text></g></g><g class="node-container" transform="translate(164.39288902282715,324.99999809265137)"><g class="node state Task NotYetStarted"><rect class="shape" rx="5" ry="5" x="-76.35652923583984" y="-18.18181800842285" width="152.7130584716797" height="36.3636360168457"/><text class="label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Send Welcome Email</tspan></text></g></g></g><g class="edges"><g class="edge"><path class="path" marker-end="url(#arrowhead9)" d="M135.7980407052508,97.7272720336914L140.56384875818017,99.81060536702472C145.32965681110957,101.89393870035806,154.86127291696835,106.06060536702473,159.62708096989775,110.22727203369139C164.39288902282715,114.39393870035806,164.39288902282715,118.56060536702473,164.39288902282712,120.64393870035806L164.39288902282715,122.7272720336914" style="fill: none;"/><defs><marker id="arrowhead9" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead10)" d="M52.61302821107002,97.7272720336914L47.847220158140615,99.81060536702472C43.08141210521123,101.89393870035806,33.54979599935244,106.06060536702473,28.78398794642304,113.2575750350952C24.01817989349365,120.45454470316568,24.01817989349365,130.68181737263996,24.018179893493645,140.90909004211426C24.01817989349365,151.13636271158853,24.01817989349365,161.3636353810628,24.018179893493645,171.5909080505371C24.01817989349365,181.81818072001138,24.01817989349365,192.04545338948566,24.018179893493645,202.27272605895996C24.01817989349365,212.49999872843424,24.01817989349365,222.7272713979085,24.018179893493645,232.95454406738278C24.01817989349365,243.18181673685706,24.01817989349365,253.40908940633136,24.018179893493645,263.63636207580566C24.01817989349365,273.8636347452799,24.01817989349365,284.0909074147542,24.018179893493645,291.2878770828247C24.01817989349365,298.48484675089514,24.01817989349365,302.65151341756183,24.018179893493645,304.73484675089514L24.018179893493652,306.8181800842285" style="fill: none;"/><defs><marker id="arrowhead10" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead11)" d="M94.2055344581604,44.08220386505127L94.2055344581604,44.87910922368367C94.2055344581604,45.67601458231608,94.2055344581604,47.26982529958089,94.2055344581604,50.150063991546624C94.2055344581604,53.03030268351236,94.2055344581604,57.19696935017903,94.2055344581604,59.28030268351237L94.2055344581604,61.3636360168457" style="fill: none;"/><defs><marker id="arrowhead11" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead12)" d="M164.39288902282715,159.0909080505371L164.39288902282712,161.17424138387042C164.39288902282715,163.25757471720377,164.39288902282715,167.42424138387042,164.39288902282712,171.5909080505371C164.39288902282715,175.75757471720377,164.39288902282715,179.92424138387042,164.39288902282712,182.00757471720377L164.39288902282715,184.0909080505371" style="fill: none;"/><defs><marker id="arrowhead12" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead13)" d="M24.018179893493652,343.1818161010742L24.018179893493645,345.26514943440753C24.01817989349365,347.34848276774085,24.01817989349365,351.51514943440753,32.33100701447608,357.2323659713951C40.64383413545851,362.9495825083826,57.26948837742337,370.217348915691,65.5823154984058,373.85123211934524L73.89514261938824,377.48511532299943" style="fill: none;"/><defs><marker id="arrowhead13" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead14)" d="M164.39288902282715,220.4545440673828L164.39288902282712,222.53787740071613C164.39288902282715,224.62121073404947,164.39288902282715,228.78787740071613,164.39288902282712,232.95454406738278C164.39288902282715,237.12121073404944,164.39288902282715,241.28787740071613,164.39288902282712,243.37121073404947L164.39288902282715,245.4545440673828" style="fill: none;"/><defs><marker id="arrowhead14" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead15)" d="M164.39288902282715,281.8181800842285L164.39288902282712,283.90151341756183C164.39288902282715,285.98484675089514,164.39288902282715,290.15151341756183,164.39288902282712,294.3181800842285C164.39288902282715,298.48484675089514,164.39288902282715,302.65151341756183,164.39288902282712,304.73484675089514L164.39288902282715,306.8181800842285" style="fill: none;"/><defs><marker id="arrowhead15" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g><g class="edge"><path class="path" marker-end="url(#arrowhead16)" d="M164.39288902282715,343.1818161010742L164.39288902282712,345.26514943440753C164.39288902282715,347.34848276774085,164.39288902282715,351.51514943440753,156.0800619018447,357.2323659713951C147.76723478086228,362.9495825083826,131.14158053889741,370.217348915691,122.828753417915,373.85123211934524L114.51592629693256,377.48511532299943" style="fill: none;"/><defs><marker id="arrowhead16" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs></g></g></g><style xmlns="http://www.w3.org/1999/xhtml">.node &gt; .shape {stroke: #555555;stroke-width: 0.6px;fill: #FFFFFF;} path {stroke: #555;background-color: #555;stroke-width: 1px;} .node.state.NotYetStarted &gt; .shape,.node.state.Container &gt; .shape {stroke-dasharray: 5 2;} .node.state.Failed &gt; .shape,rect.legend.Failed {fill: #DE322F;} .node.state.CaughtError &gt; .shape,rect.legend.CaughtError {fill: #FFA500;} .node.state.Succeeded &gt; .shape,rect.legend.Succeeded {fill: #2BD62E;} .node.state.InProgress &gt; .shape,rect.legend.InProgress {fill: #53c9ed;} .node.state.Cancelled &gt; .shape,rect.legend.Cancelled {fill: #dddddd;} .node.anchor &gt; .shape {fill: #FFDA75;} .node.state.hovered:not(.selected):not(.NotYetStarted) &gt; .shape,.node.selected &gt; .shape {stroke: #555555;stroke-width: 2px;} .node.state.Container.Failed &gt; .shape {fill: #EE9592;} .node.state.Container.CaughtError &gt; .shape {fill: #FFD27F;} .node.state.Container.Succeeded &gt; .shape {fill: #91EA9A;} .node.state.Container.InProgress &gt; .shape {fill :#A9E4F7;} .node.state.Container.Cancelled &gt; .shape {fill: #EEEEEE;} marker {fill: #555555;} .node.anchor,.node.state.NotYetStarted {cursor: default;} .node.state {cursor: pointer;} tspan .label {font-weight: normal;font-size: 12px;text-shadow: none;} </style></svg>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" class="sc-djvmMF euCbBy graph" data-testid="graph" width="634" height="332"><g transform="translate(12,12)" class="new-look-graph"><g class="nodes"><g class="node-container" transform="translate(282.5,22)"><g><circle class="sc-GVOUr ktyhhn shape" r="22"/><text class="sc-fbPSWO ijurXc label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Start</tspan></text></g></g><g class="node-container" transform="translate(282.5,103.5)"><g class="sc-ehmTmK fzRkr node state Task" data-testid="graph-Save Contact" data-state-id="Save Contact" data-state-type="Task"><g class="new-look-state-node "><rect x="-120" y="-24.5" width="240" height="49" rx="3" ry="3"/><g class="handle" transform="translate(-120,-24.5)"><path d="M5,16 L5,34 M8,16 L8,34"/></g><g class="icon" transform="translate(-104,-24)"><rect fill="var(--color-background-container-header-g9rg0j, #fafafa)" x="0.0361026108" y="0.0181291967" width="48" height="48"/><line x1="47.5" y1="0.49122807" x2="47.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><line x1="0.5" y1="0.49122807" x2="0.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><use href="#icon-service-ses"/></g><g class="text-lines" transform="translate(-48,-24.5)"><text transform="translate(0,17)" class="line1"><tspan xml:space="preserve" text-anchor="start">SES V2: CreateContact</tspan></text><text transform="translate(0,35.5)" class="line2 label"><tspan xml:space="preserve" text-anchor="start">Save Contact</tspan></text></g></g></g></g><g class="node-container" transform="translate(120,204)"><g class="sc-ehmTmK fzRkr node state Task" data-testid="graph-Send Welcome Email" data-state-id="Send Welcome Email" data-state-type="Task"><g class="new-look-state-node "><rect x="-120" y="-24.5" width="240" height="49" rx="3" ry="3"/><g class="handle" transform="translate(-120,-24.5)"><path d="M5,16 L5,34 M8,16 L8,34"/></g><g class="icon" transform="translate(-104,-24)"><rect fill="var(--color-background-container-header-g9rg0j, #fafafa)" x="0.0361026108" y="0.0181291967" width="48" height="48"/><line x1="47.5" y1="0.49122807" x2="47.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><line x1="0.5" y1="0.49122807" x2="0.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><use href="#icon-service-ses"/></g><g class="text-lines" transform="translate(-48,-24.5)"><text transform="translate(0,17)" class="line1"><tspan xml:space="preserve" text-anchor="start">SES V2: SendEmail</tspan></text><text transform="translate(0,35.5)" class="line2 label"><tspan xml:space="preserve" text-anchor="start">Send Welcome Email</tspan></text></g></g></g></g><g class="node-container" transform="translate(445,204)"><g class="sc-ehmTmK fzRkr node state Succeed" data-testid="graph-Email already subscribed -&gt; do nothing" data-state-id="Email already subscribed -&gt; do nothing" data-state-type="Succeed"><g class="new-look-state-node "><rect x="-165" y="-24.5" width="330" height="49" rx="3" ry="3"/><g class="handle" transform="translate(-165,-24.5)"><path d="M5,16 L5,34 M8,16 L8,34"/></g><g class="icon" transform="translate(-149,-24)"><rect fill="var(--color-background-container-header-g9rg0j, #fafafa)" x="0.0361026108" y="0.0181291967" width="48" height="48"/><line x1="47.5" y1="0.49122807" x2="47.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><line x1="0.5" y1="0.49122807" x2="0.5" y2="47.5" stroke="var(--color-text-home-header-secondary-g5rqe4, #d5dbdb)" stroke-linecap="square"/><use href="#icon-flow-succeed"/></g><g class="text-lines" transform="translate(-93,-24.5)"><text transform="translate(0,17)" class="line1"><tspan xml:space="preserve" text-anchor="start">Succeed state</tspan></text><text transform="translate(0,35.5)" class="line2 label"><tspan xml:space="preserve" text-anchor="start">Email already subscribed -&gt; do nothing</tspan></text></g></g></g></g><g class="node-container" transform="translate(282.5,285.5)"><g><circle class="sc-GVOUr ktyhhn shape" r="22"/><text class="sc-fbPSWO ijurXc label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">End</tspan></text></g></g></g><g class="edges"><g class="sc-lbOyJj wYkTA edge"><path id="state-Save Contact:state-Send Welcome Email:normal" d="M203.27114427860698,128L189.39262023217248,132.29166666666666C175.514096185738,136.58333333333334,147.75704809286898,145.16666666666666,133.87852404643448,153.75C120,162.33333333333334,120,170.91666666666666,120,175.20833333333334L120,179.5" marker-end="url(#arrowhead)" fill="none"/></g><g class="sc-lbOyJj wYkTA edge"><path id="state-Save Contact:state-Email already subscribed -&gt; do nothing:catch:0" d="M361.728855721393,128L375.6073797678275,132.29166666666666C389.48590381426203,136.58333333333334,417.24295190713104,145.16666666666666,431.1214759535655,153.75C445,162.33333333333334,445,170.91666666666666,445,175.20833333333334L445,179.5" marker-end="url(#arrowhead)" fill="none"/><g data-testid="graph-Save Contact-0" class="edge-label" transform="translate(431.1214759535655,153.75)"><rect x="-25" y="-8.25" width="50" height="16.5" class="sc-dwLEzm eiPrps"/><text class="sc-TRNrF iuUhOo label"><tspan xml:space="preserve" text-anchor="middle" alignment-baseline="central">Catch #1</tspan><title>Catch #1</title></text></g></g><g class="sc-lbOyJj wYkTA edge"><path id="start:state-Save Contact" d="M282.5,44L282.5,46.916666666666664C282.5,49.833333333333336,282.5,55.666666666666664,282.5,61.5C282.5,67.33333333333333,282.5,73.16666666666667,282.5,76.08333333333333L282.5,79" marker-end="url(#arrowhead)" fill="none"/></g><g class="sc-lbOyJj wYkTA edge"><path id="state-Send Welcome Email:end:normal" d="M120,228.5L120,231.41666666666666C120,234.33333333333334,120,240.16666666666666,143.52041607546045,248.80060370244527C167.0408321509209,257.43454073822386,214.08166430184178,268.86908147644766,237.60208037730226,274.5863518455596L261.1224964527627,280.3036222146715" marker-end="url(#arrowhead)" fill="none"/></g><g class="sc-lbOyJj wYkTA edge"><path id="state-Email already subscribed -&gt; do nothing:end:normal" d="M445,228.5L445,231.41666666666666C445,234.33333333333334,445,240.16666666666666,421.47958392453955,248.80060370244527C397.95916784907905,257.43454073822386,350.9183356981582,268.86908147644766,327.39791962269777,274.5863518455596L303.8775035472373,280.3036222146715" marker-end="url(#arrowhead)" fill="none"/></g></g><defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 8 3, 0 6"/></marker><marker id="highlighted-arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 6 2, 0 4"/></marker><marker id="error-arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 6 2, 0 4"/></marker><marker id="large-arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 10 4, 0 8"/></marker><marker id="large-highlighted-arrowhead" markerWidth="5.5" markerHeight="4" refX="4.5" refY="2" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 5.5 2, 0 4"/></marker><marker id="large-error-arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" class="sc-ckMVTt jtmTlO"><polygon points="0 0, 10 4, 0 8"/></marker><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-orange"><stop stop-color="#C8511B" offset="0%"/><stop stop-color="#FF9900" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-turquoise"><stop stop-color="#055F4E" offset="0%"/><stop stop-color="#56C0A7" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-blue"><stop stop-color="#2E27AD" offset="0%"/><stop stop-color="#527FFF" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-pink"><stop stop-color="#B0084D" offset="0%"/><stop stop-color="#FF4F8B" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-red"><stop stop-color="#BD0816" offset="0%"/><stop stop-color="#FF5252" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-green"><stop stop-color="#1B660F" offset="0%"/><stop stop-color="#6CAE3E" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-purple"><stop stop-color="#4D27A8" offset="0%"/><stop stop-color="#A166FF" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-grey"><stop stop-color="#DCDCDC" offset="0%"/><stop stop-color="#F6F5F7" offset="100%"/></linearGradient>,<linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-ag"><stop stop-color="#BC1356" offset="0%"/><stop stop-color="#F34482" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-athena"><stop stop-color="#5930B5" offset="0%"/><stop stop-color="#945DF2" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-emr"><stop stop-color="#5930B5" offset="0%"/><stop stop-color="#945DF2" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-glue"><stop stop-color="#5930B5" offset="0%"/><stop stop-color="#945DF2" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-sns"><stop stop-color="#BC1356" offset="0%"/><stop stop-color="#F34482" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-states"><stop stop-color="#BC1356" offset="0%"/><stop stop-color="#F34482" offset="100%"/></linearGradient><linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="gradient-generic"><stop stop-color="#ccc" offset="0%"/><stop stop-color="#ddd" offset="100%"/></linearGradient><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" id="icon-flow-succeed"><g transform="translate(11.250000, 12.250000)" fill="#2AB512" fill-rule="nonzero"><path d="M12.75,0 C5.70836944,0 0,5.70836944 0,12.75 C0,19.7916306 5.70836944,25.5 12.75,25.5 C19.7916306,25.5 25.5,19.7916306 25.5,12.75 C25.5,5.70836944 19.7916306,0 12.75,0 Z M12.75,1.5 C18.9632034,1.5 24,6.53679656 24,12.75 C24,18.9632034 18.9632034,24 12.75,24 C6.53679656,24 1.5,18.9632034 1.5,12.75 C1.5,6.53679656 6.53679656,1.5 12.75,1.5 Z"/><path d="M17.482151,9.3912361 C17.7750442,9.09834288 18.2499179,9.09834288 18.5428111,9.3912361 C18.8090777,9.65750266 18.8332838,10.0741663 18.6154293,10.3677778 L18.5428111,10.4518963 L11.1581958,17.8365117 C10.9013427,18.0933647 10.5030038,18.1258243 10.2104294,17.9293959 L10.1171609,17.8554362 L6.98253225,14.9408143 C6.67918728,14.6587599 6.66192789,14.1841999 6.94398232,13.8808549 C7.20039544,13.6050868 7.61590405,13.565753 7.91723953,13.7727921 L8.0039417,13.842305 L10.608,16.264 L17.482151,9.3912361 Z"/></g></g><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" id="icon-service-ses"><polygon fill="url(#gradient-red)" fill-rule="nonzero" points="0 0 48 0 48 48 0 48"/><g transform="translate(8 8) scale(0.032)"><path d="M781.5 872.4C781.5 843.3 759.6 821.3 730.5 821.3 701.4 821.3 679.5 843.3 679.5 872.4 679.5 901.4 701.4 923.4 730.5 923.4 759.6 923.4 781.5 901.4 781.5 872.4L781.5 872.4ZM500 862.2C470.5 862.2 446.4 885 446.4 913.2 446.4 941.4 470.5 964.3 500 964.3 529.5 964.3 553.6 941.4 553.6 913.2 553.6 885 529.5 862.2 500 862.2L500 862.2ZM267.3 821.3C238.2 821.3 216.3 843.3 216.3 872.4 216.3 901.4 238.2 923.4 267.3 923.4 296.4 923.4 318.3 901.4 318.3 872.4 318.3 843.3 296.4 821.3 267.3 821.3L267.3 821.3ZM284.3 537.9L715.7 537.9 563.7 424.7 511.3 467.8C508 470.6 504 471.9 500 471.9 496 471.9 491.9 470.6 488.6 467.8L436.2 424.7 284.3 537.9ZM248.2 269.9L248.2 520.2 407.8 401.3 248.2 269.9ZM719.8 250L280.1 250 500 430.9 719.8 250ZM751.8 520.2L751.8 269.9 592.1 401.3 751.8 520.2ZM817.2 872.4C817.2 921 779.1 959.1 730.5 959.1 681.8 959.1 643.8 921 643.8 872.4 643.8 829.9 672.8 795.5 712.6 787.4L712.6 716.5 517.9 716.5 517.9 828.2C558.6 836.3 589.3 871.3 589.3 913.2 589.3 961 549.3 1000 500 1000 450.7 1000 410.7 961 410.7 913.2 410.7 871.3 441.5 836.3 482.1 828.2L482.1 716.5 285.2 716.5 285.2 787.4C325 795.5 354 829.9 354 872.4 354 921 316 959.1 267.3 959.1 218.6 959.1 180.6 921 180.6 872.4 180.6 829.9 209.6 795.5 249.5 787.4L249.5 698.6C249.5 688.7 257.4 680.7 267.3 680.7L482.1 680.7 482.1 573.6 230.4 573.6C220.5 573.6 212.5 565.6 212.5 555.8L212.5 232.1C212.5 222.3 220.5 214.3 230.4 214.3L769.6 214.3C779.5 214.3 787.5 222.3 787.5 232.1L787.5 555.8C787.5 565.6 779.5 573.6 769.6 573.6L517.9 573.6 517.9 680.7 730.5 680.7C740.4 680.7 748.3 688.7 748.3 698.6L748.3 787.4C788.1 795.5 817.2 829.9 817.2 872.4L817.2 872.4ZM1000 499.9C1000 597.7 965.5 708.2 907.8 795.5L878 775.8C931.2 695.3 964.3 589.7 964.3 499.9 964.3 244 756 35.7 500 35.7 244 35.7 35.7 244 35.7 499.9 35.7 589.4 68.8 695.1 122 775.8L92.2 795.5C34.5 708 0 597.5 0 499.9 0 224.3 224.3 0 500 0 775.7 0 1000 224.3 1000 499.9L1000 499.9Z" fill="#FFFFFF"/></g></g></defs></g><style data-styled="true" data-styled-version="5.3.5">.fzRkr{cursor:pointer;}/*!sc*/
+data-styled.g64[id="sc-ehmTmK"]{content:"fzRkr,"}/*!sc*/
+.wYkTA{stroke:#555;background-color:#555;stroke-width:1px;}/*!sc*/
+data-styled.g65[id="sc-lbOyJj"]{content:"wYkTA,"}/*!sc*/
+.jtmTlO{fill:var(--color-text-form-secondary-1c3szk,#687078);}/*!sc*/
+data-styled.g67[id="sc-ckMVTt"]{content:"jtmTlO,"}/*!sc*/
+.ijurXc{font-weight:400;font-size:12px;line-height:16px;font-family:Amazon Ember,Arial,Roboto,Arial,sans-serif;text-shadow:none;fill:var(--color-text-body-default-7m2b3r,#16191f);}/*!sc*/
+data-styled.g68[id="sc-fbPSWO"]{content:"ijurXc,"}/*!sc*/
+.ktyhhn{fill:#fff9cc;stroke:var(--color-text-form-secondary-1c3szk,#687078);stroke-width:0.6px;}/*!sc*/
+data-styled.g69[id="sc-GVOUr"]{content:"ktyhhn,"}/*!sc*/
+.eiPrps{stroke-width:0;stroke:none;fill:#f2f3f3;}/*!sc*/
+data-styled.g71[id="sc-dwLEzm"]{content:"eiPrps,"}/*!sc*/
+.iuUhOo{font-size:10px;line-height:12.5;stroke:none;}/*!sc*/
+data-styled.g72[id="sc-TRNrF"]{content:"iuUhOo,"}/*!sc*/
+</style><style>
+.new-look-state-node &gt; rect:first-of-type {
+  stroke: #687078;
+  stroke-width: 1px;
+  fill: #FFFFFF;
+}
+
+.new-look-state-node .error-icon circle {
+ stroke-linejoin: round;
+}
+
+.new-look-state-node .error-icon circle, .new-look-state-node .error-icon path {
+ stroke: var(--color-border-status-error-fybu9w, #d13212);
+ fill: none;
+ stroke-width: 2px;
+}
+
+.new-look-state-node.has-errors &gt; rect:first-of-type {
+ stroke: var(--color-border-status-error-fybu9w, #d13212);
+ fill: var(--color-background-status-error-h1a0iq, #fdf3f1);
+}
+
+.new-look-state-node .handle path {
+  stroke: var(--color-border-dropdown-item-hover-d32f3f, #879596);
+  stroke-width: 1px;
+  fill: none;
+}
+
+.new-look-state-node {
+  font-weight: 400;
+  font-family: Amazon Ember, Arial, Roboto, Arial, sans-serif;
+  text-shadow: none;
+}
+
+.new-look-state-node .line1 {
+  fill: #687078;
+  font-size: 12px;
+}
+
+.selected.node &gt; .new-look-state-node &gt; rect,
+.selected.node &gt; .new-look-state-node &gt; .new-look-state-node &gt; rect,
+.selected.node &gt; .new-look-state-node &gt; .bounding-box &gt; .new-look-state-node-sub &gt; rect
+ {
+  stroke: var(--color-border-status-info-0iedcr, #0073bb);
+  fill: var(--color-background-status-info-yq3r41, #f1faff);
+  stroke-width: 1px;
+}
+
+.new-look-state-node-sub .item-source.not-specified {
+  height: 15px;
+  color: #687078;
+  font-family: "Amazon Ember";
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 16px;
+  font-weight: 400;
+}
+.new-look-state-node-sub .item-source .item-source_name{
+  font-weight: 600;
+}
+.new-look-state-node-sub .item-source.not-specified .item-source_name{
+  font-weight: 400;
+}
+
+.new-look-state-node-sub .item-source.not-specified {
+  font-style: italic;
+}
+
+
+
+.new-look-state-node-sub .item-source
+.selected.node &gt; .new-look-state-node.has-errors &gt; rect,
+.selected.node &gt; .new-look-state-node.has-errors &gt; .new-look-state-node &gt; rect,
+{
+ stroke: var(--color-border-status-error-fybu9w, #d13212);
+ fill: #fde0da;
+}
+
+.new-look-graph .drag-source {
+  opacity: 0.2;
+}
+
+.new-look-graph .edge, .new-look-graph path.starting-connection {
+  stroke-width: 1px;
+  stroke: var(--color-text-form-secondary-1c3szk, #687078);
+  marker-end: url(#large-arrowhead);
+}
+
+.new-look-graph .edge-label {
+  cursor: pointer;
+}
+
+.new-look-graph .edge-label rect {
+  stroke-width: 1px;
+  stroke: var(--color-border-control-default-jt0hca, #aab7b8);
+  fill: var(--color-background-container-header-g9rg0j, #fafafa);
+}
+
+.new-look-graph .edge-label.selected rect {
+  stroke: var(--color-border-status-info-0iedcr, #0073bb);
+  fill: var(--color-background-status-info-yq3r41, #f1faff);
+  stroke-width: 0.6px;
+}
+
+
+
+.new-look-graph .edge-label .label {
+  fill: var(--color-text-form-secondary-1c3szk, #687078);
+  font-family: Amazon Ember, Arial, Roboto, Arial, sans-serif;
+}
+
+/* centering the shape text */
+@-moz-document url-prefix() {
+  .new-look-graph .shape + text,
+  .new-look-graph .edge-label text {
+    transform: translateY(3.5px);
+  }
+}
+
+.new-look-graph .edge path {
+  marker-end: url(#large-arrowhead) !important;
+}
+
+.new-look-graph .edge.selected path{
+  stroke: var(--color-border-status-info-0iedcr, #0073bb);
+  stroke-width: 1.1px;
+}
+
+.new-look-graph .edge.dragging-over path, .new-look-graph  g.dragging-over .starting-connection {
+  stroke: #5C86FF;
+  stroke-width: 2px;
+}
+
+.new-look-graph .edge.dragging-over path, .new-look-graph .dragging-over path.starting-connection {
+  marker-end: url(#large-highlighted-arrowhead) !important;
+}
+
+.new-look-graph .edge.dragging-over .edge-label text {
+  fill: #5C86FF;
+}
+
+#large-highlighted-arrowhead {
+  fill: #5C86FF;
+}
+
+#large-highlighted-arrowhead path {
+  stroke: none;
+}
+
+.new-look-graph .edge.drop-not-supported path, g.drop-not-supported .starting-connection {
+  stroke: red;
+}
+
+.new-look-graph .edge.drop-not-supported .edge-label text {
+  fill: red;
+}
+
+.new-look-graph .edge.drop-not-supported path {
+  marker-end: url(#large-error-arrowhead) !important;
+}
+
+#large-error-arrowhead {
+  fill: red;
+}
+
+
+.node.Placeholder.dragging-over rect {
+  stroke: var(--color-border-status-info-0iedcr, #0073bb);
+  fill: var(--color-background-status-info-yq3r41, #f1faff);
+  stroke-width: 2px;
+}
+
+.node.Placeholder.dragging-over .label {
+  fill: var(--color-text-status-info-09r23g, #0073bb);
+}
+
+g.Placeholder rect {
+  stroke-dasharray: 5 4;
+  stroke: var(--color-border-dropdown-item-hover-d32f3f, #879596);
+  fill: var(--color-background-control-default-8xmy94, #ffffff);
+  stroke-width: 1px;
+}
+
+g.Placeholder .label {
+  font-style: italic;
+  fill: var(--color-text-input-placeholder-rtvjp5, #687078);
+}
+
+.node.Placeholder.drop-not-supported rect {
+  stroke: red;
+}
+
+.node.Placeholder.drop-not-supported .label {
+  fill: red;
+}
+</style><style>.line2 { font-size: 14px }</style></svg>

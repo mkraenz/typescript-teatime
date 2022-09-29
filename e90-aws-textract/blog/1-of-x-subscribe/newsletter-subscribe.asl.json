@@ -1,0 +1,46 @@
+{
+  "Comment": "Saves the email of a new subscriber and sends a welcome email.\nThis workflow is being called by an API Gateway integration using, for example, `POST { \"email\": \"hello@example.com\" }`.",
+  "StartAt": "Save Contact",
+  "States": {
+    "Save Contact": {
+      "Type": "Task",
+      "Parameters": {
+        "ContactListName": "EmailNewsletter",
+        "EmailAddress.$": "$.email"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:createContact",
+      "ResultPath": null,
+      "Next": "Send Welcome Email",
+      "Catch": [
+        {
+          "ErrorEquals": ["SesV2.AlreadyExistsException"],
+          "Next": "Email already subscribed -> do nothing",
+          "Comment": "Email already subscribed"
+        }
+      ]
+    },
+    "Send Welcome Email": {
+      "Type": "Task",
+      "Parameters": {
+        "FromEmailAddress": "YOUR_SENDER_EMAIL",
+        "Destination": {
+          "ToAddresses.$": "States.Array($.email)"
+        },
+        "Content": {
+          "Template": {
+            "TemplateName": "WelcomeTemplate",
+            "TemplateArn": "arn:aws:ses:YOUR_REGION:YOUR_ACCOUNT_ID:template/WelcomeTemplate",
+            "TemplateData": {
+              "email.$": "$.email"
+            }
+          }
+        }
+      },
+      "Resource": "arn:aws:states:::aws-sdk:sesv2:sendEmail",
+      "End": true
+    },
+    "Email already subscribed -> do nothing": {
+      "Type": "Succeed"
+    }
+  }
+}

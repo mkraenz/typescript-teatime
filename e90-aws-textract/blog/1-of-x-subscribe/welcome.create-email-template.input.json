@@ -1,5 +1,5 @@
 {
-  "TemplateName": "EmailNewsletterWelcome",
+  "TemplateName": "WelcomeTemplate",
   "TemplateContent": {
     "Subject": "Welcome to the Newsletter",
     "Text": "Welcome to the Newsletter. You will receive a new email whenever there is a new blog post.",

@@ -4,7 +4,7 @@
     {
       "Effect": "Allow",
       "Action": "states:StartExecution",
-      "Resource": "arn:aws:states:us-east-1:756399734264:stateMachine:NewsletterSubscribe"
+      "Resource": "arn:aws:states:YOUR_REGION:YOUR_ACCOUNT_ID:stateMachine:NewsletterSubscribe"
     }
   ]
 }

@@ -1,13 +1,13 @@
 {
-  "FromEmailAddress": "typescriptteatime@gmail.com",
+  "FromEmailAddress": "YOUR_SENDER_EMAIL_ADDRESS",
   "Destination": {
-    "ToAddresses": ["dopilij444@keyido.com"]
+    "ToAddresses": ["YOUR_DESTINATION_EMAIL_ADDRESS"]
   },
   "Content": {
     "Template": {
-      "TemplateName": "EmailNewsletterWelcome",
-      "TemplateArn": "arn:aws:ses:us-east-1:756399734264:template/EmailNewsletterWelcome",
-      "TemplateData": "{\"email\":\"dipilij444@keyido.com\"}"
+      "TemplateName": "WelcomeTemplate",
+      "TemplateArn": "arn:aws:ses:YOUR_REGION:YOUR_ACCOUNT_ID:template/WelcomeTemplate",
+      "TemplateData": "{\"email\":\"YOUR_DESTINATION_EMAIL_ADDRESS\"}"
     }
   }
 }
