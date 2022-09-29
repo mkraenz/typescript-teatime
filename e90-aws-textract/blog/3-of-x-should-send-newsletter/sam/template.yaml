@@ -523,6 +523,7 @@ Resources:
         # template data should be
         # confirmationLink: https://{{apiGatewayApiId}}.execute-api.${AWS::Region}.amazonaws.com/dev/confirm?token={{confirmationToken}}
         TemplateName: SubscriptionConfirmation
+        # TODO add 'this link will expire in 24 hours' to the template
         SubjectPart: "Please confirm your subscription to the newsletter"
         HtmlPart: !Sub '<p>Hi {{email}},</p><p>Thank you always for reading our blog.</p><p>Please confirm your newsletter subscription using the following link</p><div style="padding: 16px;background:#1FD760;width:fit-content;border-radius: 30px;"> <a href="{{confirmationLinkBase}}{{token}}" style="color:#151E18;font-family:Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:120%;Margin:0;text-decoration:none;text-transform:uppercase;" target="_blank"> Confirm subscription </a></div><p>Alternatively, copy the following link into your web browser address bar:</p><p>{{confirmationLinkBase}}{{token}}</p>'
         TextPart: !Sub "TODO"
