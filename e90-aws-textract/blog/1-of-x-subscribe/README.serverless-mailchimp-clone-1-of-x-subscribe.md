@@ -1,4 +1,4 @@
-# Deep Dive: Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 1 - Subscribe endpoint
+# Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 1 - Subscribe endpoint
 
 Today, we learn how to set up a AWS Step Functions state machine, integrating with Amazon Simple Email Service and AWS API Gateway, setting minimal permissions via AWS IAM - all from the AWS CLI for reproducability - in order to build a subscribe endpoint for an email newsletter. I will also include how to verify that everything works, as well as pitfalls and troubleshooting tips.
 
@@ -6,7 +6,7 @@ We will create the `POST /subscribe` endpoint for an email newsletter service ho
 
 To do this, we first setup Simple Email Service and get comfortable using it. Then, we build the workflow with Step Functions including setting up permissions. Finally, we setup the `POST /subscribe` endpoint on API Gateway, link it to Step Functions using an Integration, and again, set up permissions. As a bonus, we enable CORS on our new API so that the blog can make an http post request to subscribe the reader using JavaScript.
 
-A GitHub repository with the full example code can be found at TODO.
+You can find the full example code including all commands without the explanations in this [GitHub repository](https://github.com/mkraenz/blog-serverless-mailchimp-clone).
 
 > Disclaimer: Both the AWS Console and AWS CLI are great for learning. If, however, you are trying to build some actual service, I recommend using the AWS CLI for finding out the right command, and then codifying everything in an Infrastructure-as-Code tool like [AWS CloudFormation](https://aws.amazon.com/cloudformation/), [AWS SAM](https://aws.amazon.com/serverless/sam/), [AWS CDK](https://aws.amazon.com/cdk/), [Terraform](https://www.terraform.io/), or [Pulumi](https://www.pulumi.com/). Using such a tool, the whole deployment will just be one or two commands. For beginners, I recommend AWS SAM which is specifically for building serverless applications.
 
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 <!-- TODO don't include the blog title here. it autogenerates on save -->
 
-- [Deep Dive: Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 1 - Subscribe endpoint](#deep-dive-build-a-serverless-mailchimp-clone-with-aws-step-functions-and-amazon-simple-email-service---part-1---subscribe-endpoint)
+- [Build a Serverless Mailchimp Clone with AWS Step Functions and Amazon Simple Email Service - Part 1 - Subscribe endpoint](#build-a-serverless-mailchimp-clone-with-aws-step-functions-and-amazon-simple-email-service---part-1---subscribe-endpoint)
   - [Target Workflow](#target-workflow)
   - [Contents](#contents)
   - [Motivation](#motivation)
