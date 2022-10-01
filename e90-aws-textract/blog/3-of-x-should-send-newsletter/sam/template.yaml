@@ -12,6 +12,7 @@ Globals:
     Timeout: 3
 
 Resources:
+  # Using RestApi over HttpApi because we use request validation, request transformations for integration to Step Functions, and response transformations for static responses to the client on API Gateway level
   ApiGateway:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -320,16 +321,16 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
-  ################## TODO ###################
+  ################## Double Email Opt-In is achived by ###################
   # - [x] email template for confirmation
   # - [x] change Subscribe step function to use email template + wait for callback
   # - [x] include the confirmation link in the email template
   # - [x] permissions for Subscribe step function to send email (v2) with confirmation template
-  # - [ x] Api GW resource /confirm
-  # - [ x] API GW method GET /confirm?token=<callback-token>
-  # - [ x]   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
-  # - [ x] API GW permissions to invoke SubscribeSfn.SendTaskSuccess
-  # - [ ] timeout (HeartbeatSeconds inside ASL) wait for 1 day
+  # - [x] Api GW resource /confirm
+  # - [x] API GW method GET /confirm?token=<callback-token>
+  # - [x]   + API GW integration that invokes SubscribeSfn.SendTaskSuccess(token)
+  # - [x] API GW permissions to invoke SubscribeSfn.SendTaskSuccess
+  # - [x] timeout (HeartbeatSeconds inside ASL) wait for 1 day
 
   SubscribeSfn:
     Type: AWS::Serverless::StateMachine
@@ -562,6 +563,7 @@ Resources:
     Type: AWS::SES::EmailIdentity
     DeletionPolicy: Delete
     Properties:
+      # TODO replace with your own domain or email
       EmailIdentity: "typescriptteatime@gmail.com"
 
 Outputs:
