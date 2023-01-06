@@ -42,7 +42,8 @@ Not necessary
 
 ## MVP 1 - forest in the current browser
 
-- User can insert how many trees additionally planted
+- User can insert how many trees additionally got planted
+  - -> number input field + Add button
 - inserted number of trees gets saved (in the browser / local storage)
   - autogenerate coords for each tree and save + load
 - when opening app again, trees get loaded
