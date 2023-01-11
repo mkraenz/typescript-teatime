@@ -1,16 +1,14 @@
-import { Button, Heading, Text, VStack } from "@chakra-ui/react";
-// import { faTree } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Text, VStack } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import AddPlantedTrees from "../components/AddPlantedTrees";
+import Forest from "../components/Forest";
+import IndexHeader from "../components/IndexHeader";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  // const Icon = chakra(FontAwesomeIcon);
-  // <Icon icon={faTree} boxSize={6} color="brand.300" /
 
   return (
     <>
@@ -27,25 +25,9 @@ const Home: NextPage = () => {
         pt={20}
         gap={8}
       >
-        <VStack as="header" gap={8}>
-          <Heading as="h1" size="4xl" textAlign={"center"}>
-            Thousand Trees
-          </Heading>
-          <Heading
-            as="h2"
-            size={"lg"}
-            textTransform="capitalize"
-            textAlign={"center"}
-          >
-            Revert your Life Time Carbon Footprint to rescue our Planet
-          </Heading>
-        </VStack>
-
-        {/* plant new trees  */}
+        <IndexHeader />
         <AddPlantedTrees />
-
-        {/* render planted trees  */}
-        <VStack></VStack>
+        <Forest />
       </VStack>
     </>
   );
