@@ -1,0 +1,27 @@
+.text {
+    text-align: left;
+}
+
+.option {
+    cursor: pointer;
+    text-align: left;
+}
+
+.option:hover {
+    background-color: #444444;
+    color: #ffffff;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 100%;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .container {
+        width: 968px;
+    }
+}
