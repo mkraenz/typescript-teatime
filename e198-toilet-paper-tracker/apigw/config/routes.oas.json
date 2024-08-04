@@ -35,6 +35,27 @@
         },
         "operationId": "75d86419-c7a9-4dad-a2ed-8dcfb4733578"
       }
+    },
+    "/users/{id}": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "Retrieve User",
+        "description": "Retrieve the user specified by the id.",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/users-get-one)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": []
+          }
+        },
+        "operationId": "57563e1d-e24d-4117-9c87-db0dd8c8666c"
+      }
     }
   },
   "components": {
@@ -46,15 +67,19 @@
         "properties": {
           "displayName": {
             "type": "string",
-            "description": "The users name. Visible to others."
+            "description": "The user's display name.",
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9]{3,64}$"
           },
           "email": {
             "type": "string",
-            "description": "The users email. Not visible to others."
+            "description": "The user's email."
           },
           "id": {
             "type": "string",
-            "description": "User id."
+            "maxLength": 64,
+            "description": "User id. Must be equal to the sub in the JWT.",
+            "pattern": "^user_.*$"
           }
         },
         "required": ["displayName", "email", "id"]

@@ -1,3 +1,19 @@
+@url = "https://toilet-paper-tracker-dev-7f29aae.zuplo.app"
+# @surl = "http://localhost:9000"
+
+
+####
+
+POST https://toilet-paper-tracker-dev-7f29aae.zuplo.app/users
+Content-Type: application/json
+
+{
+    "displayName": "TSTeatime",
+    "email": "hello@example.com",
+    "id": "user_123456"
+}
+
+### 
 POST http://localhost:9000/users
 Content-Type: application/json
 

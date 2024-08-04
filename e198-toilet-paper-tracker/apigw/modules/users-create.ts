@@ -1,54 +1,11 @@
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { ZuploContext, ZuploRequest, environment } from "@zuplo/runtime";
-
-const accessKeyId = environment.AWS_ACCESS_KEY_ID;
-const secretAccessKey = environment.AWS_ACCESS_KEY_SECRET;
-const region = environment.AWS_REGION;
-const TableName = environment.AWS_DYNAMODB_TABLE_NAME;
-const client = new DynamoDBClient({
-  credentials: {
-    accessKeyId,
-    secretAccessKey,
-  },
-  region,
-});
-
-const BadRequestException = (message: string) => {
-  const resBody = JSON.stringify({
-    statusCode: 400,
-    message: `Bad Request. ${message}`,
-  });
-  return new Response(resBody, {
-    status: 400,
-    headers: { "Content-Type": "application/json" },
-  });
-};
-const InternalServerErrorException = () => {
-  const resBody = JSON.stringify({
-    statusCode: 500,
-    message: "Internal Server Error",
-  });
-  return new Response(resBody, {
-    status: 500,
-    headers: { "Content-Type": "application/json" },
-  });
-};
-const CreatedResponse = (body: object) => {
-  return new Response(JSON.stringify(body), {
-    status: 201,
-    headers: { "Content-Type": "application/json" },
-  });
-};
-const ConflictException = (message: string) => {
-  const resBody = JSON.stringify({
-    statusCode: 409,
-    message: `Conflict. ${message}`,
-  });
-  return new Response(resBody, {
-    status: 409,
-    headers: { "Content-Type": "application/json" },
-  });
-};
+import { PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { ZuploContext, ZuploRequest } from "@zuplo/runtime";
+import { dynamo, TableName } from "./utils/dynamodb";
+import {
+  ConflictException,
+  CreatedResponse,
+  InternalServerErrorException,
+} from "./utils/responses";
 
 export default async function (request: ZuploRequest, context: ZuploContext) {
   try {
@@ -75,7 +32,7 @@ export default async function (request: ZuploRequest, context: ZuploContext) {
       },
       ConditionExpression: "attribute_not_exists(id)", // only insert, no update
     });
-    await client.send(command);
+    await dynamo.send(command);
     context.log.info({ msg: "Created user", id });
     const resBody = { id, displayName, email };
     return CreatedResponse(resBody);

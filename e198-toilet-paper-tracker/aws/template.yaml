@@ -51,6 +51,12 @@ Resources:
       UserName: !Ref ApiGwUser
       Status: Active
 
+  ApiGwUserAccessKey3Local:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref ApiGwUser
+      Status: Active
+
 Outputs:
   PutTable:
     Description: "DynamoDB table name"
@@ -59,3 +65,7 @@ Outputs:
     Value: !Ref ApiGwUserAccessKey3
   # ApiGwUserSecretAccessKey:
   #   Value: !GetAtt ApiGwUserAccessKey3.SecretAccessKey
+  ApiGwUserLocalAccessKeyId:
+    Value: !Ref ApiGwUserAccessKey3Local
+  # ApiGwUserSecretAccessKey:
+  #   Value: !GetAtt ApiGwUserAccessKey3Local.SecretAccessKey
