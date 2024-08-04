@@ -7,7 +7,10 @@ Hackathon project to learn how far we can push the Zuplo API Gateway. Can I crea
 - Users can have multiple households.
 - Household has multiple member users.
 - Household has toilet paper.
+- Users use toilet paper.
 
 Question: **When is NPT Day?**
 
 where NTP = No Toilet Paper Day = the day you run out of toilet paper if you do not buy more.
+
+OOTP day = Out Of Toilet Paper Day = NTP day

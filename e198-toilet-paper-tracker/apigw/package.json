@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "zup dev",
     "test": "zup test",
-    "deploy:dev": "zup deploy --apiKey $ZUPLO_API_KEY --branch dev --no-verify-remote",
-    "deploy:prod": "zup deploy --apiKey $ZUPLO_API_KEY --branch main --no-verify-remote"
+    "deploy:dev": "zup deploy --apiKey $ZUPLO_API_KEY --environment=dev --no-verify-remote",
+    "deploy:prod": "zup deploy --apiKey $ZUPLO_API_KEY --environment=main --no-verify-remote"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.623.0",
     "zuplo": "latest"
   }
 }

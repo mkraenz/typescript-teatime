@@ -45,7 +45,7 @@ Resources:
                       - tableName:
                           Ref: Table
 
-  ApiGwUserAccessKey2:
+  ApiGwUserAccessKey3:
     Type: AWS::IAM::AccessKey
     Properties:
       UserName: !Ref ApiGwUser
@@ -56,6 +56,6 @@ Outputs:
     Description: "DynamoDB table name"
     Value: !GetAtt Table.Arn
   ApiGwUserAccessKeyId:
-    Value: !Ref ApiGwUserAccessKey2
+    Value: !Ref ApiGwUserAccessKey3
   # ApiGwUserSecretAccessKey:
-  #   Value: !GetAtt ApiGwUserAccessKey2.SecretAccessKey
+  #   Value: !GetAtt ApiGwUserAccessKey3.SecretAccessKey

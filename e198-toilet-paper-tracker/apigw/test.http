@@ -1,0 +1,8 @@
+POST http://localhost:9000/users
+Content-Type: application/json
+
+{
+    "displayName": "TSTeatime",
+    "email": "hello@example.com",
+    "id": "user_123456"
+}

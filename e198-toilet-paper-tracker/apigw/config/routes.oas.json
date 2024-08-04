@@ -5,27 +5,59 @@
     "title": "My Zuplo API"
   },
   "paths": {
-    "/users/{id}": {
+    "/users": {
       "x-zuplo-path": {
         "pathMode": "open-api"
       },
-      "get": {
-        "summary": "Find user",
-        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
+      "post": {
+        "summary": "Create User",
+        "description": "Create a new user. Most info is taken from JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
         "x-zuplo-route": {
           "corsPolicy": "none",
           "handler": {
-            "export": "urlForwardHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "baseUrl": "https://echo.zuplo.io"
-            }
+            "export": "default",
+            "module": "$import(./modules/users-create)",
+            "options": {}
           },
           "policies": {
-            "inbound": []
+            "inbound": ["request-validation-inbound"]
           }
         },
-        "operationId": "2cd9ebdf-c8f2-44ff-b9bc-2f2ad80906f8"
+        "operationId": "75d86419-c7a9-4dad-a2ed-8dcfb4733578"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateUserDto": {
+        "title": "Body to create a user",
+        "type": "object",
+        "maxProperties": 3,
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "The users name. Visible to others."
+          },
+          "email": {
+            "type": "string",
+            "description": "The users email. Not visible to others."
+          },
+          "id": {
+            "type": "string",
+            "description": "User id."
+          }
+        },
+        "required": ["displayName", "email", "id"]
       }
     }
   }
