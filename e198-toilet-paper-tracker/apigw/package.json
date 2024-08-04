@@ -1,0 +1,15 @@
+{
+  "name": "toilet-paper-tracker",
+  "version": "1.0.0",
+  "author": "",
+  "copyright": "",
+  "scripts": {
+    "dev": "zup dev",
+    "test": "zup test",
+    "deploy:dev": "zup deploy --apiKey $ZUPLO_API_KEY --branch dev --no-verify-remote",
+    "deploy:prod": "zup deploy --apiKey $ZUPLO_API_KEY --branch main --no-verify-remote"
+  },
+  "dependencies": {
+    "zuplo": "latest"
+  }
+}
